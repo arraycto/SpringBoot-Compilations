@@ -10,6 +10,7 @@
 - **Maven 3.5 +**
 - **IDEA 2018**
 - **mysql 5.7 +** 
+- **Navicat 12**
 
 ### 运行方式
 
@@ -17,7 +18,7 @@
 2. 使用 IDEA 打开 clone 下来的项目
 3. 在 IDEA 中打开项目
 4. 在 IDEA 中 Maven Projects 的面板导入根目录下 的 `pom.xml`
-5. Maven Projects 找不到的童鞋，可以勾上 View -> Tool Buttons ，然后Maven Projects的面板就会出现在IDEA的右侧
+5. 如果没有找到 Maven Projects ，可以勾上 View -> Tool Buttons ，然后Maven Projects的面板就会出现在IDEA的右侧
 6. 找到各个 module 的 Application 类就可以运行各个 module 
 
 
