@@ -29,11 +29,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!--<parent>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--<version>2.1.3.RELEASE</version>-->
+        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+    <!--</parent>-->
 
     <groupId>com.wjwcloud</groupId>
     <artifactId>SpringBoot-Demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>spring-boot-demo-activiti</module>
         <module>spring-boot-demo-elasticsearch</module>
     </modules>
     <packaging>pom</packaging>
@@ -48,7 +55,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
-        <mysql.version>8.0.12</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <hutool.version>4.5.1</hutool.version>
         <guava.version>27.0.1-jre</guava.version>
         <user.agent.version>1.20</user.agent.version>
