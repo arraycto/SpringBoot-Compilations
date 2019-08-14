@@ -14,8 +14,9 @@
     <artifactId>SpringBoot-Demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>spring-boot-demo-activiti</module>
-        <module>spring-boot-demo-elasticsearch</module>
+        <module>SpringBoot-Demo-cache-redis</module>
+        <module>SpringBoot-Demo-activiti</module>
+        <module>SpringBoot-Demo-elasticsearch</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -27,7 +27,7 @@
 | Module 名称                                                  | Module 介绍                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [spring-boot-demo-elasticsearch](./spring-boot-demo-elasticsearch) | spring-boot 集成 ElasticSearch，集成 `spring-boot-starter-data-elasticsearch` 完成对 ElasticSearch 的高级使用技巧，包括创建索引、配置映射、删除索引、增删改查基本操作、复杂查询、高级查询、聚合查询等 |
-| [spring-boot-demo-activiti](./spring-boot-demo-activiti) | spring-boot 集成 activiti |
+| [spring-boot-demo-activiti](./spring-boot-demo-activiti) | spring-boot 集成 activiti(未完成) |
 
 ### 各Module 开发案例
 
