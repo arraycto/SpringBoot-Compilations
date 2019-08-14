@@ -17,6 +17,7 @@
         <module>SpringBoot-Demo-cache-redis</module>
         <module>SpringBoot-Demo-activiti</module>
         <module>SpringBoot-Demo-elasticsearch</module>
+        <module>SpringBoot-Demo-cache-ehcache</module>
     </modules>
     <packaging>pom</packaging>
 
