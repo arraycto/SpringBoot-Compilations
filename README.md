@@ -32,7 +32,7 @@
 
 ### 各Module 开发案例
 
-#### spring-boot-demo-elasticsearch
+#### SpringBoot-Demo-elasticsearch
 
 
 # License
