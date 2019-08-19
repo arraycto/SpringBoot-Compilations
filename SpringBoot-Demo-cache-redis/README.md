@@ -282,7 +282,7 @@ public class UserServiceImpl implements UserService {
 
 ```java
 /**
- * @author JiaweWu
+ * @author JiaweiWu
  */
 @Slf4j
 public class RedisTest extends SpringBootDemoCacheRedisApplicationTests {
@@ -291,7 +291,7 @@ public class RedisTest extends SpringBootDemoCacheRedisApplicationTests {
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
-    private RedisTemplate<String, Serializable> redisCacheTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 测试 Redis 操作
@@ -308,13 +308,12 @@ public class RedisTest extends SpringBootDemoCacheRedisApplicationTests {
 
         // 以下演示整合，具体Redis命令可以参考官方文档
         String key = "cloud:user:1";
-        redisCacheTemplate.opsForValue().set(key, new User(1L, "user1"));
+        redisTemplate.opsForValue().set(key, new User(1L, "user1"));
         // 对应 String（字符串）
-        User user = (User) redisCacheTemplate.opsForValue().get(key);
+        User user = (User) redisTemplate.opsForValue().get(key);
         log.debug("【user】= {}", user);
     }
 }
-
 ```
 
 ## UserServiceTest.java
