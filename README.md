@@ -30,6 +30,7 @@
 | [SpringBoot-Demo-activiti](./SpringBoot-Demo-activiti) | spring-boot 集成 activiti(未完成) |
 | [SpringBoot-Demo-cache-redis](./SpringBoot-Demo-cache-redis)| SpringBoot 集成 redis的操作，redis操作工具类|
 | [SpringBoot-Demo-cache-ehcache](./SpringBoot-Demo-cache-ehcache)| SpringBoot 集成 ehcache 的使用|
+| [SpringBoot-Demo-qcloudsms](./SpringBoot-Demo-qcloudsms) | SpringBoot 集成腾讯短信云服务 |
 
 ### 各Module 开发案例
 
