@@ -1,0 +1,12 @@
+# 腾讯短信平台配置
+qcloudsms:
+  appid: **
+  appkey: **
+  # 模板Id
+  templateId: **
+  # 签名
+  smsSign: **
+
+logging:
+  level:
+    com.wjwcloud: debug

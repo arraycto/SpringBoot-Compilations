@@ -18,6 +18,7 @@
         <module>SpringBoot-Demo-activiti</module>
         <module>SpringBoot-Demo-elasticsearch</module>
         <module>SpringBoot-Demo-cache-ehcache</module>
+        <module>SpringBoot-Demo-qcloudsms</module>
     </modules>
     <packaging>pom</packaging>
 
