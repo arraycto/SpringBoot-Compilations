@@ -515,9 +515,158 @@ curl -XPUT ‘http://localhost:9200/_all/_settings?preserve_existing=true’ -d 
 “index.number_of_shards” : “10”
 }’
 ```
+# MySql同步数据到ES
+## 使用 Logstash 将mysql 数据库数据同步到 elasticsearch
+
+```
+# 拉取镜像
+docker pull docker.elastic.co/logstash/logstash:6.5.3
+
+# 创建挂载配置文件夹
+mkdir /opt/logstash/config
+```
+- 在/opt/logstash/config的路径下创建四个配置文件
+
+1、logstash.yml (空文件就行)
+2、log4j2.properties
+```
+logger.elasticsearchoutput.name = logstash.outputs.elasticsearch
+logger.elasticsearchoutput.level = debug
+
+```
+3、pipelines.yml
+```
+- pipeline.id: table1
+  path.config: "/opt/logstash/config/logstash-mysql-es.conf"
+  pipeline.workers: 3
+```
+4、logstash-mysql-es.conf
+```
+input {
+  tcp {
+    mode => "server"
+    host => "0.0.0.0"
+    port => 4567
+  }
+}
+output {
+  elasticsearch {
+    action => "index"
+    hosts  => "ip:9200"
+    index  => "index"
+  }
+}
+```
+上方的logstash-mysql-es.conf只配置了一张表，可以配置需要同步的多张表，比如想同步tableA、tableB、tableC 3张表  则创建3个 logstash-mysql-es.conf 文件 logstash-mysql-esA.conf、 logstash-mysql-esB.conf、 logstash-mysql-esC.conf。
+只是修改里面的sql语句和索引名。logstash-mysql-es.conf 文件创建好后最后在 /opt/logstash/config/pipelines.yml 配置如下方的管道即可。
+
+```
+- pipeline.id: table1
+  path.config: "/opt/logstash/config/logstash-mysql-esA.conf"
+  pipeline.workers: 3
+- pipeline.id: table2
+  path.config: "/opt/logstash/config/logstash-mysql-esB.conf"
+  pipeline.workers: 3
+- pipeline.id: table3
+  path.config: "/opt/logstash/config/logstash-mysql-esC.conf"
+  pipeline.workers: 3
+```
+- 启动容器
+
+```
+docker run -d --name logstashmysql -v /opt/logstash/config/:/usr/share/logstash/config/ docker.elastic.co/logstash/logstash:6.5.3
+```
+
+- 进入容器安装插件
+
+安装 jdbc 和 elasticsearch 插件
+```
+# 进入到容器执行
+
+./bin/logstash-plugin install logstash-input-jdbc
+
+./bin/logstash-plugin install logstash-output-elasticsearch
+
+```
+- 下载mysql-connector-java放到文件夹：/opt/logstash/config中
+
+修改logstash-mysql-es.conf配置文件(mysql同步配置示例)：
+```
+input {
+  jdbc {
+    # mysql相关jdbc配置
+    jdbc_connection_string => "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false"
+    jdbc_user => "root"
+    jdbc_password => "123456"
+
+    # jdbc连接mysql驱动的文件  此处路径一定要正确 否则会报com.mysql.cj.jdbc.Driver could not be loaded
+    jdbc_driver_library => "/opt/logstash/config/mysql-connector-java-8.0.12.jar"
+    # the name of the driver class for mysql
+    jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
+    jdbc_paging_enabled => true
+    jdbc_page_size => "50000"
+
+    jdbc_default_timezone =>"Asia/Shanghai"
+
+    # mysql文件, 也可以直接写SQL语句在此处，如下：
+    # 如果要使字段和实体类的驼峰命名法一致  则需要这样写sql  select d_name as dName, c_id as cId from area where update_time >= :sql_last_value order by update_time asc
+    statement => "select * from area where update_time >= :sql_last_value order by update_time asc"
+    # statement_filepath => "./config/jdbc.sql"
+
+    # 这里类似crontab,可以定制定时操作，比如每分钟执行一次同步(分 时 天 月 年)
+    schedule => "* * * * *"
+    #type => "jdbc"
+ 
+
+    # 是否记录上次执行结果, 如果为真,将会把上次执行到的 tracking_column 字段的值记录下来,保存到 last_run_metadata_path 指定的文件中
+    #record_last_run => true
+
+    # 是否需要记录某个column 的值,如果record_last_run为真,可以自定义我们需要 track 的 column 名称，此时该参数就要为 true. 否则默认 track 的是 timestamp 的值.
+    use_column_value => true
+
+    # 如果 use_column_value 为真,需配置此参数. track 的数据库 column 名,该 column 必须是递增的. 一般是mysql主键
+    tracking_column => "update_time"
+
+    tracking_column_type => "timestamp"
+
+    last_run_metadata_path => "area_logstash_capital_bill_last_id"
+
+    # 是否清除 last_run_metadata_path 的记录,如果为真那么每次都相当于从头开始查询所有的数据库记录
+    clean_run => false
+
+    #是否将 字段(column) 名称转小写
+    #lowercase_column_names => false
+  }
+}
+
+filter {
+  date {
+    match => [ "update_time", "yyyy-MM-dd HH:mm:ss" ]
+    timezone => "Asia/Shanghai"
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["127.0.0.1:9200"]
+    # index名 自定义 相当于数据库 对于实体类上@Document(indexName = "sys_core", type = "area"）indexName
+    index => "sys_core"  
+    #索引的类型 相当于数据库里面的表 对于实体类上@Document(indexName = "sys_core", type = "area"）type
+    document_type => "area"
+    #需要关联的数据库中有有一个id字段，对应索引的id号
+    document_id => "%{id}"
+    template_overwrite => true
+  }
+
+  # 这里输出调试，正式运行时可以注释掉
+  stdout {
+      codec => json_lines
+  }
+}
+```
 
 ## 参考
 
 1. ElasticSearch 官方文档：https://www.elastic.co/guide/en/elasticsearch/reference/6.x/getting-started.html
 2. spring-data-elasticsearch 官方文档：https://docs.spring.io/spring-data/elasticsearch/docs/3.1.2.RELEASE/reference/html/
-
+3. logstash官方文档：https://www.elastic.co/cn/blog/logstash-jdbc-input-plugin
