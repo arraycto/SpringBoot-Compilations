@@ -8,13 +8,13 @@
 
 1. 下载镜像：`docker pull elasticsearch:6.5.3`
 
-2. 运行容器：`docker run -d -p 9200:9200 -p 9300:9300 --name elasticsearch-6.5.3 elasticsearch:6.5.3`
+2. 运行容器：`docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 -p 9300:9300 -v /opt/docker/es/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data1:/usr/share/elasticsearch/data --name es1 elasticsearch:6.5.3`
 
-3. 进入容器：`docker exec -it elasticsearch-6.5.3 /bin/bash` 
+3. 进入容器：`docker exec -it es1 /bin/bash` 
 
 4. 安装 ik 分词器：`./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.5.3/elasticsearch-analysis-ik-6.5.3.zip`
 
-5. 修改 es 配置文件：`vi ./config/elasticsearch.yml
+5. 修改 es 配置文件：`vi ./config/elasticsearch.yml`
 
    ```yaml
    cluster.name: "docker-cluster"
@@ -32,9 +32,8 @@
 
 6. 退出容器：`exit`
 
-7. 停止容器：`docker stop elasticsearch-6.5.3`
+7. 重启容器：`docker restart es1`
 
-8. 启动容器：`docker start elasticsearch-6.5.3`
 
 ## pom.xml
 
@@ -384,6 +383,137 @@ public class PersonRepositoryTest extends SpringBootDemoElasticsearchApplication
     }
 
 }
+```
+# ES集群配置
+
+在/opt/docker/es/config的文件夹目录下添加如下的三个文件配置:
+
+es1.yml
+```
+cluster.name: docker-cluster
+node.name: es-node1
+network.bind_host: 0.0.0.0
+# 本机的内网IP
+network.publish_host: 192.168.233.137
+http.port: 9200
+transport.tcp.port: 9300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+node.master: true 
+node.data: true  
+# 发现其他的节点
+discovery.zen.ping.unicast.hosts: ["192.168.233.137:9300","192.168.233.137:9301","192.168.233.137:9302"]
+discovery.zen.minimum_master_nodes: 2
+```
+es2.yml
+```
+cluster.name: docker-cluster
+node.name: es-node2
+network.bind_host: 0.0.0.0
+network.publish_host: 192.168.233.137
+http.port: 9201
+transport.tcp.port: 9301
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+node.master: true 
+node.data: true  
+discovery.zen.ping.unicast.hosts: ["192.168.233.137:9300","192.168.233.137:9301","192.168.233.137:9302"]
+discovery.zen.minimum_master_nodes: 2
+```
+es3.yml
+```
+cluster.name: docker-cluster
+node.name: es-node3
+network.bind_host: 0.0.0.0
+network.publish_host: 192.168.233.137
+http.port: 9202
+transport.tcp.port: 9302
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+node.master: true 
+node.data: true  
+discovery.zen.ping.unicast.hosts: ["192.168.233.137:9300","192.168.233.137:9301","192.168.233.137:9302"]
+discovery.zen.minimum_master_nodes: 2
+
+```
+### 配置说明
+
+cluster.name：用于唯一标识一个集群，不同的集群，其 cluster.name 不同，集群名字相同的所有节点自动组成一个集群。如果不配置改属性，默认值是：elasticsearch。
+
+node.name：节点名，默认随机指定一个name列表中名字。集群中node名字不能重复
+
+index.number_of_shards: 默认的配置是把索引分为5个分片
+
+index.number_of_replicas:设置每个index的默认的冗余备份的分片数，默认是1
+```
+通过 index.number_of_shards，index.number_of_replicas默认设置索引将分为5个分片，每个分片1个副本，共10个结点。
+禁用索引的分布式特性，使索引只创建在本地主机上：
+index.number_of_shards: 1
+index.number_of_replicas: 0
+但随着版本的升级 将不在配置文件中配置而实启动ES后，再进行配置
+```
+
+bootstrap.memory_lock: true 当JVM做分页切换（swapping）时，ElasticSearch执行的效率会降低，推荐把ES_MIN_MEM和ES_MAX_MEM两个环境变量设置成同一个值，并且保证机器有足够的物理内存分配给ES，同时允许ElasticSearch进程锁住内存
+
+network.bind_host: 设置可以访问的ip,可以是ipv4或ipv6的，默认为0.0.0.0，这里全部设置通过
+
+network.publish_host:设置其它结点和该结点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址
+
+```
+同时设置bind_host和publish_host两个参数可以替换成network.host
+network.bind_host: 192.168.233.137
+network.publish_host: 192.168.233.137
+=>network.host: 192.168.233.137
+```
+
+http.port:设置对外服务的http端口，默认为9200
+
+transport.tcp.port: 设置节点之间交互的tcp端口，默认是9300
+
+http.cors.enabled: 是否允许跨域REST请求
+
+http.cors.allow-origin: 允许 REST 请求来自何处
+
+node.master: true 配置该结点有资格被选举为主结点（候选主结点），用于处理请求和管理集群。如果结点没有资格成为主结点，那么该结点永远不可能成为主结点；如果结点有资格成为主结点，只有在被其他候选主结点认可和被选举为主结点之后，才真正成为主结点。
+
+node.data: true 配置该结点是数据结点，用于保存数据，执行数据相关的操作（CRUD，Aggregation）；
+
+discovery.zen.minimum_master_nodes: //自动发现master节点的最小数，如果这个集群中配置进来的master节点少于这个数目，es的日志会一直报master节点数目不足。（默认为1）为了避免脑裂，个数请遵从该公式 => (totalnumber of master-eligible nodes / 2 + 1)。 * 脑裂是指在主备切换时，由于切换不彻底或其他原因，导致客户端和Slave误以为出现两个active master，最终使得整个集群处于混乱状态*
+
+discovery.zen.ping.unicast.hosts： 集群个节点IP地址，也可以使用es-node等名称，需要各节点能够解析
+
+
+## 启动集群
+
+上面第一次启动的容器重启，并增加启动两个ES节点：
+
+```
+docker restart es1
+
+docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9201:9201 -p 9301:9301 -v /opt/docker/es/config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data2:/usr/share/elasticsearch/data --name es2 elasticsearch:6.5.3
+
+docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9202:9202 -p 9302:9302 -v /opt/docker/es/config/es3.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data3:/usr/share/elasticsearch/data --name es3 elasticsearch:6.5.3
+```
+## 查看是否搭建成功
+
+在浏览器地址栏访问http://192.168.233.137:9200/_cat/nodes?pretty 查看节点状态
+
+## 拉取elasticsearch-head前端框架
+```
+docker pull mobz/elasticsearch-head:5
+
+# 启动
+docker run -d -p 9100:9100 --name es-manager  mobz/elasticsearch-head:5
+
+```
+在浏览器中访问：http://192.168.233.137:9100/
+
+**[注]** 索引分片设置以及副本：
+```
+curl -XPUT ‘http://localhost:9200/_all/_settings?preserve_existing=true’ -d ‘{
+“index.number_of_replicas” : “1”,
+“index.number_of_shards” : “10”
+}’
 ```
 
 ## 参考
