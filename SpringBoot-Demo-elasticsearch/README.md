@@ -4,15 +4,15 @@
 
 ## 注意
 
-作者编写本demo时，ElasticSearch版本为 `6.5.3`，使用 docker 运行，下面是所有步骤：
+作者编写本demo时，ElasticSearch版本为 `6.5.4`，使用 docker 运行，下面是所有步骤：
 
-1. 下载镜像：`docker pull elasticsearch:6.5.3`
+1. 下载镜像：`docker pull elasticsearch:6.5.4`
 
-2. 运行容器：`docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 -p 9300:9300 -v /opt/docker/es/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data1:/usr/share/elasticsearch/data --name es1 elasticsearch:6.5.3`
+2. 运行容器：`docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 -p 9300:9300 -v /opt/docker/es/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data1/:/usr/share/elasticsearch/data/ -v /opt/docker/es/logs1/:/usr/share/elasticsearch/logs/ --name es1 elasticsearch:6.5.4`
 
 3. 进入容器：`docker exec -it es1 /bin/bash` 
 
-4. 安装 ik 分词器：`./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.5.3/elasticsearch-analysis-ik-6.5.3.zip`
+4. 安装 ik 分词器：`./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.5.3/elasticsearch-analysis-ik-6.5.4.zip`
 
 5. 修改 es 配置文件：`vi ./config/elasticsearch.yml`
 
@@ -34,6 +34,7 @@
 
 7. 重启容器：`docker restart es1`
 
+【注】 docker目录的挂载，需要将宿主机的文件夹权限设置为777 ：chmod 777 /<文件夹路径>
 
 ## pom.xml
 
@@ -490,9 +491,9 @@ discovery.zen.ping.unicast.hosts： 集群个节点IP地址，也可以使用es-
 ```
 docker restart es1
 
-docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9201:9201 -p 9301:9301 -v /opt/docker/es/config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data2:/usr/share/elasticsearch/data --name es2 elasticsearch:6.5.3
+docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9201:9201 -p 9301:9301 -v /opt/docker/es/config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data2:/usr/share/elasticsearch/data -v /opt/docker/es/logs2/:/usr/share/elasticsearch/logs --name es2 elasticsearch:6.5.4
 
-docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9202:9202 -p 9302:9302 -v /opt/docker/es/config/es3.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data3:/usr/share/elasticsearch/data --name es3 elasticsearch:6.5.3
+docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9202:9202 -p 9302:9302 -v /opt/docker/es/config/es3.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data3:/usr/share/elasticsearch/data -v /opt/docker/es/logs3/:/usr/share/elasticsearch/logs --name es3 elasticsearch:6.5.4
 ```
 ## 查看是否搭建成功
 
@@ -520,61 +521,32 @@ curl -XPUT ‘http://localhost:9200/_all/_settings?preserve_existing=true’ -d 
 
 ```
 # 拉取镜像
-docker pull docker.elastic.co/logstash/logstash:6.5.3
+docker pull docker.elastic.co/logstash/logstash:6.5.4
 
 # 创建挂载配置文件夹
-mkdir /opt/logstash/config
+mkdir /opt/docker/logstash/config/pipeline
 ```
-- 在/opt/logstash/config的路径下创建四个配置文件
+- 在/opt/docker/logstash/config/pipeline的路径下创建一个配置文件
 
-1、logstash.yml (空文件就行)
-2、log4j2.properties
-```
-logger.elasticsearchoutput.name = logstash.outputs.elasticsearch
-logger.elasticsearchoutput.level = debug
-
-```
-3、pipelines.yml
-```
-- pipeline.id: table1
-  path.config: "/opt/logstash/config/logstash-mysql-es.conf"
-  pipeline.workers: 3
-```
-4、logstash-mysql-es.conf
+logstash-mysql.conf
 ```
 input {
-  tcp {
-    mode => "server"
-    host => "0.0.0.0"
-    port => 4567
-  }
+    tcp {
+        port => 4560
+        codec => json_lines
+    }
 }
-output {
-  elasticsearch {
-    action => "index"
-    hosts  => "ip:9200"
-    index  => "index"
-  }
+output{
+  elasticsearch { hosts => ["192.168.233.137:9200"] }
+  stdout { codec => rubydebug }
 }
 ```
-上方的logstash-mysql-es.conf只配置了一张表，可以配置需要同步的多张表，比如想同步tableA、tableB、tableC 3张表  则创建3个 logstash-mysql-es.conf 文件 logstash-mysql-esA.conf、 logstash-mysql-esB.conf、 logstash-mysql-esC.conf。
-只是修改里面的sql语句和索引名。logstash-mysql-es.conf 文件创建好后最后在 /opt/logstash/config/pipelines.yml 配置如下方的管道即可。
+注意output中设置了elasticsearch的连接地址：192.168.233.137:9200
 
-```
-- pipeline.id: table1
-  path.config: "/opt/logstash/config/logstash-mysql-esA.conf"
-  pipeline.workers: 3
-- pipeline.id: table2
-  path.config: "/opt/logstash/config/logstash-mysql-esB.conf"
-  pipeline.workers: 3
-- pipeline.id: table3
-  path.config: "/opt/logstash/config/logstash-mysql-esC.conf"
-  pipeline.workers: 3
-```
 - 启动容器
 
 ```
-docker run -d --name logstashmysql -v /opt/logstash/config/:/usr/share/logstash/config/ docker.elastic.co/logstash/logstash:6.5.3
+docker run --name logstash --rm -it -p 4560:4560 -v /opt/docker/logstash/config/pipeline/:/usr/share/logstash/pipeline/ -d docker.elastic.co/logstash/logstash:6.5.4
 ```
 
 - 进入容器安装插件
@@ -588,9 +560,15 @@ docker run -d --name logstashmysql -v /opt/logstash/config/:/usr/share/logstash/
 ./bin/logstash-plugin install logstash-output-elasticsearch
 
 ```
-- 下载mysql-connector-java放到文件夹：/opt/logstash/config中
+- 下载mysql-connector-java放到文件夹：/opt/docker/logstash/config中
 
-修改logstash-mysql-es.conf配置文件(mysql同步配置示例)：
+下载地址：https://dev.mysql.com/downloads/connector/j
+
+```
+wget https://cdn.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.12.tar.gz
+tar -xvf mysql-connector-java-8.0.12.tar.gz
+```
+修改logstash-mysql.conf配置文件(mysql同步配置示例)：
 ```
 input {
   jdbc {
@@ -600,7 +578,7 @@ input {
     jdbc_password => "123456"
 
     # jdbc连接mysql驱动的文件  此处路径一定要正确 否则会报com.mysql.cj.jdbc.Driver could not be loaded
-    jdbc_driver_library => "/opt/logstash/config/mysql-connector-java-8.0.12.jar"
+    jdbc_driver_library => "/opt/docker/logstash/config/mysql-connector-java-8.0.12.jar"
     # the name of the driver class for mysql
     jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
     jdbc_paging_enabled => true
@@ -664,9 +642,84 @@ output {
   }
 }
 ```
+# kibana
 
+- 拉取镜像
+`docker pull docker.elastic.co/kibana/kibana:6.5.4`
+
+- 创建默认配置文件
+```
+vi /opt/docker/kibana/kibana.yml
+```
+kibana.yml
+
+```
+server.host: "0.0.0.0"
+elasticsearch.url: "http://192.168.233.137:9200"
+```
+- 创建并启动容器
+`docker run -d -p 5601:5601 --name kibana -v /opt/docker/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml  docker.elastic.co/kibana/kibana:6.5.4`
+
+
+
+# docker-compose整体部署模式
+
+```
+version: '2'
+services:
+  es1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /opt/docker/es/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /opt/docker/es/data1/:/usr/share/elasticsearch/data
+      - /opt/docker/es/logs1/:/usr/share/elasticsearch/logs
+    environment:
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.5.4
+    volumes:
+       	- 
+    depends_on:
+      - es1
+    ports:
+      - "9600:9600"
+    stdin_open: true
+    tty: true
+    entrypoint: logstash -e 'input { stdin{} }  output { elasticsearch {  hosts => ["192.168.233.137:9200"] } }'
+```
+# 部署环境相关问题
+
+- es 启动报错
+  max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+  
+  解决办法：
+  
+  在/etc/sysctl.conf文件最后添加一行
+  
+  `vm.max_map_count=262144`
+  
+- Docker挂载主机目录Docker访问出现Permission denied
+  
+  原由：
+  
+  CentOS7中的安全模块selinux把权限禁掉了.
+  
+  解决：
+  
+  在容器启动的时候加上 --privileged=true
+  
+  eg: `docker run --privileged=true -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 -p 9300:9300 -v /opt/docker/es/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /opt/docker/es/data1/:/usr/share/elasticsearch/data/ -v /opt/docker/es/logs1/:/usr/share/elasticsearch/logs/ --name es1 elasticsearch:6.5.4`
+  
+  解决方案2：
+  
+  控制SELinux的位置在系统/etc/selinux/config文件中，将SELINUX=enforcing改为SELINUX=disabled，永久关闭SELinux状态。
+  
 ## 参考
 
 1. ElasticSearch 官方文档：https://www.elastic.co/guide/en/elasticsearch/reference/6.x/getting-started.html
 2. spring-data-elasticsearch 官方文档：https://docs.spring.io/spring-data/elasticsearch/docs/3.1.2.RELEASE/reference/html/
 3. logstash官方文档：https://www.elastic.co/cn/blog/logstash-jdbc-input-plugin
+4. docker-logstash配置官方参考文章：https://www.elastic.co/guide/en/logstash/current/docker-config.html
