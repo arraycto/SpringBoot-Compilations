@@ -565,8 +565,8 @@ docker run --name logstash --rm -it -p 4560:4560 -v /opt/docker/logstash/config/
 下载地址：https://dev.mysql.com/downloads/connector/j
 
 ```
-wget https://cdn.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.12.tar.gz
-tar -xvf mysql-connector-java-8.0.12.tar.gz
+wget https://cdn.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.17.tar.gz
+tar -xvf mysql-connector-java-8.0.17.tar.gz
 ```
 修改logstash-mysql.conf配置文件(mysql同步配置示例)：
 ```
@@ -578,7 +578,7 @@ input {
     jdbc_password => "123456"
 
     # jdbc连接mysql驱动的文件  此处路径一定要正确 否则会报com.mysql.cj.jdbc.Driver could not be loaded
-    jdbc_driver_library => "/opt/docker/logstash/config/mysql-connector-java-8.0.12.jar"
+    jdbc_driver_library => "/opt/docker/logstash/config/mysql-connector-java-8.0.17.jar"
     # the name of the driver class for mysql
     jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
     jdbc_paging_enabled => true
