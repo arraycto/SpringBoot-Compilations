@@ -23,7 +23,7 @@ network.host: 0.0.0.0
 # Details: https://github.com/elastic/elasticsearch/pull/17288
 discovery.zen.minimum_master_nodes: 1
 
-# just for elasticsearch-head plugin
+elk
 http.cors.enabled: true
 http.cors.allow-origin: "*"
 ```

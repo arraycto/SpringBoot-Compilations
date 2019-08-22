@@ -26,7 +26,7 @@
 
 | Module 名称                                                  | Module 介绍                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [SpringBoot-Demo-elasticsearch](./SpringBoot-Demo-elasticsearch) | spring-boot 集成 ElasticSearch，集成 `spring-boot-starter-data-elasticsearch` 完成对 ElasticSearch 的高级使用技巧，包括创建索引、配置映射、删除索引、增删改查基本操作、复杂查询、高级查询、聚合查询等 |
+| [SpringBoot-Demo-elasticsearch](./SpringBoot-Demo-elasticsearch) | spring-boot 集成 ElasticSearch，集成 `spring-boot-starter-data-elasticsearch` 完成对 ElasticSearch 的高级使用技巧，包括创建索引、配置映射、删除索引、增删改查基本操作、复杂查询、高级查询、聚合查询等。使用logstash进行MySQL的全量、增量同步到ES |
 | [SpringBoot-Demo-activiti](./SpringBoot-Demo-activiti) | spring-boot 集成 activiti(未完成) |
 | [SpringBoot-Demo-cache-redis](./SpringBoot-Demo-cache-redis)| SpringBoot 集成 redis的操作，redis操作工具类|
 | [SpringBoot-Demo-cache-ehcache](./SpringBoot-Demo-cache-ehcache)| SpringBoot 集成 ehcache 的使用|

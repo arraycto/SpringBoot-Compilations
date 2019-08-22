@@ -1,6 +1,6 @@
-package com.wjwcloud.elasticsearch.model;
+package com.wjwcloud.elk.model;
 
-import com.wjwcloud.elasticsearch.constants.EsConsts;
+import com.wjwcloud.elk.constants.EsConsts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

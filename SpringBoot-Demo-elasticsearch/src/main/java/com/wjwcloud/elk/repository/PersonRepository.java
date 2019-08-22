@@ -1,6 +1,6 @@
-package com.wjwcloud.elasticsearch.repository;
+package com.wjwcloud.elk.repository;
 
-import com.wjwcloud.elasticsearch.model.Person;
+import com.wjwcloud.elk.model.Person;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;

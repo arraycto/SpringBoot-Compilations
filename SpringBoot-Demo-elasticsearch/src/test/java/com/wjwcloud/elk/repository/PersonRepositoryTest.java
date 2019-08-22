@@ -1,10 +1,10 @@
-package com.wjwcloud.elasticsearch.repository;
+package com.wjwcloud.elk.repository;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
-import com.wjwcloud.elasticsearch.SpringBootDemoElasticsearchApplicationTests;
-import com.wjwcloud.elasticsearch.model.Person;
+import com.wjwcloud.elk.SpringBootDemoElasticsearchApplicationTests;
+import com.wjwcloud.elk.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;

@@ -1,4 +1,4 @@
-package com.wjwcloud.elasticsearch;
+package com.wjwcloud.elk;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringBootDemoElasticsearchApplicationTests {
+public class SpringBootDemoELKApplicationTests {
 
 	@Test
 	public void contextLoads() {

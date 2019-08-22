@@ -1,7 +1,7 @@
-package com.wjwcloud.elasticsearch.template;
+package com.wjwcloud.elk.template;
 
-import com.wjwcloud.elasticsearch.SpringBootDemoElasticsearchApplicationTests;
-import com.wjwcloud.elasticsearch.model.Person;
+import com.wjwcloud.elk.SpringBootDemoElasticsearchApplicationTests;
+import com.wjwcloud.elk.model.Person;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;

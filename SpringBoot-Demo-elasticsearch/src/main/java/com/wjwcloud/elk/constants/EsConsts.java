@@ -1,4 +1,4 @@
-package com.wjwcloud.elasticsearch.constants;
+package com.wjwcloud.elk.constants;
 
 /**
  * 常量
