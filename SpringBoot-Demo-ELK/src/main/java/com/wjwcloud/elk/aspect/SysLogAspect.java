@@ -100,7 +100,7 @@ public class SysLogAspect {
         elkLog.setApplicationName(SpringContextUtil.getApplicationName());
 
         //profile.active
-        elkLog.setProfileActive(SpringContextUtil.getActiveProfile());
+//        elkLog.setProfileActive(SpringContextUtil.getActiveProfile());
 
         // 请求的类名
         elkLog.setClassName(joinPoint.getTarget().getClass().getName());

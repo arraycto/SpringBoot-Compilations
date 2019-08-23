@@ -52,7 +52,7 @@
         <appender-ref ref="logstash"/>
     </logger>
 
-    <!--<logger name="com.zaxxer" level="${LOG_LEVEL}"/>-->
+    <!--<logger name="com.wjwcloud" level="${LOG_LEVEL}"/>-->
     <!--<logger name="org.apache.ibatis" level="${LOG_LEVEL}"/>-->
     <!--<logger name="org.mybatis.spring" level="${LOG_LEVEL}"/>-->
     <!--<logger name="org.springframework" level="${LOG_LEVEL}"/>-->

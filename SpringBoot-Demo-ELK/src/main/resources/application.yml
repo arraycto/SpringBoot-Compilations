@@ -1,5 +1,5 @@
+server:
+   port: 9000
 spring:
-  data:
-    elasticsearch:
-      cluster-name: docker-cluster
-      cluster-nodes: 192.168.233.137:9300
+   application:
+       name: Logstash
