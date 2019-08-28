@@ -20,6 +20,7 @@
         <module>SpringBoot-Demo-ELK</module>
         <module>SpringBoot-Demo-cache-ehcache</module>
         <module>SpringBoot-Demo-qcloudsms</module>
+        <module>SpringBoot-Demo-auth</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -36,7 +37,10 @@
         <mysql.version>8.0.16</mysql.version>
         <hutool.version>4.5.1</hutool.version>
         <guava.version>27.0.1-jre</guava.version>
+        <wtool.version>1.0.5</wtool.version>
         <user.agent.version>1.20</user.agent.version>
+        <commons.lang3.version>3.9</commons.lang3.version>
+        <commons.codec.version>1.11</commons.codec.version>
     </properties>
 
     <dependencyManagement>
@@ -65,12 +69,31 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.github.wjw0315/wtool -->
+            <dependency>
+                <groupId>com.github.wjw0315</groupId>
+                <artifactId>wtool</artifactId>
+                <version>${wtool.version}</version>
+            </dependency>
             <!-- 解析 UserAgent 信息 -->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${user.agent.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
