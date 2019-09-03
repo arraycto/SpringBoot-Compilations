@@ -1,8 +1,8 @@
 package com.wjwcloud.auth.commons.utils;
 
+import com.github.wjw0315.wtool.core.util.ClientUtil;
 import com.github.wjw0315.wtool.core.util.ReflectionUtils;
 import com.wjwcloud.auth.commons.handle.BaseContextHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

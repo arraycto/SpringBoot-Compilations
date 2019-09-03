@@ -125,7 +125,6 @@
 		<dependency>
 			<groupId>com.github.wjw0315</groupId>
 			<artifactId>wtool</artifactId>
-			<!--<version>1.0.1-RELEASE</version>-->
 		</dependency>
     </dependencies>
 
