@@ -21,6 +21,7 @@
         <module>SpringBoot-Demo-cache-ehcache</module>
         <module>SpringBoot-Demo-qcloudsms</module>
         <module>SpringBoot-Demo-auth</module>
+        <module>SpringBoot-task</module>
     </modules>
     <packaging>pom</packaging>
 
