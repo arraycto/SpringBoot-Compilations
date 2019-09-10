@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
- * Authorization Code 授权码模式
+ * Authorizatigiton Code 授权码模式
  * Created by zhoulei on 2019/4/25.
  * Impl OAth2  http://oauth.net/2/
  */
