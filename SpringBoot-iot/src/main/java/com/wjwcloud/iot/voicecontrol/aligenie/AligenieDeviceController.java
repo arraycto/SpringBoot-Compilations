@@ -2,10 +2,9 @@ package com.wjwcloud.iot.voicecontrol.aligenie;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.geer2.zwow.iot.product.service.ProductDeviceService;
-import com.geer2.zwow.iot.voicecontrol.aligenie.entity.AligenieUtil;
-import com.geer2.zwow.iot.voicecontrol.aligenie.enums.GenieCtrType;
-import com.geer2.zwow.iot.voicecontrol.aligenie.service.IAligenieDeviceService;
+import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.enums.GenieCtrType;
+import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieDeviceService;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +31,8 @@ public class AligenieDeviceController {
     /**
      * 注入设备服务
      */
-    @Resource(name = "productDeviceServiceImpl")
-    private ProductDeviceService productDeviceService;
+//    @Resource(name = "productDeviceServiceImpl")
+//    private ProductDeviceService productDeviceService;
 
 
     /**

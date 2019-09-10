@@ -2,7 +2,8 @@ package com.wjwcloud.iot.voicecontrol.aligenie.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.geer2.base.utils.DateUtils;
+
+import com.wjwcloud.iot.utils.DateUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;

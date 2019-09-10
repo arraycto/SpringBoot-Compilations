@@ -1,11 +1,12 @@
 package com.wjwcloud.iot.voicecontrol.aligenie;
 
-import com.geer2.base.model.ResultResponse;
-import com.geer2.base.utils.redis.RedisProxy;
-import com.geer2.zwow.iot.voicecontrol.aligenie.controller.AuthzController;
-import com.geer2.zwow.iot.voicecontrol.aligenie.entity.AligenieUtil;
-import com.geer2.zwow.iot.voicecontrol.aligenie.service.IAligenieAuthService;
-import com.geer2.zwow.iot.voicecontrol.service.OauthCallBackService;
+
+import com.wjwcloud.iot.model.ResultResponse;
+import com.wjwcloud.iot.utils.redis.RedisProxy;
+import com.wjwcloud.iot.voicecontrol.aligenie.controller.AuthzController;
+import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
+import com.wjwcloud.iot.voicecontrol.service.OauthCallBackService;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
@@ -68,27 +69,27 @@ public class AligenieController {
      */
 
     //用户登录
-    @RequestMapping(value = "/login")
-    @ResponseBody
-    public ResultResponse authorize(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params) {
-        try {
-            if(!params.containsKey("mobilePhone")){
-                return ResultResponse.FAILED("请输入手机号");
-            }
-            if(!params.containsKey("loginType")){
-                return ResultResponse.FAILED("请传入正确的参数");
-            }
-
-            Map token = iAligenieAuthService.login(params);
-            if (null != token) {
-                return ResultResponse.SUCCESSFUL(token);
-            } else {
-                return ResultResponse.FAILED("登录失败");
-            }
-        } catch (Exception ex) {
-            return ResultResponse.FAILED(ex.getMessage());
-        }
-    }
+//    @RequestMapping(value = "/login")
+//    @ResponseBody
+//    public ResultResponse authorize(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params) {
+//        try {
+//            if(!params.containsKey("mobilePhone")){
+//                return ResultResponse.FAILED("请输入手机号");
+//            }
+//            if(!params.containsKey("loginType")){
+//                return ResultResponse.FAILED("请传入正确的参数");
+//            }
+//
+//            Map token = iAligenieAuthService.login(params);
+//            if (null != token) {
+//                return ResultResponse.SUCCESSFUL(token);
+//            } else {
+//                return ResultResponse.FAILED("登录失败");
+//            }
+//        } catch (Exception ex) {
+//            return ResultResponse.FAILED(ex.getMessage());
+//        }
+//    }
 
     //天猫精灵调用登录服务
     @RequestMapping(value = "/aligenielogin" ,method = RequestMethod.GET)
@@ -98,8 +99,8 @@ public class AligenieController {
 
     /**
      * 登录成功后回调服务
-     * @param request
-     * @param session
+     * @param
+     * @param
      * @param params
      * @return
      */

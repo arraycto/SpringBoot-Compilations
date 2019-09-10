@@ -1,12 +1,11 @@
 package com.wjwcloud.iot.voicecontrol.aligenie.service.imp;
 
 
-import com.geer2.base.utils.key.UUIDUtil;
-import com.geer2.base.utils.redis.RedisProxy;
-import com.geer2.zwow.iot.customer.service.CustomerLoginService;
-import com.geer2.zwow.iot.voicecontrol.aligenie.common.AligenieConstantKey;
-import com.geer2.zwow.iot.voicecontrol.aligenie.entity.AligenieUtil;
-import com.geer2.zwow.iot.voicecontrol.aligenie.service.IAligenieAuthService;
+import com.wjwcloud.iot.utils.key.UUIDUtil;
+import com.wjwcloud.iot.utils.redis.RedisProxy;
+import com.wjwcloud.iot.voicecontrol.aligenie.common.AligenieConstantKey;
+import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,8 @@ import java.util.Map;
 @Service("aligenieLoginServiceImpl")
 public class AligenieAuthServiceImpl implements IAligenieAuthService {
 
-    @Resource(name = "customerLoginServiceImpl")
-    private CustomerLoginService customerLoginService;
+//    @Resource(name = "customerLoginServiceImpl")
+//    private CustomerLoginService customerLoginService;
 
     /**
      * 注入redis服务
@@ -36,19 +35,19 @@ public class AligenieAuthServiceImpl implements IAligenieAuthService {
     @Autowired
     private RedisProxy redisProxy;
 
-    //天猫精灵登录
-    public Map login(Map<String,Object> params) {
-        Map map = new HashMap();
-        try {
-            String token = customerLoginService.aligenieLogin(params);
-            map.put("token" , token);
-            map.put("callBackUrl" , AligenieConstantKey.OAUTH_CLIENT_CALLBACK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
-        return map;
-    }
+//    //天猫精灵登录
+//    public Map login(Map<String,Object> params) {
+//        Map map = new HashMap();
+//        try {
+//            String token = customerLoginService.aligenieLogin(params);
+//            map.put("token" , token);
+//            map.put("callBackUrl" , AligenieConstantKey.OAUTH_CLIENT_CALLBACK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(e.getMessage());
+//        }
+//        return map;
+//    }
     /**
      * 天猫精灵调用登录服务
      */
