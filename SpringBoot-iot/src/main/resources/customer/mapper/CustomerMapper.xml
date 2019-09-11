@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wjwcloud.iot.customer.mapper.CustomerMapper" >
+  <parameterMap id="parameterMap" type="com.wjwcloud.iot.customer.entity.Customer"></parameterMap>
+  <resultMap id="BaseResultMap" type="com.wjwcloud.iot.customer.entity.Customer" >
+    	<id column="id" property="id" jdbcType="BIGINT" />
+	<result column="company_id" property="companyId" jdbcType="BIGINT" />
+	<result column="code" property="code" jdbcType="VARCHAR" />
+	<result column="name" property="name" jdbcType="VARCHAR" />
+	<result column="short_name" property="shortName" jdbcType="VARCHAR" />
+	<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+	<result column="type" property="type" jdbcType="VARCHAR" />
+	<result column="email" property="email" jdbcType="VARCHAR" />
+	<result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+	<result column="telphone" property="telphone" jdbcType="VARCHAR" />
+	<result column="gender" property="gender" jdbcType="VARCHAR" />
+	<result column="birthday" property="birthday" jdbcType="VARCHAR" />
+	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+	<result column="weixin" property="weixin" jdbcType="VARCHAR" />
+	<result column="qq" property="qq" jdbcType="VARCHAR" />
+	<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+	<result column="grade" property="grade" jdbcType="VARCHAR" />
+	<result column="password" property="password" jdbcType="VARCHAR" />
+	<result column="encrypt" property="encrypt" jdbcType="VARCHAR" />
+	<result column="salt_value" property="saltValue" jdbcType="VARCHAR" />
+	<result column="login_error_count" property="loginErrorCount" jdbcType="INTEGER" />
+	<result column="login_lock_time" property="loginLockTime" jdbcType="TIMESTAMP" />
+	<result column="origin" property="origin" jdbcType="VARCHAR" />
+	<result column="phone_ua" property="phoneUa" jdbcType="VARCHAR" />
+	<result column="phone_imei" property="phoneImei" jdbcType="VARCHAR" />
+	<result column="description" property="description" jdbcType="VARCHAR" />
+	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	<result column="status" property="status" jdbcType="INTEGER" />
+	<result column="sort" property="sort" jdbcType="INTEGER" />
+	<result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+	<result column="version" property="version" jdbcType="INTEGER" />
+	<result column="modifier" property="modifier" jdbcType="BIGINT" />
+	<result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+	<result column="creator" property="creator" jdbcType="BIGINT" />
+	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	  <result column="app_join_time" property="appJoinTime" jdbcType="TIMESTAMP" />
+	  <result column="app_client_id" property="appClientId" jdbcType="VARCHAR" />
+	  <result column="app_platform" property="appPlatform" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="columnSql" >
+   t.id, t.company_id, t.code, t.name, t.short_name, t.nickname, t.type, t.email, t.mobile_phone, t.telphone, t.gender, t.birthday, t.id_card, t.weixin, t.qq, t.avatar, t.grade, t.password, t.encrypt, t.salt_value, t.login_error_count, t.login_lock_time, t.origin, t.phone_ua, t.phone_imei, t.description, t.remark, t.status, t.sort, t.is_deleted, t.version, t.modifier, t.modify_time, t.creator, t.create_time,t.app_client_id,t.app_platform,t.app_join_time
+  </sql>
+  <sql id="idColumnSql" >
+    t.id
+  </sql>
+  <sql id="whereSql">
+    	<if test="id != null and id != '' ">
+		 t.id = #{id} 
+	</if>
+	<if test="companyId != null and companyId != '' ">
+		 and t.company_id = #{companyId} 
+	</if>
+	<if test="code != null and code != '' ">
+		 and t.code = #{code} 
+	</if>
+	<if test="name != null and name != '' ">
+		 and t.name = #{name} 
+	</if>
+	<if test="shortName != null and shortName != '' ">
+		 and t.short_name = #{shortName} 
+	</if>
+	<if test="nickname != null and nickname != '' ">
+		 and t.nickname = #{nickname} 
+	</if>
+	<if test="type != null and type != '' ">
+		 and t.type = #{type} 
+	</if>
+	<if test="email != null and email != '' ">
+		 and t.email = #{email} 
+	</if>
+	<if test="mobilePhone != null and mobilePhone != '' ">
+		 and t.mobile_phone = #{mobilePhone} 
+	</if>
+	<if test="telphone != null and telphone != '' ">
+		 and t.telphone = #{telphone} 
+	</if>
+	<if test="gender != null and gender != '' ">
+		 and t.gender = #{gender} 
+	</if>
+	<if test="birthday != null and birthday != '' ">
+		 and t.birthday = #{birthday} 
+	</if>
+	<if test="idCard != null and idCard != '' ">
+		 and t.id_card = #{idCard} 
+	</if>
+	<if test="weixin != null and weixin != '' ">
+		 and t.weixin = #{weixin} 
+	</if>
+	<if test="qq != null and qq != '' ">
+		 and t.qq = #{qq} 
+	</if>
+	<if test="avatar != null and avatar != '' ">
+		 and t.avatar = #{avatar} 
+	</if>
+	<if test="grade != null and grade != '' ">
+		 and t.grade = #{grade} 
+	</if>
+	<if test="password != null and password != '' ">
+		 and t.password = #{password} 
+	</if>
+	<if test="encrypt != null and encrypt != '' ">
+		 and t.encrypt = #{encrypt} 
+	</if>
+	<if test="saltValue != null and saltValue != '' ">
+		 and t.salt_value = #{saltValue} 
+	</if>
+	<if test="loginErrorCount != null and loginErrorCount != '' ">
+		 and t.login_error_count = #{loginErrorCount} 
+	</if>
+	<if test="loginLockTime != null and loginLockTime != '' ">
+		 and <![CDATA[ t.login_lock_time = #{loginLockTime} ]]> 
+	</if>
+	<if test="origin != null and origin != '' ">
+		 and t.origin = #{origin} 
+	</if>
+	<if test="phoneUa != null and phoneUa != '' ">
+		 and t.phone_ua = #{phoneUa} 
+	</if>
+	<if test="phoneImei != null and phoneImei != '' ">
+		 and t.phone_imei = #{phoneImei} 
+	</if>
+	<if test="description != null and description != '' ">
+		 and t.description = #{description} 
+	</if>
+	<if test="remark != null and remark != '' ">
+		 and t.remark = #{remark} 
+	</if>
+	  <if test="status != null">
+		 and t.status = #{status} 
+	</if>
+	<if test="sort != null and sort != '' ">
+		 and t.sort = #{sort} 
+	</if>
+	  <if test="isDeleted != null">
+		 and t.is_deleted = #{isDeleted} 
+	</if>
+	<if test="version != null and version != '' ">
+		 and t.version = #{version} 
+	</if>
+	<if test="modifier != null and modifier != '' ">
+		 and t.modifier = #{modifier} 
+	</if>
+	<if test="modifyTime != null">
+		and DATE_FORMAT(t.modify_time ,'%Y-%m-%d') = #{modifyTime}
+	</if>
+	<if test="creator != null and creator != '' ">
+		 and t.creator = #{creator} 
+	</if>
+	<if test="createTime != null ">
+		and DATE_FORMAT(t.create_time ,'%Y-%m-%d') = #{createTime}
+	</if>
+	  <if test="appPlatform != null and appPlatform != '' ">
+		  and t.app_platform = #{appPlatform}
+	  </if>
+	  <if test="appJoinTime != null and appJoinTime != '' ">
+		  and t.app_join_time = #{appJoinTime}
+	  </if>
+	  <if test="appClientId != null and appClientId != '' ">
+		  and t.app_client_id = #{appClientId}
+	  </if>
+  </sql>
+
+  <!--通过主键查询记录-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="columnSql" />
+    from tb_customer t
+    where t.id = #{id}
+  </select>
+
+  <!--通过主键删除记录-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_customer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <!--插入记录-->
+  <insert id="insert" parameterType="com.wjwcloud.iot.customer.entity.Customer" >
+    insert into tb_customer (company_id, code, name, short_name, nickname, type, email, mobile_phone, telphone, gender, birthday, id_card, weixin, qq, avatar, grade, password, encrypt, salt_value, login_error_count, login_lock_time, origin, phone_ua, phone_imei, description, remark, status, sort, is_deleted, version, modifier, modify_time, creator, create_time,app_join_time,app_platform,app_client_id)
+    values (
+	#{companyId,jdbcType=BIGINT},
+	#{code,jdbcType=VARCHAR},
+	#{name,jdbcType=VARCHAR},
+	#{shortName,jdbcType=VARCHAR},
+	#{nickname,jdbcType=VARCHAR},
+	#{type,jdbcType=VARCHAR},
+	#{email,jdbcType=VARCHAR},
+	#{mobilePhone,jdbcType=VARCHAR},
+	#{telphone,jdbcType=VARCHAR},
+	#{gender,jdbcType=VARCHAR},
+	#{birthday,jdbcType=VARCHAR},
+	#{idCard,jdbcType=VARCHAR},
+	#{weixin,jdbcType=VARCHAR},
+	#{qq,jdbcType=VARCHAR},
+	#{avatar,jdbcType=VARCHAR},
+	#{grade,jdbcType=VARCHAR},
+	#{password,jdbcType=VARCHAR},
+	#{encrypt,jdbcType=VARCHAR},
+	#{saltValue,jdbcType=VARCHAR},
+	#{loginErrorCount,jdbcType=INTEGER},
+	#{loginLockTime,jdbcType=TIMESTAMP},
+	#{origin,jdbcType=VARCHAR},
+	#{phoneUa,jdbcType=VARCHAR},
+	#{phoneImei,jdbcType=VARCHAR},
+	#{description,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR},
+	#{status,jdbcType=INTEGER},
+	#{sort,jdbcType=INTEGER},
+	#{isDeleted,jdbcType=INTEGER},
+	#{version,jdbcType=INTEGER},
+	#{modifier,jdbcType=BIGINT},
+	#{modifyTime,jdbcType=TIMESTAMP},
+	#{creator,jdbcType=BIGINT},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{appJoinTime,jdbcType=TIMESTAMP},
+	#{appPlatform,jdbcType=VARCHAR},
+	#{appClientId,jdbcType=VARCHAR})
+  </insert>
+
+  <!--查询最后插入记录的ID-->
+  <select id="selectLastId" resultType="java.lang.Long">
+    select LAST_INSERT_ID()
+  </select>
+
+  <insert id="insertSelective" parameterType="com.wjwcloud.iot.customer.entity.Customer">
+    insert into tb_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      	<if test="id != null ">
+		 id, 
+	</if>
+	<if test="companyId != null ">
+		 company_id, 
+	</if>
+	<if test="code != null ">
+		 code, 
+	</if>
+	<if test="name != null ">
+		 name, 
+	</if>
+	<if test="shortName != null ">
+		 short_name, 
+	</if>
+	<if test="nickname != null ">
+		 nickname, 
+	</if>
+	<if test="type != null ">
+		 type, 
+	</if>
+	<if test="email != null ">
+		 email, 
+	</if>
+	<if test="mobilePhone != null ">
+		 mobile_phone, 
+	</if>
+	<if test="telphone != null ">
+		 telphone, 
+	</if>
+	<if test="gender != null ">
+		 gender, 
+	</if>
+	<if test="birthday != null ">
+		 birthday, 
+	</if>
+	<if test="idCard != null ">
+		 id_card, 
+	</if>
+	<if test="weixin != null ">
+		 weixin, 
+	</if>
+	<if test="qq != null ">
+		 qq, 
+	</if>
+	<if test="avatar != null ">
+		 avatar, 
+	</if>
+	<if test="grade != null ">
+		 grade, 
+	</if>
+	<if test="password != null ">
+		 password, 
+	</if>
+	<if test="encrypt != null ">
+		 encrypt, 
+	</if>
+	<if test="saltValue != null ">
+		 salt_value, 
+	</if>
+	<if test="loginErrorCount != null ">
+		 login_error_count, 
+	</if>
+	<if test="loginLockTime != null ">
+		 login_lock_time, 
+	</if>
+	<if test="origin != null ">
+		 origin, 
+	</if>
+	<if test="phoneUa != null ">
+		 phone_ua, 
+	</if>
+	<if test="phoneImei != null ">
+		 phone_imei, 
+	</if>
+	<if test="description != null ">
+		 description, 
+	</if>
+	<if test="remark != null ">
+		 remark, 
+	</if>
+	<if test="status != null ">
+		 status, 
+	</if>
+	<if test="sort != null ">
+		 sort, 
+	</if>
+	<if test="isDeleted != null ">
+		 is_deleted, 
+	</if>
+	<if test="version != null ">
+		 version, 
+	</if>
+	<if test="modifier != null ">
+		 modifier, 
+	</if>
+	<if test="modifyTime != null ">
+		 modify_time, 
+	</if>
+	<if test="creator != null ">
+		 creator, 
+	</if>
+	<if test="createTime != null ">
+		 create_time, 
+	</if>
+		<if test="appPlatform != null ">
+			app_platform,
+		</if>
+		<if test="appClientId != null ">
+			app_client_id,
+		</if>
+		<if test="appJoinTime != null ">
+			app_join_time,
+		</if>
+
+	</trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      	<if test="id != null ">
+		 #{id,jdbcType=BIGINT}, 
+	</if>
+	<if test="companyId != null ">
+		 #{companyId,jdbcType=BIGINT}, 
+	</if>
+	<if test="code != null ">
+		 #{code,jdbcType=VARCHAR}, 
+	</if>
+	<if test="name != null ">
+		 #{name,jdbcType=VARCHAR}, 
+	</if>
+	<if test="shortName != null ">
+		 #{shortName,jdbcType=VARCHAR}, 
+	</if>
+	<if test="nickname != null ">
+		 #{nickname,jdbcType=VARCHAR}, 
+	</if>
+	<if test="type != null ">
+		 #{type,jdbcType=VARCHAR}, 
+	</if>
+	<if test="email != null ">
+		 #{email,jdbcType=VARCHAR}, 
+	</if>
+	<if test="mobilePhone != null ">
+		 #{mobilePhone,jdbcType=VARCHAR}, 
+	</if>
+	<if test="telphone != null ">
+		 #{telphone,jdbcType=VARCHAR}, 
+	</if>
+	<if test="gender != null ">
+		 #{gender,jdbcType=VARCHAR}, 
+	</if>
+	<if test="birthday != null ">
+		 #{birthday,jdbcType=VARCHAR}, 
+	</if>
+	<if test="idCard != null ">
+		 #{idCard,jdbcType=VARCHAR}, 
+	</if>
+	<if test="weixin != null ">
+		 #{weixin,jdbcType=VARCHAR}, 
+	</if>
+	<if test="qq != null ">
+		 #{qq,jdbcType=VARCHAR}, 
+	</if>
+	<if test="avatar != null ">
+		 #{avatar,jdbcType=VARCHAR}, 
+	</if>
+	<if test="grade != null ">
+		 #{grade,jdbcType=VARCHAR}, 
+	</if>
+	<if test="password != null ">
+		 #{password,jdbcType=VARCHAR}, 
+	</if>
+	<if test="encrypt != null ">
+		 #{encrypt,jdbcType=VARCHAR}, 
+	</if>
+	<if test="saltValue != null ">
+		 #{saltValue,jdbcType=VARCHAR}, 
+	</if>
+	<if test="loginErrorCount != null ">
+		 #{loginErrorCount,jdbcType=INTEGER}, 
+	</if>
+	<if test="loginLockTime != null ">
+		 #{loginLockTime,jdbcType=TIMESTAMP}, 
+	</if>
+	<if test="origin != null ">
+		 #{origin,jdbcType=VARCHAR}, 
+	</if>
+	<if test="phoneUa != null ">
+		 #{phoneUa,jdbcType=VARCHAR}, 
+	</if>
+	<if test="phoneImei != null ">
+		 #{phoneImei,jdbcType=VARCHAR}, 
+	</if>
+	<if test="description != null ">
+		 #{description,jdbcType=VARCHAR}, 
+	</if>
+	<if test="remark != null ">
+		 #{remark,jdbcType=VARCHAR}, 
+	</if>
+	<if test="status != null ">
+		 #{status,jdbcType=INTEGER}, 
+	</if>
+	<if test="sort != null ">
+		 #{sort,jdbcType=INTEGER}, 
+	</if>
+	<if test="isDeleted != null ">
+		 #{isDeleted,jdbcType=INTEGER}, 
+	</if>
+	<if test="version != null ">
+		 #{version,jdbcType=INTEGER}, 
+	</if>
+	<if test="modifier != null ">
+		 #{modifier,jdbcType=BIGINT}, 
+	</if>
+	<if test="modifyTime != null ">
+		 #{modifyTime,jdbcType=TIMESTAMP}, 
+	</if>
+	<if test="creator != null ">
+		 #{creator,jdbcType=BIGINT}, 
+	</if>
+	<if test="createTime != null ">
+		 #{createTime,jdbcType=TIMESTAMP}, 
+	</if>
+		<if test="appJoinTime != null ">
+			#{appJoinTime,jdbcType=TIMESTAMP},
+		</if>
+		<if test="appPlatform != null ">
+			#{appPlatform,jdbcType=VARCHAR},
+		</if>
+		<if test="appClientId != null ">
+			#{appClientId,jdbcType=VARCHAR},
+		</if>
+
+
+
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.wjwcloud.iot.customer.entity.Customer">
+    update tb_customer
+    <set>
+      	<if test="companyId != null ">
+		 company_id= #{companyId,jdbcType=BIGINT}, 
+	</if>
+	<if test="code != null ">
+		 code= #{code,jdbcType=VARCHAR}, 
+	</if>
+	<if test="name != null ">
+		 name= #{name,jdbcType=VARCHAR}, 
+	</if>
+	<if test="shortName != null ">
+		 short_name= #{shortName,jdbcType=VARCHAR}, 
+	</if>
+	<if test="nickname != null ">
+		 nickname= #{nickname,jdbcType=VARCHAR}, 
+	</if>
+	<if test="type != null ">
+		 type= #{type,jdbcType=VARCHAR}, 
+	</if>
+	<if test="email != null ">
+		 email= #{email,jdbcType=VARCHAR}, 
+	</if>
+	<if test="mobilePhone != null ">
+		 mobile_phone= #{mobilePhone,jdbcType=VARCHAR}, 
+	</if>
+	<if test="telphone != null ">
+		 telphone= #{telphone,jdbcType=VARCHAR}, 
+	</if>
+	<if test="gender != null ">
+		 gender= #{gender,jdbcType=VARCHAR}, 
+	</if>
+	<if test="birthday != null ">
+		 birthday= #{birthday,jdbcType=VARCHAR}, 
+	</if>
+	<if test="idCard != null ">
+		 id_card= #{idCard,jdbcType=VARCHAR}, 
+	</if>
+	<if test="weixin != null ">
+		 weixin= #{weixin,jdbcType=VARCHAR}, 
+	</if>
+	<if test="qq != null ">
+		 qq= #{qq,jdbcType=VARCHAR}, 
+	</if>
+	<if test="avatar != null ">
+		 avatar= #{avatar,jdbcType=VARCHAR}, 
+	</if>
+	<if test="grade != null ">
+		 grade= #{grade,jdbcType=VARCHAR}, 
+	</if>
+	<if test="password != null ">
+		 password= #{password,jdbcType=VARCHAR}, 
+	</if>
+	<if test="encrypt != null ">
+		 encrypt= #{encrypt,jdbcType=VARCHAR}, 
+	</if>
+	<if test="saltValue != null ">
+		 salt_value= #{saltValue,jdbcType=VARCHAR}, 
+	</if>
+	<if test="loginErrorCount != null ">
+		 login_error_count= #{loginErrorCount,jdbcType=INTEGER}, 
+	</if>
+	<if test="loginLockTime != null ">
+		 login_lock_time= #{loginLockTime,jdbcType=TIMESTAMP}, 
+	</if>
+	<if test="origin != null ">
+		 origin= #{origin,jdbcType=VARCHAR}, 
+	</if>
+	<if test="phoneUa != null ">
+		 phone_ua= #{phoneUa,jdbcType=VARCHAR}, 
+	</if>
+	<if test="phoneImei != null ">
+		 phone_imei= #{phoneImei,jdbcType=VARCHAR}, 
+	</if>
+	<if test="description != null ">
+		 description= #{description,jdbcType=VARCHAR}, 
+	</if>
+	<if test="remark != null ">
+		 remark= #{remark,jdbcType=VARCHAR}, 
+	</if>
+	<if test="status != null ">
+		 status= #{status,jdbcType=INTEGER}, 
+	</if>
+	<if test="sort != null ">
+		 sort= #{sort,jdbcType=INTEGER}, 
+	</if>
+	<if test="isDeleted != null ">
+		 is_deleted= #{isDeleted,jdbcType=INTEGER}, 
+	</if>
+	<if test="version != null ">
+		 version= #{version,jdbcType=INTEGER}, 
+	</if>
+	<if test="modifier != null ">
+		 modifier= #{modifier,jdbcType=BIGINT}, 
+	</if>
+	<if test="modifyTime != null ">
+		 modify_time= #{modifyTime,jdbcType=TIMESTAMP}, 
+	</if>
+	<if test="creator != null ">
+		 creator= #{creator,jdbcType=BIGINT}, 
+	</if>
+	<if test="createTime != null ">
+		 create_time= #{createTime,jdbcType=TIMESTAMP}, 
+	</if>
+		<if test="appJoinTime != null ">
+			app_join_time = #{appJoinTime,jdbcType=TIMESTAMP},
+		</if>
+		<if test="appPlatform != null ">
+			app_platform = #{appPlatform,jdbcType=VARCHAR},
+		</if>
+		<if test="appClientId != null ">
+			app_client_id = #{appClientId,jdbcType=VARCHAR},
+		</if>
+
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--通过主键更新记录-->
+  <update id="updateByPrimaryKey" parameterType="com.wjwcloud.iot.customer.entity.Customer" >
+    update tb_customer
+    <set>
+      
+		 company_id = #{companyId,jdbcType=BIGINT},
+		 code = #{code,jdbcType=VARCHAR},
+		 name = #{name,jdbcType=VARCHAR},
+		 short_name = #{shortName,jdbcType=VARCHAR},
+		 nickname = #{nickname,jdbcType=VARCHAR},
+		 type = #{type,jdbcType=VARCHAR},
+		 email = #{email,jdbcType=VARCHAR},
+		 mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+		 telphone = #{telphone,jdbcType=VARCHAR},
+		 gender = #{gender,jdbcType=VARCHAR},
+		 birthday = #{birthday,jdbcType=VARCHAR},
+		 id_card = #{idCard,jdbcType=VARCHAR},
+		 weixin = #{weixin,jdbcType=VARCHAR},
+		 qq = #{qq,jdbcType=VARCHAR},
+		 avatar = #{avatar,jdbcType=VARCHAR},
+		 grade = #{grade,jdbcType=VARCHAR},
+		 password = #{password,jdbcType=VARCHAR},
+		 encrypt = #{encrypt,jdbcType=VARCHAR},
+		 salt_value = #{saltValue,jdbcType=VARCHAR},
+		 login_error_count = #{loginErrorCount,jdbcType=INTEGER},
+		 login_lock_time = #{loginLockTime,jdbcType=TIMESTAMP},
+		 origin = #{origin,jdbcType=VARCHAR},
+		 phone_ua = #{phoneUa,jdbcType=VARCHAR},
+		 phone_imei = #{phoneImei,jdbcType=VARCHAR},
+		 description = #{description,jdbcType=VARCHAR},
+		 remark = #{remark,jdbcType=VARCHAR},
+		 status = #{status,jdbcType=INTEGER},
+		 sort = #{sort,jdbcType=INTEGER},
+		 is_deleted = #{isDeleted,jdbcType=INTEGER},
+		 version = #{version,jdbcType=INTEGER},
+		 modifier = #{modifier,jdbcType=BIGINT},
+		 modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+		 creator = #{creator,jdbcType=BIGINT},
+		 create_time = #{createTime,jdbcType=TIMESTAMP},
+			app_join_time = #{appJoinTime,jdbcType=TIMESTAMP},
+			app_platform = #{appPlatform,jdbcType=VARCHAR},
+			app_client_id = #{appClientId,jdbcType=VARCHAR},
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--通过实体对象条件查询总记录数-->
+  <select id="findCount" parameterMap="parameterMap" resultType="java.lang.Integer">
+	  select count(*)
+	  from tb_customer t
+    <where>
+      <include refid="whereSql"></include>
+    </where>
+  </select>
+
+  <!--通过实体对象条件查询列表-->
+  <select id="findList" parameterMap="parameterMap" resultMap="BaseResultMap">
+    select
+    <include refid="columnSql"></include>
+    from tb_customer t
+    <where>
+      <include refid="whereSql"></include>
+    </where>
+    <if test="startRowNum != null and endRowNum != null ">
+      limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+    </if>
+  </select>
+
+	<!--通过实体对象条件查询总记录数-->
+	<select id="findCustomerCount" parameterMap="parameterMap" resultType="java.lang.Integer">
+		select count(*)
+		from (select t.*
+		from tb_customer t
+		left join zw_family_member fm on t.id=fm.customer_id
+		left join zw_family f on fm.family_id=f.id
+		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
+		left join zw_house h on h.id=fha.house_id
+		<where>
+			<include refid="whereSql"></include>
+			<if test="familyName != null and familyName != '' ">
+				and f.name like CONCAT('%',#{familyName},'%')
+			</if>
+			<if test="houseName != null and houseName != '' ">
+				and h.name like CONCAT('%',#{houseName},'%')
+			</if>
+			<if test="houseAddress != null and houseAddress != '' ">
+				and h.address like CONCAT('%',#{houseAddress},'%')
+			</if>
+			<if test="provinceId != null and provinceId != '' ">
+				and h.province_id = #{provinceId}
+			</if>
+			<if test="cityId != null and cityId != '' ">
+				and h.city_id = #{cityId}
+			</if>
+			<if test="districtId != null and districtId != '' ">
+				and h.district_id = #{districtId}
+			</if>
+			<if test="streetId != null and streetId != '' ">
+				and h.street_id = #{streetId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ AND t.create_time  >= #{startTime} ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ AND t.create_time  <= #{endTime } ]]>
+			</if>
+		</where>
+		group by t.id) t1
+	</select>
+	<!-- 查询指定字段的数据 -->
+	<select id="findCustomerFieldList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="idColumnSql"></include>
+		from tb_customer t
+		left join zw_family_member fm on t.id=fm.customer_id
+		left join zw_family f on fm.family_id=f.id
+		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
+		left join zw_house h on h.id=fha.house_id
+		<where>
+			<include refid="whereSql"></include>
+			<if test="familyName != null and familyName != '' ">
+				and f.name like CONCAT('%',#{familyName},'%')
+			</if>
+			<if test="houseName != null and houseName != '' ">
+				and h.name like CONCAT('%',#{houseName},'%')
+			</if>
+			<if test="houseAddress != null and houseAddress != '' ">
+				and h.address like CONCAT('%',#{houseAddress},'%')
+			</if>
+			<if test="provinceId != null and provinceId != '' ">
+				and h.province_id = #{provinceId}
+			</if>
+			<if test="cityId != null and cityId != '' ">
+				and h.city_id = #{cityId}
+			</if>
+			<if test="districtId != null and districtId != '' ">
+				and h.district_id = #{districtId}
+			</if>
+			<if test="streetId != null and streetId != '' ">
+				and h.street_id = #{streetId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ AND t.create_time  >= #{startTime} ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ AND t.create_time  <= #{endTime } ]]>
+			</if>
+		</where>
+		group by t.id
+		<if test="startRowNum != null and endRowNum != null ">
+			limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+		</if>
+	</select>
+	<!--通过实体对象条件查询列表-->
+	<select id="findCustomerList" parameterMap="parameterMap" resultMap="BaseResultMap">
+		select
+		<include refid="columnSql"></include>
+		from tb_customer t
+		left join zw_family_member fm on t.id=fm.customer_id
+		left join zw_family f on fm.family_id=f.id
+		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
+		left join zw_house h on h.id=fha.house_id
+		<where>
+			<include refid="whereSql"></include>
+			<if test="familyName != null and familyName != '' ">
+				and f.name like CONCAT('%',#{familyName},'%')
+			</if>
+			<if test="houseName != null and houseName != '' ">
+				and h.name like CONCAT('%',#{houseName},'%')
+			</if>
+			<if test="houseAddress != null and houseAddress != '' ">
+				and h.address like CONCAT('%',#{houseAddress},'%')
+			</if>
+			<if test="provinceId != null and provinceId != '' ">
+				and h.province_id = #{provinceId}
+			</if>
+			<if test="cityId != null and cityId != '' ">
+				and h.city_id = #{cityId}
+			</if>
+			<if test="districtId != null and districtId != '' ">
+				and h.district_id = #{districtId}
+			</if>
+			<if test="streetId != null and streetId != '' ">
+				and h.street_id = #{streetId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				<![CDATA[ AND t.create_time  >= #{startTime} ]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+				<![CDATA[ AND t.create_time  <= #{endTime } ]]>
+			</if>
+		</where>
+		group by t.id
+		<if test="startRowNum != null and endRowNum != null ">
+			limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+		</if>
+	</select>
+
+  <!--&lt;!&ndash;通过Map条件集合查询总记录数&ndash;&gt;-->
+  <!--<select id="findCount4Map" parameterType="java.util.Map" resultType="java.lang.Integer">-->
+    <!--select-->
+    <!--count(id)-->
+    <!--from tb_customer t-->
+    <!--<where>-->
+      <!--<include refid="whereSql"></include>-->
+    <!--</where>-->
+  <!--</select>-->
+
+  <!--&lt;!&ndash;通过Map条件集合查询列表&ndash;&gt;-->
+  <!--<select id="findList4Map" parameterType="java.util.Map" resultMap="BaseResultMap">-->
+    <!--select-->
+    <!--<include refid="columnSql"></include>-->
+    <!--from tb_customer t-->
+    <!--<where>-->
+      <!--<include refid="whereSql"></include>-->
+    <!--</where>-->
+    <!--<if test="startRowNum != null and endRowNum != null ">-->
+      <!--limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}-->
+    <!--</if>-->
+
+  <!--</select>-->
+
+  <!-- 查询指定字段的数据 -->
+  <select id="findFieldList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="idColumnSql"></include>
+    from tb_customer t
+    <where>
+      <include refid="whereSql"></include>
+    </where>
+    <if test="startRowNum != null and endRowNum != null ">
+      limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <!-- 根据主键ids 查询 -->
+  <select id="findListByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="columnSql" />
+    from tb_customer t
+    where t.id in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+	<!-- 根据设备ID查询设备关联的管理员会员信息 -->
+	<select id="selectCustomerByDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="columnSql" />
+		from tb_customer t
+		where t.id =
+		(
+		select customer_id from zw_family_member where is_super=1 and family_id=(
+		  select family_id from zw_family_house_assoc where status=1 and house_id=(
+		    select house_id from zw_house_device_assoc where device_id = #{deviceId}
+		    )
+		  )
+		)
+	</select>
+
+	<!-- 根据房屋ID查询管理员会员信息 -->
+	<select id="selectCustomerByHouseId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="columnSql" />
+		from tb_customer t
+		where t.id =
+		(
+			select customer_id from zw_family_member where is_super=1 and family_id=(
+				select family_id from zw_family_house_assoc where status=1 and house_id= #{houseId}
+			)
+		)
+	</select>
+
+	<!-- 共享设备会员列表 -->
+	<select id="findListBySharedDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT t.* FROM tb_customer t
+		INNER JOIN zw_house_member_device md ON t.id=md.customer_id
+		where 1=1
+		<if test="deviceId != null and deviceId != ''">
+			AND md.device_id=#{deviceId}
+		</if>
+	</select>
+</mapper>

@@ -1,4 +1,4 @@
-//package com.wjwcloud.iot.voicecontrol.aligenie.service.imp;
+//package com.wjwcloud.iot.voicecontrol.aligenie.service.impl;
 //
 //
 //import com.alibaba.da.coin.ide.spi.meta.ResultType;
@@ -6,7 +6,15 @@
 //import com.alibaba.da.coin.ide.spi.standard.TaskQuery;
 //import com.alibaba.da.coin.ide.spi.standard.TaskResult;
 //import com.alibaba.da.coin.ide.spi.trans.MetaFormat;
-//
+//import com.geer2.base.utils.DateUtils;
+//import com.geer2.base.utils.redis.RedisProxy;
+//import com.geer2.zwow.iot.customer.service.CustomerLoginService;
+//import com.geer2.zwow.iot.product.service.LockSecretMobileService;
+//import com.geer2.zwow.iot.product.service.ProductDeviceLogMobileService;
+//import com.geer2.zwow.iot.product.service.ProductDeviceService;
+//import com.geer2.zwow.iot.product.vo.ProductDeviceLogVo;
+//import com.geer2.zwow.iot.voicecontrol.aligenie.entity.AligenieUtil;
+//import com.geer2.zwow.iot.voicecontrol.service.AbsCustomSkillsService;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +28,12 @@
 //
 ///**
 // * Created by zhoulei on 2019/5/7.
-// * 天猫精灵自定义技能服务  报警记录播放
+// * 天猫精灵自定义技能服务 开门记录播放
 // */
-//@Service("alarmRecordAligenieCustomSkillsServiceImpl")
-//public class AlarmRecordAligenieCustomSkillsServiceImpl extends AbsCustomSkillsService {
+//@Service("openLockAligenieCustomSkillsServiceImpl")
+//public class OpenLockAligenieCustomSkillsServiceImpl extends AbsCustomSkillsService {
 //    String base64Security = "eda1782204cf41efaca1e051ccc610be62acdcf24c09f011f343583c41cfb93f";
-//    private static Logger logger = LoggerFactory.getLogger(AlarmRecordAligenieCustomSkillsServiceImpl.class);
+//    private static Logger logger = LoggerFactory.getLogger(OpenLockAligenieCustomSkillsServiceImpl.class);
 //
 //    @Resource(name = "customerLoginServiceImpl")
 //    private CustomerLoginService customerLoginService;
@@ -52,7 +60,6 @@
 //    private ProductDeviceLogMobileService productDeviceLogMobileService;
 //
 //
-//
 //    /**
 //     * 执行自定义技能
 //     * @param bodyStr
@@ -74,7 +81,7 @@
 //            String token = query.getToken();
 //            if(null == token){
 //                Map  map = new HashMap();
-//                map.put("mobilePhone" , "18126143867");
+//                map.put("mobilePhone" , "13592891514");
 //                map.put("password" , "123456");
 //                map.put("loginType" , "userPassword");
 //                token = customerLoginService.aligenieLogin(map);
@@ -82,7 +89,7 @@
 //            customerId = AligenieUtil.getCustomerIdByToken(token,base64Security);
 //            Map dateMap = AligenieUtil.getDateRange(DateUtils.getDate());
 //            setCustomerId(customerId);
-//            setMessageType("alert");
+//            setMessageType("lockOpened");
 //            setTimeTrue("1");
 //            setStartTime(dateMap.get("startTime").toString());
 //            setEndTime(dateMap.get("endTime").toString());
@@ -100,14 +107,12 @@
 //     * @return
 //     */
 //    private ResultModel<TaskResult> getResultModel(){
-//        logger.info("播放报警记录");
+//        logger.info("播放开门记录");
 //        TaskResult result = new TaskResult();
 //        StringBuffer context = new StringBuffer();
-//        context.append("报警记录");
-////        context.append("15时30分小明用指纹开锁,门未上锁");
+//        context.append("开锁记录");
 //        ResultModel<TaskResult> resultModel = new ResultModel<TaskResult>();
 //        try {
-//
 //            List<ProductDeviceLogVo> productDeviceLogList  = findSpeechContentList();
 //            //没有设备
 //            if(null == productDeviceLogList){
@@ -115,11 +120,17 @@
 //                context.append("您还没有智能设备");
 //            }else if(productDeviceLogList.size() == 0 ){
 //                context = new StringBuffer();
-//                context.append("没有报警记录");
+//                context.append("没有开门记录");
 //            }else{
 //                context.append(assembleSpeechContent(productDeviceLogList));
+////                int count = 1;
+////                for (ProductDeviceLogVo productDeviceLog : productDeviceLogList) {
+////                    Timestamp createTime = productDeviceLog.getCreateTime();
+////                    String creatTimeStr = DateUtils.dateToString(createTime , "yyyy-MM-dd hh:mm:ss");
+////                    creatTimeStr = creatTimeStr.substring(0,19);
+////                    context.append(creatTimeStr + "开锁" + ",");
+////                }
 //            }
-//
 //            logger.info("返回信息：" + context.toString());
 //            result.setReply(context.toString());
 //            resultModel.setReturnCode("0");

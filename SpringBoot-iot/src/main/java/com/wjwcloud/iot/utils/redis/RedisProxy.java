@@ -75,6 +75,7 @@ public class RedisProxy {
 
             try {
                 return this.redisTemplate.hasKey(key) ? this.redisTemplate.execute(new RedisCallback<Object>() {
+                    @Override
                     public Object doInRedis(RedisConnection connection) throws DataAccessException {
                         byte[] keyBytes = RedisProxy.this.serializeKey(key);
                         byte[] valueBytes = connection.get(keyBytes);

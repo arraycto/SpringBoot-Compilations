@@ -6,9 +6,12 @@ package com.wjwcloud.iot.voicecontrol.aligenie.enums;
  */
 public enum GenieCtrType {
 
-    设备发现("AliGenie.Iot.Device.Discovery"),
-    设备控制("AliGenie.Iot.Device.Control"),
-    设备属性查询("AliGenie.Iot.Device.Query");
+//    设备发现("AliGenie.Iot.Device.Discovery"),
+//    设备控制("AliGenie.Iot.Device.Control"),
+//    设备属性查询("AliGenie.Iot.Device.Query");
+    DEVICE_DISCOVERY("ali_genie.Iot.Device.Discovery"),
+    DEVICE_CONTROL("ali_genie.Iot.Device.Control"),
+    DEVICE_QUERY("ali_genie.Iot.Device.Query");
     private final String value;
     GenieCtrType(String value) {
         this.value = value;

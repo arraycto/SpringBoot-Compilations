@@ -67,14 +67,15 @@ public class AligenieDeviceController {
             Map HeaderMap = (Map)bodyJson.get("header");
         System.out.println(HeaderMap);
           //获取设备列表
-          if(HeaderMap.get("namespace").equals(GenieCtrType.设备发现.getValue())){
+//          if(HeaderMap.get("namespace").equals(GenieCtrType.设备发现.getValue())){
+        if(HeaderMap.get("namespace").equals(GenieCtrType.DEVICE_DISCOVERY.getValue())){
               merchineList = aligenieDeviceService.deviceDiscovery(bodyStrin);
                return merchineList;
-          }else if (HeaderMap.get("namespace").equals(GenieCtrType.设备控制.getValue())){
+          }else if (HeaderMap.get("namespace").equals(GenieCtrType.DEVICE_CONTROL.getValue())){
               merchineList = aligenieDeviceService.deviceControl(bodyStrin);
               logger.info("设备操作");
               return merchineList;
-          }else  if(HeaderMap.get("namespace").equals(GenieCtrType.设备属性查询.getValue())){
+          }else  if(HeaderMap.get("namespace").equals(GenieCtrType.DEVICE_QUERY.getValue())){
               logger.info("设备属性查询");
               merchineList = aligenieDeviceService.deviceQuery(bodyStrin);
               return  merchineList;

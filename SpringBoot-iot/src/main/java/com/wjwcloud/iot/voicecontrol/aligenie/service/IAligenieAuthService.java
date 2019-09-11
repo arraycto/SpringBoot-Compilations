@@ -15,7 +15,7 @@ public interface IAligenieAuthService {
       * @param params
       * @return
       */
-//     Map login(Map<String, Object> params);
+     Map login(Map<String, Object> params);
 
      /**
       * 天猫精灵调用登录服务

@@ -1,56 +1,55 @@
-//package com.wjwcloud.iot.voicecontrol.aligenie.service.imp;
-//
-//package com.geer2.zwow.iot.customer.service.impl;
-//
-//import com.geer2.base.jwt.JwtAudience;
-//import com.geer2.base.jwt.JwtHelper;
-//import com.geer2.base.utils.Logger;
-//import com.geer2.base.utils.key.SecretKeyUtils;
-//import com.geer2.base.utils.redis.RedisProxy;
-//import com.geer2.zwow.iot.company.entity.Company;
-//import com.geer2.zwow.iot.company.mapper.CompanyMapper;
-//import com.geer2.zwow.iot.company.service.CompanyService;
-//import com.geer2.zwow.iot.company.vo.CompanyVo;
-//import com.geer2.zwow.iot.customer.assembler.CustomerAssembler;
-//import com.geer2.zwow.iot.customer.entity.Customer;
-//import com.geer2.zwow.iot.customer.service.CustomerLoginService;
-//import com.geer2.zwow.iot.customer.service.CustomerService;
-//import com.geer2.zwow.iot.customer.vo.CustomerVo;
-//import com.geer2.zwow.iot.gateway.telecom.TelecomDeviceManageServiceImpl;
-//import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.core.env.Environment;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import javax.annotation.Resource;
-//import java.net.URLEncoder;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//@Service("customerLoginServiceImpl")
-//@Transactional
-//public class CustomerLoginServiceImpl extends CustomerServiceImpl implements CustomerLoginService {
-//
-//    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CustomerLoginServiceImpl.class);
-//
-//    @Resource(name = "customerServiceImpl")
-//    private CustomerService customerService;
-//
+package com.wjwcloud.iot.customer.service.impl;
+
+
+import com.wjwcloud.iot.customer.commons.constant.CustomerConstant;
+import com.wjwcloud.iot.customer.entity.Customer;
+import com.wjwcloud.iot.customer.service.CustomerLoginService;
+import com.wjwcloud.iot.customer.service.CustomerService;
+import com.wjwcloud.iot.customer.service.impl.CustomerServiceImpl;
+import com.wjwcloud.iot.customer.vo.CustomerVo;
+import com.wjwcloud.iot.customer.vo.JwtRequest;
+import com.wjwcloud.iot.jwt.JWTInfo;
+import com.wjwcloud.iot.jwt.utils.JwtTokenUtil;
+import com.wjwcloud.iot.utils.redis.RedisProxy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service("customerLoginServiceImpl")
+@Transactional
+public class CustomerLoginServiceImpl extends CustomerServiceImpl implements CustomerLoginService {
+
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CustomerLoginServiceImpl.class);
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    @Resource(name = "customerServiceImpl")
+    private CustomerService customerService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
 //    @Autowired
 //    private CompanyMapper companyMapper;
-//
-//    @Autowired
-//    private Environment env;
-//
-//    @Autowired
-//    private RedisProxy redisProxy;
-//
-//    /**
-//     * 用户登录
-//     * @return
-//     */
+
+    @Autowired
+    private Environment env;
+
+    @Autowired
+    private RedisProxy redisProxy;
+
+    /**
+     * 用户登录
+     * @return
+     */
 //    @Override
 //    public String login(Map<String,Object> params) throws Exception {
 //        String userName = params.get("userName").toString();
@@ -108,13 +107,13 @@
 //
 //        return login(customerVo);
 //    }
-//
-//
-//    /**
-//     * 用户登录
-//     * @param customerVo
-//     * @return
-//     */
+
+
+    /**
+     * 用户登录
+     * @param customerVo
+     * @return
+     */
 //    @Override
 //    public String login(CustomerVo customerVo) throws Exception {
 //        JwtAudience jwtAudience = new JwtAudience();
@@ -128,14 +127,14 @@
 //
 //        return JwtHelper.createJWT(jwtAudience);
 //    }
-//
-//
-//    /**
-//     * 公司用户登录
-//     * @param userName
-//     * @param password
-//     * @return
-//     */
+
+
+    /**
+     * 公司用户登录
+     * @param userName
+     * @param password
+     * @return
+     */
 //    @Override
 //    public String companyLogin(String userName, String password) throws Exception{
 //        Map<String, Object> params = new HashMap<>();
@@ -163,12 +162,12 @@
 //        }
 //        return companyLogin(customerVo);
 //    }
-//
-//    /**
-//     * 公司用户登录
-//     * @param customerVo
-//     * @return
-//     */
+
+    /**
+     * 公司用户登录
+     * @param customerVo
+     * @return
+     */
 //    @Override
 //    public String companyLogin(CustomerVo customerVo) throws Exception {
 //        JwtAudience jwtAudience = new JwtAudience();
@@ -183,11 +182,11 @@
 //
 //        return JwtHelper.createJWT(jwtAudience);
 //    }
-//
-//    /**
-//     * 天猫精灵登录用户登录
-//     * @return
-//     */
+
+    /**
+     * 天猫精灵登录用户登录
+     * @return
+     */
 //    @Override
 //    public String aligenieLogin(Map<String,Object> params) throws Exception {
 //        String mobilePhone = params.get("mobilePhone").toString();
@@ -237,13 +236,14 @@
 //
 //        return login(customerVo);
 //    }
-//
-//    /**
-//     * 创建会员信息
-//     * @param entity
-//     * @param params
-//     * @return
-//     */
+
+
+    /**
+     * 创建会员信息
+     * @param entity
+     * @param params
+     * @return
+     */
 //    private long createCustomerInformation (Customer entity){
 //        long customerId = 0L ;
 //        //获取八位随机数
@@ -283,14 +283,47 @@
 //        }
 //        return customerId;
 //    }
-//
-//    /**
-//     获取八位随机数
-//     */
-//    protected String getRandomStr(){
-//        int num = (int) ((Math.random() * 9 + 1) * 10000000);
-//        return num + "";
+
+    /**
+     获取八位随机数
+     */
+    protected String getRandomStr(){
+        int num = (int) ((Math.random() * 9 + 1) * 10000000);
+        return num + "";
+    }
+
+    /**
+     * 用户密码登陆校验
+     * @return
+     */
+//    private Customer passwordValidate(JwtRequest jwtRequest){
+//        if (encoder.matches(jwtRequest.getPassword(),))
 //    }
-//
-//
-//}
+
+    /**
+     * 用户登陆
+     */
+    @Override
+    public String aligenieLogin(Map<String,Object> params) throws Exception {
+        String token = null;
+        String mobilePhone = params.get("mobilePhone").toString();
+        Map resourceMap = new HashMap();
+        resourceMap.put("mobilePhone" , mobilePhone);
+        resourceMap.put("isDeleted" , 0);
+        CustomerVo customerVo = customerService.findOne4Map(resourceMap);
+        if (customerVo == null){
+            throw new Exception("用户未注册");
+        }
+        if (CustomerConstant.LOGIN_TYPE_MOBILE.equals(params.get(CustomerConstant.LOGIN_TYPE))){
+
+        } else if (CustomerConstant.LOGIN_TYPE_PASSWORD.equals(params.get(CustomerConstant.LOGIN_TYPE))){
+            if (!encoder.matches(params.get(CustomerConstant.PASSWORD).toString(),customerVo.getPassword())){
+                throw new Exception(" 用户密码错误！");
+            }
+            JWTInfo jwtInfo = new JWTInfo(customerVo.getName(),customerVo.getId()+"",customerVo.getNickname(),customerVo.getCompanyId()+"");
+            token = jwtTokenUtil.generateToken(jwtInfo);
+        }
+        return token;
+    }
+
+}

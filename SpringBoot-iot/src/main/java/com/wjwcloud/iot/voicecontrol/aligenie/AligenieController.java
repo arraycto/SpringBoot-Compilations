@@ -1,6 +1,7 @@
 package com.wjwcloud.iot.voicecontrol.aligenie;
 
 
+import com.wjwcloud.iot.customer.commons.constant.CustomerConstant;
 import com.wjwcloud.iot.model.ResultResponse;
 import com.wjwcloud.iot.utils.redis.RedisProxy;
 import com.wjwcloud.iot.voicecontrol.aligenie.controller.AuthzController;
@@ -68,28 +69,35 @@ public class AligenieController {
      * @test http://wechat.tunnel.geer2.com:8047/oauth2/authorize?client_id=fbed1d1b4b1449daa4bc49397cbe2350&response_type=code&redirect_uri=http://wechat.tunnel.geer2.com:8047/client/oauthCallback
      */
 
-    //用户登录
-//    @RequestMapping(value = "/login")
-//    @ResponseBody
-//    public ResultResponse authorize(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params) {
-//        try {
-//            if(!params.containsKey("mobilePhone")){
-//                return ResultResponse.FAILED("请输入手机号");
-//            }
-//            if(!params.containsKey("loginType")){
-//                return ResultResponse.FAILED("请传入正确的参数");
-//            }
-//
-//            Map token = iAligenieAuthService.login(params);
-//            if (null != token) {
-//                return ResultResponse.SUCCESSFUL(token);
-//            } else {
-//                return ResultResponse.FAILED("登录失败");
-//            }
-//        } catch (Exception ex) {
-//            return ResultResponse.FAILED(ex.getMessage());
-//        }
-//    }
+    /**
+     * 用户登录
+     * @param request
+     * @param session
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/login")
+    @ResponseBody
+    public ResultResponse authorize(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params) {
+        try {
+            if(!params.containsKey("mobilePhone")){
+                return ResultResponse.FAILED("请输入手机号");
+            }
+            if(!params.containsKey("loginType")){
+                return ResultResponse.FAILED("请传入正确的参数");
+            }
+
+            Map token = iAligenieAuthService.login(params);
+            if (null != token) {
+                return ResultResponse.SUCCESSFUL(token);
+            } else {
+                return ResultResponse.FAILED("登录失败");
+            }
+        } catch (Exception ex) {
+            return ResultResponse.FAILED(ex.getMessage());
+        }
+    }
+
 
     //天猫精灵调用登录服务
     @RequestMapping(value = "/aligenielogin" ,method = RequestMethod.GET)
