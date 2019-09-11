@@ -1,5 +1,7 @@
 package com.wjwcloud.iot.voicecontrol.aligenie.controller;
 
+import com.wjwcloud.iot.model.ResultResponse;
+import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

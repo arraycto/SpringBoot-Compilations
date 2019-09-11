@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 public class Customer extends AbstructBaseEntity<Long> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public final static String TABLE_NAME = "tb_customer";
+	public final static String TABLE_NAME = "base_customer";
 
 	public Customer() {
 		super();

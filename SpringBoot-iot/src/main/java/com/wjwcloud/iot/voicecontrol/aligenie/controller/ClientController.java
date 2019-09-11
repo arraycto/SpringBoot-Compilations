@@ -1,9 +1,9 @@
 package com.wjwcloud.iot.voicecontrol.aligenie.controller;
 
-import com.geer2.base.model.ResultResponse;
-import com.geer2.base.utils.redis.RedisProxy;
-import com.geer2.zwow.iot.voicecontrol.aligenie.entity.AligenieUtil;
-import com.geer2.zwow.iot.voicecontrol.aligenie.service.IAligenieAuthService;
+import com.wjwcloud.iot.model.ResultResponse;
+import com.wjwcloud.iot.utils.redis.RedisProxy;
+import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -170,19 +170,19 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="columnSql" />
-    from tb_customer t
+    from base_customer t
     where t.id = #{id}
   </select>
 
   <!--通过主键删除记录-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from tb_customer
+    delete from base_customer
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
   <!--插入记录-->
   <insert id="insert" parameterType="com.wjwcloud.iot.customer.entity.Customer" >
-    insert into tb_customer (company_id, code, name, short_name, nickname, type, email, mobile_phone, telphone, gender, birthday, id_card, weixin, qq, avatar, grade, password, encrypt, salt_value, login_error_count, login_lock_time, origin, phone_ua, phone_imei, description, remark, status, sort, is_deleted, version, modifier, modify_time, creator, create_time,app_join_time,app_platform,app_client_id)
+    insert into base_customer (company_id, code, name, short_name, nickname, type, email, mobile_phone, telphone, gender, birthday, id_card, weixin, qq, avatar, grade, password, encrypt, salt_value, login_error_count, login_lock_time, origin, phone_ua, phone_imei, description, remark, status, sort, is_deleted, version, modifier, modify_time, creator, create_time,app_join_time,app_platform,app_client_id)
     values (
 	#{companyId,jdbcType=BIGINT},
 	#{code,jdbcType=VARCHAR},
@@ -229,7 +229,7 @@
   </select>
 
   <insert id="insertSelective" parameterType="com.wjwcloud.iot.customer.entity.Customer">
-    insert into tb_customer
+    insert into base_customer
     <trim prefix="(" suffix=")" suffixOverrides=",">
       	<if test="id != null ">
 		 id, 
@@ -469,7 +469,7 @@
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.wjwcloud.iot.customer.entity.Customer">
-    update tb_customer
+    update base_customer
     <set>
       	<if test="companyId != null ">
 		 company_id= #{companyId,jdbcType=BIGINT}, 
@@ -589,7 +589,7 @@
 
   <!--通过主键更新记录-->
   <update id="updateByPrimaryKey" parameterType="com.wjwcloud.iot.customer.entity.Customer" >
-    update tb_customer
+    update base_customer
     <set>
       
 		 company_id = #{companyId,jdbcType=BIGINT},
@@ -636,7 +636,7 @@
   <!--通过实体对象条件查询总记录数-->
   <select id="findCount" parameterMap="parameterMap" resultType="java.lang.Integer">
 	  select count(*)
-	  from tb_customer t
+	  from base_customer t
     <where>
       <include refid="whereSql"></include>
     </where>
@@ -646,7 +646,7 @@
   <select id="findList" parameterMap="parameterMap" resultMap="BaseResultMap">
     select
     <include refid="columnSql"></include>
-    from tb_customer t
+    from base_customer t
     <where>
       <include refid="whereSql"></include>
     </where>
@@ -659,7 +659,7 @@
 	<select id="findCustomerCount" parameterMap="parameterMap" resultType="java.lang.Integer">
 		select count(*)
 		from (select t.*
-		from tb_customer t
+		from base_customer t
 		left join zw_family_member fm on t.id=fm.customer_id
 		left join zw_family f on fm.family_id=f.id
 		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
@@ -700,7 +700,7 @@
 	<select id="findCustomerFieldList" parameterType="java.util.Map" resultMap="BaseResultMap">
 		select
 		<include refid="idColumnSql"></include>
-		from tb_customer t
+		from base_customer t
 		left join zw_family_member fm on t.id=fm.customer_id
 		left join zw_family f on fm.family_id=f.id
 		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
@@ -744,7 +744,7 @@
 	<select id="findCustomerList" parameterMap="parameterMap" resultMap="BaseResultMap">
 		select
 		<include refid="columnSql"></include>
-		from tb_customer t
+		from base_customer t
 		left join zw_family_member fm on t.id=fm.customer_id
 		left join zw_family f on fm.family_id=f.id
 		left join (select fh.* from zw_family_house_assoc fh where fh.status='1') fha ON f.id=fha.family_id
@@ -789,7 +789,7 @@
   <!--<select id="findCount4Map" parameterType="java.util.Map" resultType="java.lang.Integer">-->
     <!--select-->
     <!--count(id)-->
-    <!--from tb_customer t-->
+    <!--from base_customer t-->
     <!--<where>-->
       <!--<include refid="whereSql"></include>-->
     <!--</where>-->
@@ -799,7 +799,7 @@
   <!--<select id="findList4Map" parameterType="java.util.Map" resultMap="BaseResultMap">-->
     <!--select-->
     <!--<include refid="columnSql"></include>-->
-    <!--from tb_customer t-->
+    <!--from base_customer t-->
     <!--<where>-->
       <!--<include refid="whereSql"></include>-->
     <!--</where>-->
@@ -813,7 +813,7 @@
   <select id="findFieldList" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="idColumnSql"></include>
-    from tb_customer t
+    from base_customer t
     <where>
       <include refid="whereSql"></include>
     </where>
@@ -826,7 +826,7 @@
   <select id="findListByIds" parameterType="java.util.List" resultMap="BaseResultMap">
     select
     <include refid="columnSql" />
-    from tb_customer t
+    from base_customer t
     where t.id in
     <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
       #{item}
@@ -837,7 +837,7 @@
 	<select id="selectCustomerByDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
 		select
 		<include refid="columnSql" />
-		from tb_customer t
+		from base_customer t
 		where t.id =
 		(
 		select customer_id from zw_family_member where is_super=1 and family_id=(
@@ -852,7 +852,7 @@
 	<select id="selectCustomerByHouseId" parameterType="java.util.Map" resultMap="BaseResultMap">
 		select
 		<include refid="columnSql" />
-		from tb_customer t
+		from base_customer t
 		where t.id =
 		(
 			select customer_id from zw_family_member where is_super=1 and family_id=(
@@ -863,7 +863,7 @@
 
 	<!-- 共享设备会员列表 -->
 	<select id="findListBySharedDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
-		SELECT t.* FROM tb_customer t
+		SELECT t.* FROM base_customer t
 		INNER JOIN zw_house_member_device md ON t.id=md.customer_id
 		where 1=1
 		<if test="deviceId != null and deviceId != ''">
