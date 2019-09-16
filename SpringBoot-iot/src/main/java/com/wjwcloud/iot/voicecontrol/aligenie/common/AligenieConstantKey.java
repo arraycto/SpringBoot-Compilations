@@ -17,8 +17,6 @@ public class AligenieConstantKey extends ConstantKey {
 
     public static final String AUTH_LOCATION_OAUTH_CLIENT_AUTHORIZE = "authorize";
 
-    public static final String TOKEN_LOCATION_OAUTH_CLIENT_ACCESS_TOKEN = "accessToken";
-
     public static final String OAUTH_CLIENT_AUTHORIZE = "http://gzue.natapp1.cc/aligenie/authorize";
     /**
      * 已登录或授权成功后调用获取token

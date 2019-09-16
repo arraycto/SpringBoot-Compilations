@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Token</title>
     <link type="text/css" href="https://api.weibo.com/oauth2/css/oauth/oauth_web.css" rel="stylesheet" />
@@ -17,9 +17,9 @@
                 <dl class="error_content">
                     <dt>令牌与资源信息</dt>
                     <dd>
-                        ${accessToken}
+                        <span th:text="${accessToken}"></span>
                         </br>
-                        ${errorMsg}
+                        <span th:text="${errorMsg}"></span>
                     </dd>
                 </dl>
             </div>

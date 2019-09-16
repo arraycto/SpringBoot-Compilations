@@ -18,7 +18,7 @@
         <div class="WB_panel oauth_main">
             <form id="authZForm" name="authZForm" action="/aligenie/authorize" method="post" node-type="form">
                 <div class="oauth_content" node-type="commonlogin">
-                    <p class="oauth_main_info">使用你的微博帐号访问  <a href="http://app.weibo.com/t/feed/37xdvD"  target="_blank" class="app_name">${clientName}</a>
+                    <p class="oauth_main_info">使用你的微博帐号访问  <a href="http://app.weibo.com/t/feed/37xdvD"  target="_blank" class="app_name"><span th:text="${clientName}"></span></a>
                         ，并同时登录微博</p>
                     <div class="oauth_login clearfix">
                         <input type="hidden" name="action"  id="action" th:value="authorize"/>

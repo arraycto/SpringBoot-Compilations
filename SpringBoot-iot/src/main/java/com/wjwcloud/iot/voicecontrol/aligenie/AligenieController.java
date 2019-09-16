@@ -307,7 +307,7 @@ public class AligenieController {
             oauthAuthzResponse = OAuthAuthzResponse.oauthCodeAuthzResponse(request);
             String code = oauthAuthzResponse.getCode();
             OAuthClientRequest oauthClientRequest = OAuthClientRequest
-                    .tokenLocation(AligenieConstantKey.TOKEN_LOCATION_OAUTH_CLIENT_ACCESS_TOKEN)
+                    .tokenLocation(AligenieConstantKey.OAUTH_CLIENT_ACCESS_TOKEN)
                     .setGrantType(GrantType.AUTHORIZATION_CODE)
                     .setClientId(ConstantKey.OAUTH_CLIENT_ID)
                     .setClientSecret(ConstantKey.OAUTH_CLIENT_SECRET)
@@ -334,7 +334,7 @@ public class AligenieController {
 
             logger.info("accessToken: "+accessToken +" refreshToken: "+refreshToken +" expiresIn: "+expiresIn +" resBody: "+resBody);
             model.addAttribute("accessToken",  "accessToken: "+accessToken +" resBody: "+resBody);
-            return "oauth2/token";
+            return "token";
         } catch (OAuthSystemException ex) {
             logger.error("getToken OAuthSystemException : " + ex.getMessage());
             model.addAttribute("errorMsg",  ex.getMessage());
@@ -450,6 +450,7 @@ public class AligenieController {
             OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request, ParameterStyle.QUERY);
             //获取验证accesstoken
             String accessToken = oauthRequest.getAccessToken();
+            System.out.println("flow==accessToken="+oauthRequest.getAccessToken());
             //验证accesstoken是否存在或过期
             if (accessToken.isEmpty()||cache.get(accessToken)== null) {
                 OAuthResponse oauthResponse = OAuthRSResponse
