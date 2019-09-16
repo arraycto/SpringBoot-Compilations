@@ -4,6 +4,11 @@ server:
 spring:
   mvc:
     static-path-pattern: /**
+
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
 #  redis:
 #    host: localhost
 #    # 连接超时时间（记得添加单位，Duration）

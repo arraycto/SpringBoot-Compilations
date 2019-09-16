@@ -67,7 +67,9 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/aligenie")
 public class AligenieController {
+
     private static Logger logger = LoggerFactory.getLogger(AuthzController.class);
+
     private Cache cache;
 
     @Autowired
