@@ -57,6 +57,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -205,22 +206,30 @@ public class AligenieController {
 
 
     @RequestMapping("/client")
-    public String  loginPage(){
+    public String  loginPage(Model model){
         try {
             System.out.println("执行到这里");
             OAuthClientRequest oauthResponse = OAuthClientRequest
-                    .authorizationLocation(AligenieConstantKey.AUTH_LOCATION_OAUTH_CLIENT_AUTHORIZE)
+                    .authorizationLocation(AligenieConstantKey.OAUTH_CLIENT_AUTHORIZE)
                     .setResponseType(OAuth.OAUTH_CODE)
                     .setClientId(AligenieConstantKey.OAUTH_CLIENT_ID)
                     .setRedirectURI(AligenieConstantKey.OAUTH_CLIENT_CALLBACK)
                     .setScope(AligenieConstantKey.OAUTH_CLIENT_SCOPE)
                     .buildQueryMessage();
             System.out.println("flow==client:"+oauthResponse.getLocationUri());
-            return "redirect:"+oauthResponse.getLocationUri();
+            return "redirect:" + oauthResponse.getLocationUri();
+//            return "redirect:"+AligenieConstantKey.AUTH_LOCATION_OAUTH_CLIENT_AUTHORIZE + "?redirect_uri=http%3A%2F%2Fgzue.natapp1.cc%2Faligenie%2FoauthCallback"  + "&state=" + 111 + "&client_id=" + AligenieConstantKey.OAUTH_CLIENT_ID
+//                    + "&response_type=code" + "&grant_type=authorization_code";
         } catch (OAuthSystemException e) {
             e.printStackTrace();
         }
-        return "redirect:/index";
+//        String clientName= "App Name";
+//        model.addAttribute("clientName",clientName);
+//        model.addAttribute("response_type",OAuth.OAUTH_CODE);
+//        model.addAttribute("client_id",AligenieConstantKey.OAUTH_CLIENT_ID);
+//        model.addAttribute("redirect_uri",AligenieConstantKey.OAUTH_CLIENT_CALLBACK);
+//        model.addAttribute("scope",AligenieConstantKey.OAUTH_CLIENT_SCOPE);
+        return "index";
     }
 
     @RequestMapping(value = "/authorize")
@@ -231,30 +240,9 @@ public class AligenieController {
 
             //构建OAuth请求
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
-            //验证redirecturl格式是否合法 (8080端口测试)
-//            if (!oauthRequest.getRedirectURI().contains(":8080")&&!Pattern.compile("^[a-zA-Z]+://(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*(\\?\\s*)?$").matcher(oauthRequest.getRedirectURI()).matches()) {
-//                OAuthResponse oauthResponse = OAuthASResponse
-//                        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                        .setError(OAuthError.CodeResponse.INVALID_REQUEST)
-//                        .setErrorDescription(OAuthError.OAUTH_ERROR_URI)
-//                        .buildJSONMessage();
-//                logger.error("oauthRequest.getRedirectURI() : " + oauthRequest.getRedirectURI() + " oauthResponse.getBody() : " + oauthResponse.getBody());
-//                model.addAttribute("errorMsg", oauthResponse.getBody());
-//                return "/oauth2/error";
-//            }
-            //验证appkey是否正确
-//            if (!validateOAuth2AppKey(oauthRequest)){
-//                OAuthResponse oauthResponse = OAuthASResponse
-//                        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                        .setError(OAuthError.CodeResponse.ACCESS_DENIED)
-//                        .setErrorDescription(OAuthError.CodeResponse.UNAUTHORIZED_CLIENT)
-//                        .buildJSONMessage();
-//                logger.error("oauthRequest.getRedirectURI() : "+oauthRequest.getRedirectURI()+" oauthResponse.getBody() : "+oauthResponse.getBody());
-//                model.addAttribute("errorMsg", oauthResponse.getBody());
-//                return "oauth2/error";
-//            }
+
             //查询客户端Appkey应用的信息
-            String clientName= "App Name";//oauthClientService.findByClientId(oauthRequest.getClientId());
+            String clientName= "App Name";
             model.addAttribute("clientName",clientName);
             model.addAttribute("response_type",oauthRequest.getResponseType());
             model.addAttribute("client_id",oauthRequest.getClientId());
@@ -263,7 +251,7 @@ public class AligenieController {
             //验证用户是否已登录
             if(session.getAttribute(AligenieConstantKey.MEMBER_SESSION_KEY)==null) {
                 //用户登录
-                if(!validateOAuth2Pwd(request)) {
+                if("1".equals(validateOAuth2Pwd(request).getCode())) {
                     //登录失败跳转到登陆页
                     System.out.println("flow==oauth2/login");
                     return "index";
@@ -353,42 +341,7 @@ public class AligenieController {
             out = response.getWriter();
             //构建oauth2请求
             OAuthTokenRequest oauthRequest = new OAuthTokenRequest(request);
-            //验证redirecturl格式是否合法 (8080端口测试)
-//            if (!oauthRequest.getRedirectURI().contains(":8080")&&!Pattern.compile("^[a-zA-Z]+://(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*(\\?\\s*)?$").matcher(oauthRequest.getRedirectURI()).matches()) {
-//                OAuthResponse oauthResponse = OAuthASResponse
-//                                              .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                                              .setError(OAuthError.CodeResponse.INVALID_REQUEST)
-//                                              .setErrorDescription(OAuthError.OAUTH_ERROR_URI)
-//                                              .buildJSONMessage();
-//                out.write(oauthResponse.getBody());
-//                out.flush();
-//                out.close();
-//                return;
-//            }
-            //验证appkey是否正确
-//            if (!validateOAuth2AppKey(oauthRequest)){
-//                OAuthResponse oauthResponse = OAuthASResponse
-//                                              .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                                              .setError(OAuthError.CodeResponse.ACCESS_DENIED)
-//                                              .setErrorDescription(OAuthError.CodeResponse.UNAUTHORIZED_CLIENT)
-//                                              .buildJSONMessage();
-//                out.write(oauthResponse.getBody());
-//                out.flush();
-//                out.close();
-//                return;
-//            }
-            //验证客户端安全AppSecret是否正确
-//            if (!validateOAuth2AppSecret(oauthRequest)) {
-//                OAuthResponse oauthResponse = OAuthASResponse
-//                                              .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                                              .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
-//                                              .setErrorDescription(ConstantKey.INVALID_CLIENT_SECRET)
-//                                              .buildJSONMessage();
-//                out.write(oauthResponse.getBody());
-//                out.flush();
-//                out.close();
-//                return;
-//            }
+
             String authzCode = oauthRequest.getCode();
             //验证AUTHORIZATION_CODE , 其他的还有PASSWORD 或 REFRESH_TOKEN (考虑到更新令牌的问题，在做修改)
             if (GrantType.AUTHORIZATION_CODE.name().equalsIgnoreCase(oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE))) {
@@ -441,10 +394,12 @@ public class AligenieController {
     }
 
     @RequestMapping("/getResource")
+//    @ResponseBody
     public void get_resource(HttpServletRequest request, HttpServletResponse response)
             throws IOException, OAuthSystemException{
         PrintWriter out = null;
         try {
+            System.out.println("flow==getResource Start");
             out = response.getWriter();
             //构建oauth2资源请求
             OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request, ParameterStyle.QUERY);
@@ -452,15 +407,15 @@ public class AligenieController {
             String accessToken = oauthRequest.getAccessToken();
             System.out.println("flow==accessToken="+oauthRequest.getAccessToken());
             //验证accesstoken是否存在或过期
-            if (accessToken.isEmpty()||cache.get(accessToken)== null) {
-                OAuthResponse oauthResponse = OAuthRSResponse
-                        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-                        .setRealm("RESOURCE_SERVER_NAME")
-                        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
-                        .setErrorDescription(OAuthError.ResourceResponse.EXPIRED_TOKEN)
-                        .buildHeaderMessage();
-                response.addDateHeader(OAuth.HeaderType.WWW_AUTHENTICATE, Long.parseLong(oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE)));
-            }
+//            if (accessToken.isEmpty()||cache.get(accessToken)== null) {
+//                OAuthResponse oauthResponse = OAuthRSResponse
+//                        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+//                        .setRealm("RESOURCE_SERVER_NAME")
+//                        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
+//                        .setErrorDescription(OAuthError.ResourceResponse.EXPIRED_TOKEN)
+//                        .buildHeaderMessage();
+//                response.addDateHeader(OAuth.HeaderType.WWW_AUTHENTICATE, Long.parseLong(oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE)));
+//            }
             //获得用户名
             String mobilephone = "16620069844"; //oAuthService.getNameByAccessToken(accessToken);
             out.print(mobilephone);
@@ -479,11 +434,12 @@ public class AligenieController {
         }
     }
 
-    private boolean validateOAuth2Pwd(HttpServletRequest request){
+    private ResultResponse validateOAuth2Pwd(HttpServletRequest request){
+
             String mobilePhone = request.getParameter("mobilePhone");
             String password = request.getParameter("password");
             if(StringUtils.isBlank(mobilePhone)){
-                return false;
+                return ResultResponse.FAILED();
             }
 //            if(!params.containsKey("loginType")){
 //                return false;
@@ -495,9 +451,9 @@ public class AligenieController {
             Map token = iAligenieAuthService.login(params);
             if (null != token) {
                 request.getSession().setAttribute(AligenieConstantKey.MEMBER_SESSION_KEY,mobilePhone);
-                return true;
+                return ResultResponse.SUCCESSFUL(token);
             } else {
-                return false;
+                return ResultResponse.FAILED();
             }
     }
 }
