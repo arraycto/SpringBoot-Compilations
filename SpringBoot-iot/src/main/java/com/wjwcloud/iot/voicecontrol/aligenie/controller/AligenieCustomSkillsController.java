@@ -3,7 +3,7 @@
 //import com.alibaba.da.coin.ide.spi.standard.ResultModel;
 //import com.alibaba.da.coin.ide.spi.standard.TaskResult;
 //import com.wjwcloud.iot.utils.SpringContextUtils;
-//import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+//import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 //import com.wjwcloud.iot.voicecontrol.aligenie.enums.CustomSkillsType;
 //import com.wjwcloud.iot.voicecontrol.service.ICustomSkillsService;
 //import org.apache.oltu.oauth2.common.exception.OAuthSystemException;

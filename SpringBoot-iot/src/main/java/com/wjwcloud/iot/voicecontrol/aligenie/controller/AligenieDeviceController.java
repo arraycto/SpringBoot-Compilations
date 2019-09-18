@@ -2,7 +2,7 @@
 //
 //import com.alibaba.fastjson.JSON;
 //import com.alibaba.fastjson.JSONObject;
-//import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+//import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 //import com.wjwcloud.iot.voicecontrol.aligenie.enums.GenieCtrType;
 //import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieDeviceService;
 //import org.apache.oltu.oauth2.common.exception.OAuthSystemException;

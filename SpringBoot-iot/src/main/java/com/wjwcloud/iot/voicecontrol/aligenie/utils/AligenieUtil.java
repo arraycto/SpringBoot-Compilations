@@ -1,9 +1,10 @@
-package com.wjwcloud.iot.voicecontrol.aligenie.entity;
+package com.wjwcloud.iot.voicecontrol.aligenie.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.wjwcloud.iot.utils.DateUtils;
+import com.wjwcloud.iot.voicecontrol.aligenie.entity.TokenBean;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;

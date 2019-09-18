@@ -1,9 +1,9 @@
-package com.wjwcloud.iot.voicecontrol.aligenie.controller;
+package com.wjwcloud.iot.voicecontrol.aligenie.test.controller;
 
 import com.wjwcloud.iot.utils.key.UUIDUtil;
 import com.wjwcloud.iot.utils.redis.RedisProxy;
 import com.wjwcloud.iot.voicecontrol.aligenie.common.AligenieConstantKey;
-import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

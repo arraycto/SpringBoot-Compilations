@@ -1,8 +1,8 @@
-package com.wjwcloud.iot.voicecontrol.aligenie.controller;
+package com.wjwcloud.iot.voicecontrol.aligenie.test.controller;
 
 import com.wjwcloud.iot.model.ResultResponse;
 import com.wjwcloud.iot.utils.redis.RedisProxy;
-import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

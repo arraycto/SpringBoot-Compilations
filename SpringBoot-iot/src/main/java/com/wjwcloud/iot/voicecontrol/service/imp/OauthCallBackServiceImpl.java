@@ -1,7 +1,7 @@
 package com.wjwcloud.iot.voicecontrol.service.imp;
 
 import com.wjwcloud.iot.utils.redis.RedisProxy;
-import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 import com.wjwcloud.iot.voicecontrol.aligenie.enums.VoicePlatformType;
 import com.wjwcloud.iot.voicecontrol.service.AbstractOauthCallBack;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.wjwcloud.iot.customer.service.CustomerLoginService;
 import com.wjwcloud.iot.utils.key.UUIDUtil;
 import com.wjwcloud.iot.utils.redis.RedisProxy;
 import com.wjwcloud.iot.voicecontrol.aligenie.common.AligenieConstantKey;
-import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

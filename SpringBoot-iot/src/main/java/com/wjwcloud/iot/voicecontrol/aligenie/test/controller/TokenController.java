@@ -1,6 +1,6 @@
-package com.wjwcloud.iot.voicecontrol.aligenie.controller;
+package com.wjwcloud.iot.voicecontrol.aligenie.test.controller;
 
-import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;

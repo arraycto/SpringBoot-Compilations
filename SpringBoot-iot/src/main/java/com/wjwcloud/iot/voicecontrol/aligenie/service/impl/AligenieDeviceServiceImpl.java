@@ -5,7 +5,7 @@
 //import com.alibaba.fastjson.JSONObject;
 //
 //import com.wjwcloud.iot.utils.redis.RedisProxy;
-//import com.wjwcloud.iot.voicecontrol.aligenie.entity.AligenieUtil;
+//import com.wjwcloud.iot.voicecontrol.aligenie.utils.AligenieUtil;
 //import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieDeviceService;
 //import io.jsonwebtoken.Claims;
 //import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.wjwcloud.iot.voicecontrol.aligenie.controller;
+package com.wjwcloud.iot.voicecontrol.aligenie.test.controller;
 
 import com.wjwcloud.iot.model.ResultResponse;
 import com.wjwcloud.iot.voicecontrol.aligenie.service.IAligenieAuthService;
