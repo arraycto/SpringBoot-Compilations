@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/aligenie")
+@RequestMapping("/test")
 public class Oauth2Test {
 
 

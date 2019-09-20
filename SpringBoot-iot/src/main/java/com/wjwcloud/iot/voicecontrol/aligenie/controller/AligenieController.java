@@ -477,7 +477,7 @@ public class AligenieController {
     }
 
 
-    @RequestMapping("/getResource")
+//    @RequestMapping("/getResource")
     @ResponseBody
     public JSONObject get_resource(HttpServletRequest request, HttpServletResponse response , BufferedReader br)
             throws IOException, OAuthSystemException{
@@ -636,7 +636,7 @@ public class AligenieController {
             //设备名称
             device.put("deviceName", productDevice.getAlias());
             //设备类型
-            device.put("deviceType", "smart-gating");
+            device.put("deviceType", "fan");
             //设备位置
             device.put("zone", "");
             //品牌
@@ -649,19 +649,22 @@ public class AligenieController {
 
             //返回当前设备支持的属性状态列表，产品支持的属性列表参考 设备控制与设备状态查询页 的 第二部分 设备状态查询 2.2 章节
             //设备是否在线
-            propertieOnLine.put("name", "onlinestate");
-            propertieOnLine.put("value", productDevice.getIsOnline()==1?"online":"offline");
-            properties.add(propertieOnLine);
+//            propertieOnLine.put("name", "onlinestate");
+//            propertieOnLine.put("value", productDevice.getIsOnline()==1?"online":"offline");
+//            properties.add(propertieOnLine);
             //设备当前状态
-            propertieIsopen.put("name", "remotestatus");
-            propertieIsopen.put("value", productDevice.getIsOnline().equals("lock_opened")?"on":"off");
-            properties.add(propertieIsopen);
+//            propertieIsopen.put("name", "remotestatus");
+//            propertieIsopen.put("value", productDevice.getIsOnline().equals("1")?"on":"off");
+//            properties.add(propertieIsopen);
+            propertieOnLine.put("name", "windspeed");
+            propertieOnLine.put("value", "1");
+            properties.add(propertieOnLine);
             device.put("properties", properties);
 
-            actions.add("TurnOn");
-            actions.add("TurnOff");
+//            actions.add("TurnOn");
+//            actions.add("TurnOff");
+            actions.add("SetWindSpeed");
             device.put("actions", actions);
-
 
             extentions.put("extension1", "扩展1");
             extentions.put("extension2", "扩展2");
@@ -692,15 +695,15 @@ public class AligenieController {
 
         //头部文件设置
         header.put("namespace", "AliGenie.Iot.Device.Control");
-        header.put("name", "TurnOn");
+        header.put("name", "SetWindSpeed");
         header.put("messageId", UUIDUtil.getUUID());
         header.put("payLoadVersion", "1");
 
         payload.put("accessToken", str);
-        payload.put("deviceId", "1347");
-        payload.put("deviceType", "smart-gating" );
-        payload.put("attribute", "powerstate");
-        payload.put("value", "on");
+        payload.put("deviceId", "1");
+        payload.put("deviceType", "fan" );
+        payload.put("attribute", "windspeed");
+        payload.put("value", "1");
         extentions.put("extension1", "tset");
         extentions.put("extension2", "test");
         payload.put("extensions", extentions);
