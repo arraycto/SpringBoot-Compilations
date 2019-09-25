@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wjwcloud.iot.product.mapper.ProductDeviceMapper">
+    <parameterMap id="parameterMap" type="com.wjwcloud.iot.product.entity.ProductDevice"></parameterMap>
+    <resultMap id="BaseResultMap" type="com.wjwcloud.iot.product.entity.ProductDevice">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="company_id" property="companyId" jdbcType="BIGINT"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="group_id" property="groupId" jdbcType="BIGINT"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="device_key" property="deviceKey" jdbcType="VARCHAR"/>
+        <result column="serial" property="serial" jdbcType="VARCHAR"/>
+        <result column="model" property="model" jdbcType="VARCHAR"/>
+        <result column="mac" property="mac" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="ssid" property="ssid" jdbcType="VARCHAR"/>
+        <result column="is_actived" property="isActived" jdbcType="INTEGER"/>
+        <result column="is_online" property="isOnline" jdbcType="INTEGER"/>
+        <result column="qrcode" property="qrcode" jdbcType="VARCHAR"/>
+        <result column="power" property="power" jdbcType="VARCHAR"/>
+        <result column="third_device_id" property="thirdDeviceId" jdbcType="VARCHAR"/>
+        <result column="third_device_secret" property="thirdDeviceSecret" jdbcType="VARCHAR"/>
+        <result column="psk" property="psk" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="modifier" property="modifier" jdbcType="BIGINT"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="device_secret_index_binary" property="deviceSecretIndexBinary" jdbcType="VARCHAR"/>
+        <result column="device_user_index_binary" property="deviceUserIndexBinary" jdbcType="VARCHAR"/>
+        <result column="device_status" property="deviceStatus" jdbcType="VARCHAR"/>
+        <result column="sim" property="sim" jdbcType="VARCHAR"/>
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="bluetooth_mac" property="bluetoothMac" jdbcType="VARCHAR"/>
+        <result column="bluetooth_signal" property="bluetoothSignal" jdbcType="VARCHAR"/>
+        <result column="active_time" property="activeTime" jdbcType="TIMESTAMP"/>
+        <result column="rssi" property="rssi" jdbcType="INTEGER"/>
+        <result column="is_abnormal" property="isAbnormal" jdbcType="INTEGER"/>
+        <result column="lastest_report_time" property="lastestReportTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="columnSql">
+   t.id, t.company_id, t.product_id, t.group_id, t.alias, t.device_key, t.serial, t.model, t.mac, t.ip, t.ssid, t.is_actived, t.is_online, t.qrcode, t.power, t.third_device_id, t.psk, t.remark, t.status, t.sort, t.is_deleted, t.version, t.modifier, t.modify_time, t.creator, t.create_time,t.device_secret_index_binary,t.device_user_index_binary,t.device_status,t.sim,t.imei,t.bluetooth_mac,t.bluetooth_signal,
+	  t.third_device_secret,t.active_time, t.rssi, t.is_abnormal, t.lastest_report_time
+  </sql>
+    <sql id="idColumnSql">
+    t.id
+  </sql>
+    <sql id="whereSql">
+        <if test="id != null and id != '' ">
+            t.id = #{id}
+        </if>
+        <if test="companyId != null and companyId != '' ">
+            and t.company_id = #{companyId}
+        </if>
+        <if test="productId != null and productId != '' ">
+            and t.product_id = #{productId}
+        </if>
+        <if test="groupId != null and groupId != '' ">
+            and t.group_id = #{groupId}
+        </if>
+        <if test="alias != null and alias != '' ">
+            and t.alias = #{alias}
+        </if>
+        <if test="deviceKey != null and deviceKey != '' ">
+            and t.device_key = #{deviceKey}
+        </if>
+        <if test="serial != null and serial != '' ">
+            and t.serial = #{serial}
+        </if>
+        <if test="model != null and model != '' ">
+            and t.model = #{model}
+        </if>
+        <if test="mac != null and mac != '' ">
+            and t.mac = #{mac}
+        </if>
+        <if test="ip != null and ip != '' ">
+            and t.ip = #{ip}
+        </if>
+        <if test="ssid != null and ssid != '' ">
+            and t.ssid = #{ssid}
+        </if>
+        <if test="isActived != null ">
+            and t.is_actived = #{isActived}
+        </if>
+        <if test="isOnline != null">
+            and t.is_online = #{isOnline}
+        </if>
+        <if test="qrcode != null and qrcode != '' ">
+            and t.qrcode = #{qrcode}
+        </if>
+        <if test="power != null and power != '' ">
+            and t.power = #{power}
+        </if>
+        <if test="thirdDeviceId != null and thirdDeviceId != '' ">
+            and t.third_device_id = #{thirdDeviceId}
+        </if>
+        <if test="thirdDeviceSecret != null and thirdDeviceSecret != '' ">
+            and t.third_device_secret = #{thirdDeviceSecret}
+        </if>
+        <if test="psk != null and psk != '' ">
+            and t.psk = #{psk}
+        </if>
+        <if test="remark != null and remark != '' ">
+            and t.remark = #{remark}
+        </if>
+        <if test="status != null ">
+            and t.status = #{status}
+        </if>
+        <if test="sort != null and sort != '' ">
+            and t.sort = #{sort}
+        </if>
+        <if test="isDeleted != null ">
+            and t.is_deleted = #{isDeleted}
+        </if>
+        <if test="version != null and version != '' ">
+            and t.version = #{version}
+        </if>
+        <if test="modifier != null and modifier != '' ">
+            and t.modifier = #{modifier}
+        </if>
+        <if test="modifyTime != null">
+            and DATE_FORMAT(t.modify_time ,'%Y-%m-%d') = #{modifyTime}
+        </if>
+        <if test="geModifyTime != null">
+            and <![CDATA[ t.modify_time >= #{geModifyTime} ]]>
+        </if>
+        <if test="leModifyTime != null">
+            and <![CDATA[ t.modify_time <= #{leModifyTime} ]]>
+        </if>
+        <if test="creator != null and creator != '' ">
+            and t.creator = #{creator}
+        </if>
+        <if test="createTime != null ">
+            and DATE_FORMAT(t.create_time ,'%Y-%m-%d') = #{createTime}
+        </if>
+        <if test="deviceUserIndexBinary != null and deviceUserIndexBinary != '' ">
+            and t.device_user_index_binary = #{deviceUserIndexBinary}
+        </if>
+        <if test="deviceSecretIndexBinary != null and deviceSecretIndexBinary != '' ">
+            and t.device_secret_index_binary = #{deviceSecretIndexBinary}
+        </if>
+        <if test="deviceStatus != null and deviceStatus != '' ">
+            and t.device_status = #{deviceStatus}
+        </if>
+        <if test="sim != null and sim != '' ">
+            and t.sim = #{sim}
+        </if>
+        <if test="imei != null and imei != '' ">
+            and t.imei = #{imei}
+        </if>
+        <if test="bluetoothMac != null and bluetoothMac != '' ">
+            and t.bluetooth_mac = #{bluetoothMac}
+        </if>
+        <if test="bluetoothSignal != null and bluetoothSignal != '' ">
+            and t.bluetooth_signal = #{bluetoothSignal}
+        </if>
+        <if test="activeTime != null and activeTime != '' ">
+            and t.active_time = #{activeTime}
+        </if>
+        <if test="rssi != null and rssi != '' ">
+            and t.rssi = #{rssi}
+        </if>
+        <if test="isAbnormal != null and isAbnormal != '' ">
+            and t.is_abnormal = #{isAbnormal}
+        </if>
+        <if test="lastestReportTime != null and lastestReportTime != '' ">
+            and t.lastest_report_time = #{lastestReportTime}
+        </if>
+        <if test="nameAndKey != null and nameAndKey != '' ">
+            and t.alias LIKE CONCAT(CONCAT('%',#{nameAndKey}),'%') or t.device_key like
+            CONCAT(CONCAT('%',#{nameAndKey}),'%')
+        </if>
+
+        <!--查询条件-->
+        <if test="deviceKeyList != null and deviceKeyList.size>0">
+            AND t.device_key in
+            (
+            <foreach collection="deviceKeyList" separator="," item="deviceKey" index="index">
+                #{deviceKey}
+            </foreach>
+            )
+        </if>
+
+        <if test="keyWords != null and keyWords != ''">
+            and concat(ifnull(t.alias ,''),ifnull(t.device_key,'') ,ifnull(t.serial,''),ifnull(t.imei,'')) like
+            concat(concat('%',#{keyWords}),'%')
+        </if>
+
+        <if test="searchImei != null and searchImei != ''">
+            and concat(ifnull(t.imei ,'')) like
+            concat(concat('%',#{searchImei}),'%')
+        </if>
+
+    </sql>
+
+    <!--通过主键查询记录-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="columnSql"/>
+        from base_product_device t
+        where t.id = #{id}
+    </select>
+
+    <!--通过主键删除记录-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from base_product_device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="com.wjwcloud.iot.product.entity.ProductDevice">
+    insert into base_product_device (company_id, product_id, group_id, alias, device_key, serial, model, mac, ip, ssid, is_actived, is_online, qrcode, power, third_device_id, psk, remark, status, sort, is_deleted, version, modifier, modify_time, creator, create_time,device_secret_index_binary,device_user_index_binary,device_status,sim,imei,bluetooth_mac,bluetooth_signal,
+    third_device_secret,active_time,rssi,is_abnormal,lastest_report_time)
+    values (
+	#{companyId,jdbcType=BIGINT},
+	#{productId,jdbcType=BIGINT},
+	#{groupId,jdbcType=BIGINT},
+	#{alias,jdbcType=VARCHAR},
+	#{deviceKey,jdbcType=VARCHAR},
+	#{serial,jdbcType=VARCHAR},
+	#{model,jdbcType=VARCHAR},
+	#{mac,jdbcType=VARCHAR},
+	#{ip,jdbcType=VARCHAR},
+	#{ssid,jdbcType=VARCHAR},
+	#{isActived,jdbcType=INTEGER},
+	#{isOnline,jdbcType=INTEGER},
+	#{qrcode,jdbcType=VARCHAR},
+	#{power,jdbcType=VARCHAR},
+	#{thirdDeviceId,jdbcType=VARCHAR},
+	#{psk,jdbcType=VARCHAR},
+	#{remark,jdbcType=VARCHAR},
+	#{status,jdbcType=INTEGER},
+	#{sort,jdbcType=INTEGER},
+	#{isDeleted,jdbcType=INTEGER},
+	#{version,jdbcType=INTEGER},
+	#{modifier,jdbcType=BIGINT},
+	#{modifyTime,jdbcType=TIMESTAMP},
+	#{creator,jdbcType=BIGINT},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{deviceSecretIndexBinary,jdbcType=VARCHAR},
+	#{deviceUserIndexBinary,jdbcType=VARCHAR},
+	#{deviceStatus,jdbcType=VARCHAR},
+	#{sim,jdbcType=VARCHAR},
+	#{imei,jdbcType=VARCHAR},
+	#{bluetoothMac,jdbcType=VARCHAR},
+	#{bluetoothSignal,jdbcType=VARCHAR},
+	#{thirdDeviceSecret,jdbcType=VARCHAR},
+	#{activeTime,jdbcType=TIMESTAMP},
+	#{rssi,jdbcType=INTEGER},
+	#{isAbnormal,jdbcType=INTEGER},
+	#{lastestReportTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <!--查询最后插入记录的ID-->
+    <select id="selectLastId" resultType="java.lang.Long">
+    select LAST_INSERT_ID()
+  </select>
+
+    <insert id="insertSelective" parameterType="com.wjwcloud.iot.product.entity.ProductDevice">
+        insert into base_product_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="companyId != null ">
+                company_id,
+            </if>
+            <if test="productId != null ">
+                product_id,
+            </if>
+            <if test="groupId != null ">
+                group_id,
+            </if>
+            <if test="alias != null ">
+                alias,
+            </if>
+            <if test="deviceKey != null ">
+                device_key,
+            </if>
+            <if test="serial != null ">
+                serial,
+            </if>
+            <if test="model != null ">
+                model,
+            </if>
+            <if test="mac != null ">
+                mac,
+            </if>
+            <if test="ip != null ">
+                ip,
+            </if>
+            <if test="ssid != null ">
+                ssid,
+            </if>
+            <if test="isActived != null ">
+                is_actived,
+            </if>
+            <if test="isOnline != null ">
+                is_online,
+            </if>
+            <if test="qrcode != null ">
+                qrcode,
+            </if>
+            <if test="power != null ">
+                power,
+            </if>
+            <if test="thirdDeviceId != null ">
+                third_device_id,
+            </if>
+            <if test="psk != null ">
+                psk,
+            </if>
+            <if test="remark != null ">
+                remark,
+            </if>
+            <if test="status != null ">
+                status,
+            </if>
+            <if test="sort != null ">
+                sort,
+            </if>
+            <if test="isDeleted != null ">
+                is_deleted,
+            </if>
+            <if test="version != null ">
+                version,
+            </if>
+            <if test="modifier != null ">
+                modifier,
+            </if>
+            <if test="modifyTime != null ">
+                modify_time,
+            </if>
+            <if test="creator != null ">
+                creator,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+            <if test="deviceSecretIndexBinary != null ">
+                device_secret_index_binary,
+            </if>
+            <if test="deviceUserIndexBinary != null ">
+                device_user_index_binary,
+            </if>
+            <if test="deviceStatus != null ">
+                device_status,
+            </if>
+            <if test="sim != null ">
+                sim,
+            </if>
+            <if test="imei != null ">
+                imei,
+            </if>
+            <if test="bluetoothMac != null ">
+                bluetooth_mac,
+            </if>
+            <if test="bluetoothSignal != null ">
+                bluetooth_signal,
+            </if>
+            <if test="thirdDeviceSecret != null ">
+                third_device_secret,
+            </if>
+            <if test="activeTime != null ">
+                active_time,
+            </if>
+            <if test="rssi != null ">
+                rssi,
+            </if>
+            <if test="isAbnormal != null ">
+                is_abnormal,
+            </if>
+            <if test="lastestReportTime != null ">
+                lastest_report_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="companyId != null ">
+                #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null ">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null ">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="alias != null ">
+                #{alias,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceKey != null ">
+                #{deviceKey,jdbcType=VARCHAR},
+            </if>
+            <if test="serial != null ">
+                #{serial,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null ">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null ">
+                #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null ">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ssid != null ">
+                #{ssid,jdbcType=VARCHAR},
+            </if>
+            <if test="isActived != null ">
+                #{isActived,jdbcType=INTEGER},
+            </if>
+            <if test="isOnline != null ">
+                #{isOnline,jdbcType=INTEGER},
+            </if>
+            <if test="qrcode != null ">
+                #{qrcode,jdbcType=VARCHAR},
+            </if>
+            <if test="power != null ">
+                #{power,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdDeviceId != null ">
+                #{thirdDeviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="psk != null ">
+                #{psk,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null ">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null ">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null ">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="version != null ">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="modifier != null ">
+                #{modifier,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null ">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null ">
+                #{creator,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null ">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deviceSecretIndexBinary != null ">
+                #{deviceSecretIndexBinary,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceUserIndexBinary != null ">
+                #{deviceUserIndexBinary,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null ">
+                #{deviceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sim != null ">
+                #{sim,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null ">
+                #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="bluetoothMac != null ">
+                #{bluetoothMac,jdbcType=VARCHAR},
+            </if>
+            <if test="bluetoothSignal != null ">
+                #{bluetoothSignal,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdDeviceSecret != null ">
+                #{thirdDeviceSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="activeTime != null ">
+                #{activeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rssi != null ">
+                #{rssi,jdbcType=INTEGER},
+            </if>
+            <if test="isAbnormal != null ">
+                #{isAbnormal,jdbcType=INTEGER},
+            </if>
+            <if test="lastestReportTime != null ">
+                #{lastestReportTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.wjwcloud.iot.product.entity.ProductDevice">
+        update base_product_device
+        <set>
+            <if test="companyId != null ">
+                company_id= #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null ">
+                product_id= #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null ">
+                group_id= #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="alias != null ">
+                alias= #{alias,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceKey != null ">
+                device_key= #{deviceKey,jdbcType=VARCHAR},
+            </if>
+            <if test="serial != null ">
+                serial= #{serial,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null ">
+                model= #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null ">
+                mac= #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null ">
+                ip= #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ssid != null ">
+                ssid= #{ssid,jdbcType=VARCHAR},
+            </if>
+            <if test="isActived != null ">
+                is_actived= #{isActived,jdbcType=INTEGER},
+            </if>
+            <if test="isOnline != null ">
+                is_online= #{isOnline,jdbcType=INTEGER},
+            </if>
+            <if test="qrcode != null ">
+                qrcode= #{qrcode,jdbcType=VARCHAR},
+            </if>
+            <if test="power != null ">
+                power= #{power,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdDeviceId != null ">
+                third_device_id= #{thirdDeviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="psk != null ">
+                psk= #{psk,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null ">
+                remark= #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null ">
+                status= #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null ">
+                sort= #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null ">
+                is_deleted= #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="version != null ">
+                version= #{version,jdbcType=INTEGER},
+            </if>
+            <if test="modifier != null ">
+                modifier= #{modifier,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null ">
+                modify_time= #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null ">
+                creator= #{creator,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null ">
+                create_time= #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deviceSecretIndexBinary != null ">
+                device_secret_index_binary = #{deviceSecretIndexBinary,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceUserIndexBinary != null ">
+                device_user_index_binary = #{deviceUserIndexBinary,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null ">
+                device_status = #{deviceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sim != null ">
+                sim = #{sim,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null ">
+                imei = #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="bluetoothMac != null ">
+                bluetooth_mac = #{bluetoothMac,jdbcType=VARCHAR},
+            </if>
+            <if test="bluetoothSignal != null ">
+                bluetooth_signal = #{bluetoothSignal,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdDeviceSecret != null ">
+                third_device_secret = #{thirdDeviceSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="activeTime != null ">
+                active_time= #{activeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rssi != null ">
+                rssi = #{rssi,jdbcType=INTEGER},
+            </if>
+            <if test="isAbnormal != null ">
+                is_abnormal = #{isAbnormal,jdbcType=INTEGER},
+            </if>
+            <if test="lastestReportTime != null ">
+                lastest_report_time = #{lastestReportTime,jdbcType=TIMESTAMP},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--通过主键更新记录-->
+    <update id="updateByPrimaryKey" parameterType="com.wjwcloud.iot.product.entity.ProductDevice">
+        update base_product_device
+        <set>
+
+            company_id = #{companyId,jdbcType=BIGINT},
+            product_id = #{productId,jdbcType=BIGINT},
+            group_id = #{groupId,jdbcType=BIGINT},
+            alias = #{alias,jdbcType=VARCHAR},
+            device_key = #{deviceKey,jdbcType=VARCHAR},
+            serial = #{serial,jdbcType=VARCHAR},
+            model = #{model,jdbcType=VARCHAR},
+            mac = #{mac,jdbcType=VARCHAR},
+            ip = #{ip,jdbcType=VARCHAR},
+            ssid = #{ssid,jdbcType=VARCHAR},
+            is_actived = #{isActived,jdbcType=INTEGER},
+            is_online = #{isOnline,jdbcType=INTEGER},
+            qrcode = #{qrcode,jdbcType=VARCHAR},
+            power = #{power,jdbcType=VARCHAR},
+            third_device_id = #{thirdDeviceId,jdbcType=VARCHAR},
+            psk = #{psk,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            is_deleted = #{isDeleted,jdbcType=INTEGER},
+            version = #{version,jdbcType=INTEGER},
+            modifier = #{modifier,jdbcType=BIGINT},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            creator = #{creator,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            device_secret_index_binary = #{deviceSecretIndexBinary,jdbcType=VARCHAR},
+            device_user_index_binary = #{deviceUserIndexBinary,jdbcType=VARCHAR},
+            device_status = #{deviceStatus,jdbcType=VARCHAR},
+            sim = #{sim,jdbcType=VARCHAR},
+            imei = #{imei,jdbcType=VARCHAR},
+            bluetooth_mac = #{bluetoothMac,jdbcType=VARCHAR},
+            bluetooth_signal = #{bluetoothSignal,jdbcType=VARCHAR},
+            third_device_secret = #{thirdDeviceSecret,jdbcType=VARCHAR},
+            active_time= #{activeTime,jdbcType=TIMESTAMP},
+            rssi = #{rssi,jdbcType=INTEGER},
+            is_abnormal = #{isAbnormal,jdbcType=INTEGER},
+            lastest_report_time = #{lastestReportTime,jdbcType=TIMESTAMP},
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--通过实体对象条件查询总记录数-->
+    <select id="findCount" parameterMap="parameterMap" resultType="java.lang.Integer">
+        select
+        count(id)
+        from base_product_device t
+        <where>
+            <include refid="whereSql"></include>
+        </where>
+    </select>
+
+    <!--通过实体对象条件查询列表-->
+    <select id="findList" parameterMap="parameterMap" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"></include>
+        from base_product_device t
+        <where>
+            <include refid="whereSql"></include>
+        </where>
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <!--通过Map条件集合查询总记录数-->
+    <select id="findCount4Map" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+        count(id)
+        from base_product_device t
+        <where>
+            <include refid="whereSql"></include>
+        </where>
+    </select>
+
+    <!--通过Map条件集合查询列表-->
+    <select id="findList4Map" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"></include>
+        from base_product_device t
+        <where>
+            <include refid="whereSql"></include>
+        </where>
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+
+    </select>
+
+    <!-- 查询指定字段的数据 -->
+    <select id="findFieldList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="idColumnSql"></include>
+        from base_product_device t
+        <where>
+            <include refid="whereSql"></include>
+        </where>
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <!-- 根据主键ids 查询 -->
+    <select id="findListByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"/>
+        from base_product_device t
+        where t.id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 根据房间id 查询成员在该房间房间拥有设备列表 -->
+    <select id="findProductDeviceListByRoomId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select t.* from zw_house_device_assoc hda
+        LEFT join base_product_device t on hda.device_id=t.id
+        LEFT join zw_house_member_device hmd on hmd.device_id=t.id
+        where 1=1
+        <if test="isDeleted != null">
+            and t.is_deleted = #{isDeleted}
+        </if>
+        <if test="roomId != null and roomId != ''">
+            and hda.room_id=#{roomId}
+        </if>
+    </select>
+
+    <!-- 根据家庭id 查询房间设备列表 -->
+    <select id="findListByFamilyId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM zw_family_house_assoc fha
+        INNER JOIN zw_house h ON fha.house_id=h.id
+        INNER JOIN zw_house_device_assoc hda ON hda.house_id=h.id
+        LEFT JOIN base_product_device t ON hda.device_id=t.id
+        WHERE fha.STATUS=1
+        <if test="isDeleted != null">
+            and t.is_deleted = #{isDeleted}
+        </if>
+        <if test="familyId != null and familyId != ''">
+            and fha.family_id=#{familyId}
+        </if>
+    </select>
+
+    <!-- 通过成员id 查询设备秘钥列表 -->
+    <select id="findListByMemberId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM zw_family_member_device_role fmar
+        INNER JOIN base_product_device t ON fmar.device_id=t.id
+        WHERE 1=1
+        <if test="isDeleted != null">
+            and t.is_deleted = #{isDeleted}
+        </if>
+        <if test="memberId != null and memberId != ''">
+            and fmar.member_id=#{memberId}
+        </if>
+        GROUP BY t.id
+    </select>
+
+    <!--通过customerId查询列表-->
+    <select id="findListByCustomerId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"/>
+        from base_product_device t
+        where t.id in (
+        select device_id from zw_house_device_assoc where house_id in (
+        select house_id from zw_family_house_assoc where status=1 and family_id in (
+        select family_id from zw_family_member where customer_id=#{customerId})
+        ))
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <!--根据设备ID查询关联的设备列表-->
+    <select id="findListByAssocDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"/>
+        from base_product_device t
+        where t.is_deleted=0 and t.id in (
+        select device_id_to from base_product_device_assoc where device_id = #{deviceId}
+        ) or t.id in (
+        select device_id from base_product_device_assoc where device_id_to = #{deviceId}
+        ) or t.id = #{deviceId}
+    </select>
+
+    <!--查询指定产品中，没有升级指定版本的设备列表-->
+    <!-- log.status=0 表示准备升级   log.status=3 表示升级失败 -->
+    <select id="findListByUpgradeVersionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="columnSql"/>
+        from base_product_device t
+        where t.product_id=#{productId} and t.id not in (
+        select device_id from zw_firmware_version_upgrade_log log
+        where log.version_id=#{versionId} and log.status != 3
+        )
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <!--根据设备ID查询关联的设备列表-->
+    <select id="findListByHouseId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM base_product_device t
+        INNER JOIN zw_house_device_assoc hd ON t.id=hd.device_id
+        INNER JOIN zw_product p ON t.product_id=p.id
+        <where>
+            <include refid="whereSql"></include>
+            <if test="houseId != null and houseId != ''">
+                AND hd.house_id=#{houseId}
+            </if>
+            <if test="type != null and type != ''">
+                AND p.type=#{type}
+            </if>
+            <if test="roomId != null and roomId != ''">
+                AND hd.room_id=#{roomId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询当前会员的所有设备-->
+    <!--<select id="findListOfCustomer" parameterType="java.util.Map" resultMap="BaseResultMap">-->
+        <!--SELECT t.* FROM base_product_device t-->
+        <!--INNER JOIN zw_house_device_assoc hd ON t.id=hd.device_id-->
+        <!--INNER JOIN zw_product p ON t.product_id=p.id-->
+        <!--inner join zw_house h on hd.house_id=h.id-->
+        <!--inner join zw_family_house_assoc fha on fha.house_id=h.id-->
+        <!--inner join zw_family f on fha.family_id=f.id-->
+        <!--inner join zw_family_member fm on f.id=fm.family_id-->
+        <!--where fha.STATUS=1 and f.is_deleted=0-->
+        <!--<if test="customerId != null and customerId != ''">-->
+            <!--AND fm.customer_id=#{customerId}-->
+        <!--</if>-->
+        <!--<if test="type != null and type != ''">-->
+            <!--AND p.type=#{type}-->
+        <!--</if>-->
+        <!--<if test="familyName != null and familyName != ''">-->
+            <!--AND p.family_name=#{familyName}-->
+        <!--</if>-->
+        <!--<if test="isDeleted != null and isDeleted != ''">-->
+            <!--AND t.is_deleted=#{isDeleted}-->
+        <!--</if>-->
+        <!--order by hd.id desc-->
+    <!--</select>-->
+    <select id="findListOfCustomer" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM base_product_device t
+        where  t.is_deleted=0
+        <if test="customerId != null and customerId != ''">
+            AND t.customer_id=#{customerId}
+        </if>
+    </select>
+
+    <!--共享设备列表-->
+    <select id="findSharedDeviceList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM base_product_device t
+        INNER JOIN zw_house_member_device md ON t.id=md.device_id
+        WHERE 1=1 AND md.status=1
+        <if test="customerId != null and customerId != ''">
+            AND md.customer_id=#{customerId}
+        </if>
+    </select>
+
+
+    <!--查询产品型号-->
+    <select id="findProductModel" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.* FROM base_product_device t
+        INNER JOIN zw_product p ON t.product_id=p.id
+        WHERE 1=1
+        <if test="type != null and type != ''">
+            AND p.type=#{type}
+        </if>
+        <if test="imei != null and imei != ''">
+            AND t.imei LIKE CONCAT(CONCAT('%',#{imei}),'%')
+        </if>
+        <if test="startRowNum != null and endRowNum != null ">
+            limit #{startRowNum,jdbcType=BIGINT},#{endRowNum,jdbcType=BIGINT}
+        </if>
+    </select>
+
+
+    <sql id="bronzeColumnSql">
+   device.id, device.company_id, device.product_id, device.group_id, device.alias, device.device_key, device.serial, device.model, device.mac, device.ip, device.ssid, device.is_actived, device.is_online, device.qrcode, device.power, device.third_device_id, device.psk, device.remark, device.status, device.sort, device.is_deleted, device.version, device.modifier, device.modify_time, device.creator, device.create_time,device.device_secret_index_binary,device.device_user_index_binary,device.device_status,device.sim,device.imei,device.bluetooth_mac,device.bluetooth_signal,
+	  device.third_device_secret,device.active_time, device.rssi, device.is_abnormal, device.lastest_report_time ,product.type
+  </sql>
+    <!-- 根据公司ID及imie模糊查询锁版列表 -->
+    <select id="findDeviceListByIMEI" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT *  FROM
+	(
+	SELECT
+        <include refid="bronzeColumnSql"/>
+	FROM
+		base_product_device device
+		LEFT JOIN zw_product product ON device.product_id = product.id
+	WHERE
+	device.company_id = #{companyId} and
+		concat( imei ) LIKE concat ( concat( '%', #{searchImei} ), '%' )
+		OR device.id IN (
+		SELECT
+			device_id
+		FROM
+			base_product_device_assoc
+		WHERE
+		company_id = #{companyId} and
+			device_id_to IN ( SELECT id FROM base_product_device WHERE concat( imei ) LIKE concat ( concat( '%', #{searchImei} ), '%' ) )
+		)
+	) t
+WHERE
+	t.type = 'lock' and status = 1
+
+    </select>
+    
+   <select id="findDeviceNbIMEI" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT *  FROM
+	(
+	SELECT
+        <include refid="bronzeColumnSql"/>
+	FROM
+		base_product_device device
+		LEFT JOIN zw_product product ON device.product_id = product.id
+	WHERE
+	device.company_id = #{companyId} and
+		concat( imei ) LIKE concat ( concat( '%', #{searchImei} ), '%' )
+		OR device.id IN (
+		SELECT
+			device_id
+		FROM
+			base_product_device_assoc
+		WHERE
+		company_id = #{companyId} and
+			device_id_to IN ( SELECT id FROM base_product_device WHERE concat( imei ) LIKE concat ( concat( '%', #{searchImei} ), '%' ) )
+		)
+	) t
+WHERE
+	t.type = 'NB' and status = 1
+
+    </select>
+</mapper>
