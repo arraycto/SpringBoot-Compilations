@@ -23,6 +23,7 @@
         <module>SpringBoot-Demo-auth</module>
         <!--<module>SpringBoot-task</module>-->
         <module>SpringBoot-iot</module>
+        <module>SpringBoot-Drools</module>
     </modules>
     <packaging>pom</packaging>
 
