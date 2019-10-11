@@ -1,0 +1,13 @@
+mybatis:
+  typeAliasesPackage: com.wjwcloud.ad.common.dataobject
+  mapperLocations: classpath:mapper/*.xml
+
+
+spring:
+    datasource:
+        name: presell-market
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/iot_v1?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true
+        username: root
+        password: root
+

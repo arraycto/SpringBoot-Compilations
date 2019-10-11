@@ -24,6 +24,7 @@
         <!--<module>SpringBoot-task</module>-->
         <module>SpringBoot-iot</module>
         <module>SpringBoot-Drools</module>
+        <module>SpringBoot-activity-drools</module>
     </modules>
     <packaging>pom</packaging>
 
