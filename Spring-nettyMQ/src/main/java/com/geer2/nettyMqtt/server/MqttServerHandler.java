@@ -221,10 +221,15 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter
         MqttMessage pingespMessage = new MqttMessage(header);
         ctx.write(pingespMessage);
     }
-    
+
+    /**
+     * 收到心跳
+     * @param ctx
+     * @param request
+     */
     private void doPingrespMessage(ChannelHandlerContext ctx, Object request)
     {
-        //       System.out.println("收到心跳请求！");
+               System.out.println("收到心跳请求！");
     }
     
     /**
