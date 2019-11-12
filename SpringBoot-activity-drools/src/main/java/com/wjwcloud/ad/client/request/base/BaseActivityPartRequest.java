@@ -17,6 +17,8 @@ public abstract class BaseActivityPartRequest implements ActivityRequest {
      */
     private String channelId;
 
+
+
     public BaseActivityPartRequest(String customerRegisterId, String channelId) {
         this.customerRegisterId = customerRegisterId;
         this.channelId = channelId;

@@ -12,9 +12,6 @@ import javax.annotation.Resource;
 
 /**
  * ActivityPartServiceTest
- *
- * @author caisl
- * @since 2019-02-16
  */
 public class ActivityPartServiceTest extends BaseTest {
 

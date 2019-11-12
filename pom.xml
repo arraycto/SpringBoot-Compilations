@@ -25,6 +25,7 @@
         <module>SpringBoot-iot</module>
         <module>SpringBoot-Drools</module>
         <module>SpringBoot-activity-drools</module>
+        <module>Spring-nettyMQ</module>
     </modules>
     <packaging>pom</packaging>
 

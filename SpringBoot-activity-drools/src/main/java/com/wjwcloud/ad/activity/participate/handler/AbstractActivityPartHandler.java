@@ -2,6 +2,8 @@ package com.wjwcloud.ad.activity.participate.handler;
 
 
 import com.alibaba.fastjson.JSON;
+import com.wjwcloud.ad.activity.mifendevice.reduction.domain.ReductionActivityDTO;
+import com.wjwcloud.ad.activity.participate.domain.NewCustomerPartDTO;
 import com.wjwcloud.ad.client.constant.Result;
 import com.wjwcloud.ad.client.constant.ResultCodeEnum;
 import com.wjwcloud.ad.activity.participate.domain.BaseActivityPartDTO;

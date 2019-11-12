@@ -32,6 +32,7 @@ public class NewCustomerPartHandler extends AbstractActivityPartHandler {
     @Override
     protected void doAction(ContextParam contextParam) {
         LogUtil.log(ActivityLoggerFactory.BUSINESS, ActivityLoggerMarker.BUSINESS, Level.INFO, "do doAction");
+        //进行规则处理
         rewardProcess.reward();
         activityRecordProcess.insertRecord();
     }

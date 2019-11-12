@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 /**
  * RewardProcess
  * 奖励组件
- *
- * @author caisl
- * @since 2019-02-14
  */
 @Component
 public class RewardProcess {

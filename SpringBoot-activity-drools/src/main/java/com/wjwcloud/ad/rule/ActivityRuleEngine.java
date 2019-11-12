@@ -10,9 +10,6 @@ import java.util.List;
 
 /**
  * ActivityRuleEngine
- *
- * @author caisl
- * @since 2019-01-22
  */
 @Component
 public class ActivityRuleEngine extends CheckerEngine<Rule, RuleChecker> {
@@ -25,6 +22,7 @@ public class ActivityRuleEngine extends CheckerEngine<Rule, RuleChecker> {
      */
     public Result<String> validate(final ActivityPartRuleRequest request, List<Rule> rules) {
         return (new CheckerProcess<Rule>() {
+            @Override
             public Result _process(Rule rule) {
                 return ActivityRuleEngine.this.getChecker(rule).validate(rule, request);
             }
