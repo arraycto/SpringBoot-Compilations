@@ -2,7 +2,7 @@ package com.geer2.nettyMqtt.core;
 
 
 /**
- * @Author: 穆书伟
+ * @Author:
  * @Date: 19-4-2
  * @Version 1.0
  */

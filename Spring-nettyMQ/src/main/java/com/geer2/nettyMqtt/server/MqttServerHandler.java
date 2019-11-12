@@ -318,6 +318,7 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter
             String topic = subscription.topicName();
             MqttQoS reqQoS = subscription.qualityOfService();
             switch (topic) {
+                //设备属性主题
                 case DEVICE_ATTRIBUTES_TOPIC: {
                     try {
                         JsonMqttAdaptor.convertToMsg(SUBSCRIBE_ATTRIBUTES_REQUEST, message);
@@ -327,9 +328,11 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter
                     registerSubQoS(topic, grantedQoSList, reqQoS);
                     break;
                 }
+                //设备属性响应主题前缀
                 case DEVICE_ATTRIBUTES_RESPONSE_TOPIC_PREFIX:
                     registerSubQoS(topic, grantedQoSList, reqQoS);
                     break;
+                    //设备注册
                 case DEVICE_REGISTER :
                     registerSubQoS(topic, grantedQoSList, reqQoS);
                     break;

@@ -11,7 +11,7 @@
 	<groupId>com.geer2</groupId>
 	<artifactId>nettyMQ</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>nettyMQ</name>
+	<name>SpringBoot-nettyMQ</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

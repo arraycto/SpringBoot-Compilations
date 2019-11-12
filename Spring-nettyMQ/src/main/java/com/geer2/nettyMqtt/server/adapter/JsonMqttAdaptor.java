@@ -30,15 +30,19 @@ public class JsonMqttAdaptor {
 
     public static void convertToMsg(SessionMsgType type, MqttMessage inbound) throws AdaptorException {
         switch (type) {
+            //后遥测请求
             case POST_TELEMETRY_REQUEST:
                 convertToTelemetryUploadRequest( (MqttPublishMessage) inbound);
                 break;
+                //发布属性请求
             case POST_ATTRIBUTES_REQUEST:
                 convertToUpdateAttributesRequest((MqttPublishMessage) inbound);
                 break;
+                //订阅属性请求
             case SUBSCRIBE_ATTRIBUTES_REQUEST:
                 System.out.println("{\"key1\":\"value1\"}");
                 break;
+                //获取属性请求
             case GET_ATTRIBUTES_REQUEST:
                 convertToGetAttributesRequest((MqttPublishMessage) inbound);
                 break;

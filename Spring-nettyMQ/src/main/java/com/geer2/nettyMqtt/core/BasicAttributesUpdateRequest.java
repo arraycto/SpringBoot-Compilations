@@ -8,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * @Author: 穆书伟
- * @Date: 19-4-2
+ * @Author:
+ * @Date:
  * @Version 1.0
  */
 public class BasicAttributesUpdateRequest extends BasicRequest implements AttributesUpdateRequest {

@@ -6,7 +6,7 @@ import com.geer2.nettyMqtt.util.data.kv.AttributeKvEntry;
 import java.util.Set;
 
 /**
- * @Author: 穆书伟
+ * @Author:
  * @Date: 19-4-2
  * @Version 1.0
  */
