@@ -1,8 +1,8 @@
 package com.geer2.nettyMqtt.server.api;
 
 import com.geer2.nettyMqtt.bean.MqttChannel;
+import com.geer2.nettyMqtt.bean.WillMeaasge;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.MqttConnectMessage;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
 
@@ -17,7 +17,7 @@ import java.util.Set;
  **/
 public interface ChannelService {
 
-    ChannelHandlerContext getMqttChannel(String deviceId);
+    MqttChannel getMqttChannel(String deviceId);
 
     boolean connectSuccess(String s, MqttChannel build);
 
@@ -31,7 +31,7 @@ public interface ChannelService {
 
     void closeSuccess(String deviceId, boolean isDisconnect);
 
-//    void sendWillMsg(WillMeaasge willMeaasge);
+    void sendWillMsg(WillMeaasge willMeaasge);
 
     String  getDeviceId(Channel channel);
 

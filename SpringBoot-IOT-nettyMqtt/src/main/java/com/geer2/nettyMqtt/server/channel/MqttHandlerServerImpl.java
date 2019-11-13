@@ -1,23 +1,14 @@
 package com.geer2.nettyMqtt.server.channel;
 
-import com.geer2.nettyMqtt.bean.DeviceManage;
-import com.geer2.nettyMqtt.bean.forBusiness.UpMessage;
-import com.geer2.nettyMqtt.bean.forStb.StbReportMsg;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
-import com.geer2.nettyMqtt.server.handler.HttpServerHandler;
 import com.geer2.nettyMqtt.server.utils.MqttTopicMatcher;
-import com.geer2.nettyMqtt.util.Constants;
-import com.geer2.nettyMqtt.util.json.gson.GsonJsonUtil;
-import com.google.gson.JsonSyntaxException;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,56 +47,57 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
      */
     @Override
     public void publish(Channel channel, MqttPublishMessage mqttPublishMessage) {
-        ByteBuf buf = mqttPublishMessage.payload();
-        String msg = new String(ByteBufUtil.getBytes(buf));
-        log.debug("终端消息上报 start，终端编码为："+channel.attr(DeviceManage.DEVICE).get()+" 终端上报消息体："+msg);
-        int msgId = mqttPublishMessage.variableHeader().messageId();
-        if (msgId == -1) {
-            msgId = 1;
-        }
-        //主题名
-        String topicName = mqttPublishMessage.variableHeader().topicName();
-        System.out.println("上报消息的主题："+topicName);
-        try
-        {
-            //上报消息写入
-            StbReportMsg stbmsg= GsonJsonUtil.fromJson(msg, StbReportMsg.class);
-            //机顶盒编号||消息编号||发送状态||点击状态 ||更新时间||消息应下发用户总数
-            if(!StringUtils.isEmpty(stbmsg.getMsgId()))
-            {
-                UpMessage upmessage=new UpMessage();
-                upmessage.setDeviceId(StringUtils.isEmpty(stbmsg.getDeviceNum())?channel.attr(DeviceManage.DEVICE).get():stbmsg.getDeviceNum());
-                upmessage.setMsgCode(stbmsg.getMsgId());
-                upmessage.setStatus(stbmsg.getStatus());
-                upmessage.setIsOnclick(stbmsg.getJumpFlag());
-                upmessage.setDate(UpMessage.getCurrentDate());
-                upmessage.setMsgType(stbmsg.getMsgType());
-                if(HttpServerHandler.messageMap.containsKey(stbmsg.getMsgId()))
-                {
-                    upmessage.setUserNums(HttpServerHandler.messageMap.get(stbmsg.getMsgId()).getUserNumbers());
-                }
-                log.debug("终端消息上报 end 终端上报消息成功。终端编号："+channel.attr(DeviceManage.DEVICE).get()+" 消息编码："+stbmsg.getMsgId()+"消息状态："+stbmsg.getStatus());
-                HttpServerHandler.reportMsgLog.debug(upmessage.getDeviceId()+"||"+upmessage.getMsgCode()+"||"
-                        +upmessage.getStatus()+"||"+upmessage.getIsOnclick()+"||"+upmessage.getDate()
-                        +"||"+upmessage.getUserNums()+"||"+upmessage.getMsgType());
-            }else
-            {
-                log.error("终端消息上报 end 终端上报消息编码为空！终端编号为: "+ channel.attr(DeviceManage.DEVICE).get()+" 上报消息为： "+msg);
-            }
-        }
-        catch (JsonSyntaxException e)
-        {
-            log.error("终端消息上报 end 终端上报消息格式错误！终端编号为: "+channel.attr(DeviceManage.DEVICE).get()+" 上报消息为： "+msg);
-        }
-
-        if (mqttPublishMessage.fixedHeader().qosLevel() == AT_LEAST_ONCE)
-        {
-            MqttMessageIdVariableHeader header = MqttMessageIdVariableHeader.from(msgId);
-            MqttPubAckMessage puback = new MqttPubAckMessage(Constants.PUBACK_HEADER, header);
-            channel.write(puback);
-        }
-        msg = null;
-        topicName = null;
+        mqttChannelService.publishSuccess(channel, mqttPublishMessage);
+//        ByteBuf buf = mqttPublishMessage.payload();
+//        String msg = new String(ByteBufUtil.getBytes(buf));
+//        log.debug("终端消息上报 start，终端编码为："+channel.attr(DeviceManage.DEVICE).get()+" 终端上报消息体："+msg);
+//        int msgId = mqttPublishMessage.variableHeader().messageId();
+//        if (msgId == -1) {
+//            msgId = 1;
+//        }
+//        //主题名
+//        String topicName = mqttPublishMessage.variableHeader().topicName();
+//        System.out.println("上报消息的主题："+topicName);
+//        try
+//        {
+//            //上报消息写入
+//            StbReportMsg stbmsg= GsonJsonUtil.fromJson(msg, StbReportMsg.class);
+//            //机顶盒编号||消息编号||发送状态||点击状态 ||更新时间||消息应下发用户总数
+//            if(!StringUtils.isEmpty(stbmsg.getMsgId()))
+//            {
+//                UpMessage upmessage=new UpMessage();
+//                upmessage.setDeviceId(StringUtils.isEmpty(stbmsg.getDeviceNum())?channel.attr(DeviceManage.DEVICE).get():stbmsg.getDeviceNum());
+//                upmessage.setMsgCode(stbmsg.getMsgId());
+//                upmessage.setStatus(stbmsg.getStatus());
+//                upmessage.setIsOnclick(stbmsg.getJumpFlag());
+//                upmessage.setDate(UpMessage.getCurrentDate());
+//                upmessage.setMsgType(stbmsg.getMsgType());
+//                if(HttpServerHandler.messageMap.containsKey(stbmsg.getMsgId()))
+//                {
+//                    upmessage.setUserNums(HttpServerHandler.messageMap.get(stbmsg.getMsgId()).getUserNumbers());
+//                }
+//                log.debug("终端消息上报 end 终端上报消息成功。终端编号："+channel.attr(DeviceManage.DEVICE).get()+" 消息编码："+stbmsg.getMsgId()+"消息状态："+stbmsg.getStatus());
+//                HttpServerHandler.reportMsgLog.debug(upmessage.getDeviceId()+"||"+upmessage.getMsgCode()+"||"
+//                        +upmessage.getStatus()+"||"+upmessage.getIsOnclick()+"||"+upmessage.getDate()
+//                        +"||"+upmessage.getUserNums()+"||"+upmessage.getMsgType());
+//            }else
+//            {
+//                log.error("终端消息上报 end 终端上报消息编码为空！终端编号为: "+ channel.attr(DeviceManage.DEVICE).get()+" 上报消息为： "+msg);
+//            }
+//        }
+//        catch (JsonSyntaxException e)
+//        {
+//            log.error("终端消息上报 end 终端上报消息格式错误！终端编号为: "+channel.attr(DeviceManage.DEVICE).get()+" 上报消息为： "+msg);
+//        }
+//
+//        if (mqttPublishMessage.fixedHeader().qosLevel() == AT_LEAST_ONCE)
+//        {
+//            MqttMessageIdVariableHeader header = MqttMessageIdVariableHeader.from(msgId);
+//            MqttPubAckMessage puback = new MqttPubAckMessage(Constants.PUBACK_HEADER, header);
+//            channel.write(puback);
+//        }
+//        msg = null;
+//        topicName = null;
     }
 
     /**
@@ -193,7 +185,8 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
      */
     @Override
     public void close(Channel channel) {
-
+        mqttChannelService.closeSuccess(mqttChannelService.getDeviceId(channel), false);
+        channel.close();
     }
 
     /**

@@ -22,8 +22,7 @@ public class DeviceManage {
      * 设备数据缓存。<设备编号，ctx>
      */
     public static Map<String, ChannelHandlerContext> DEVICE_MAP = new ConcurrentHashMap<String, ChannelHandlerContext>();
-    // deviceId - mqChannel 登录
-    public static ConcurrentHashMap<String ,MqttChannel> mqttChannels = new ConcurrentHashMap<>();
+
     /**
      * 记载在线用户登入时间
      */

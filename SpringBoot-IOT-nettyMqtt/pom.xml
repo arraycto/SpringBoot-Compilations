@@ -19,11 +19,11 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.wjwcloud</groupId>
-			<artifactId>IOT-TSL</artifactId>
-			<version>0.0.1</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.wjwcloud</groupId>-->
+			<!--<artifactId>IOT-TSL</artifactId>-->
+			<!--<version>0.0.1</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -71,11 +71,6 @@
 			<classifier>sources</classifier>
 		</dependency>
 
-		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-			<version>3.0.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -125,6 +120,18 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>23.3-jre</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.4.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-core -->
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.2.2.RELEASE</version>
 		</dependency>
 
 	</dependencies>
