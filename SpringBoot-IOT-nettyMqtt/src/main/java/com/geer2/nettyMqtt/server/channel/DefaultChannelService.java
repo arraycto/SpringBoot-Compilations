@@ -243,7 +243,8 @@ public  class DefaultChannelService extends PublishApiSevice implements ChannelS
                                             .byteBuf(sendMqttMessage.getByteBuf())
                                             .qoS(sendMqttMessage.getQos())
                                             .topic(sendMqttMessage.getTopic())
-                                            .build()); // 把待确认数据转入session中
+                                            // 把待确认数据转入session中
+                                            .build());
                                 }
                         ));
 
