@@ -34,7 +34,7 @@
 | [SpringBoot-Demo-qcloudsms](./SpringBoot-Demo-qcloudsms) | SpringBoot 集成腾讯短信云服务 |
 | [SpringBoot-Demo-auth](./SpringBoot-Demo-auth) | SpringBoot 第三方认证登录设计实现 ...未完成|
 | [SpringBoot-task](./SpringBoot-task) | SpingBoot 集成Quartz实现CRUD任务系统 | 
-| [SpringBoot-iot](./SpringBoot-iot) | SpringBoot 对接天猫精灵语音控制 |
+| [SpringBoot-iot-aligenie](./SpringBoot-iot-aligenie) | SpringBoot 对接天猫精灵语音控制 |
 | [SpringBoot-Drools](./SpringBoot-Drools) | SpringBoot 集成 Drools规则引擎 |
 
 ### 各Module 开发案例

@@ -22,10 +22,11 @@
         <module>SpringBoot-Demo-qcloudsms</module>
         <module>SpringBoot-Demo-auth</module>
         <!--<module>SpringBoot-task</module>-->
-        <module>SpringBoot-iot</module>
+        <module>SpringBoot-iot-aligenie</module>
         <module>SpringBoot-Drools</module>
         <module>SpringBoot-activity-drools</module>
-        <module>Spring-nettyMQ</module>
+        <module>SpringBoot-IOT-nettyMqtt</module>
+        <module>SpringBoot-IOT-TSL</module>
     </modules>
     <packaging>pom</packaging>
 
