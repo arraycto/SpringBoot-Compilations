@@ -70,27 +70,9 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
         //主题名
         String topicName = mqttPublishMessage.variableHeader().topicName();
         System.out.println("上报消息的主题："+topicName);
-        //test code
-    /*    if(topicName.equals("test"))
-        {
-
-            MsgToNode msgs=new MsgToNode();
-            MsgPublish pub=new MsgPublish();
-            pub.setMqttQos(1);
-            pub.setMsgPushType(1);
-            pub.setMsgPushDst("111");
-            msgs.setMsgPublish(pub);
-
-            MsgInfo info=new MsgInfo();
-            info.setMsgCode("mm123");
-            msgs.setMsgInfo(info);
-            SendOnlineMessageThread t = new SendOnlineMessageThread(msgs);
-            HttpServerHandler.scheduledExecutorService.execute(t);
-        }
-        */
         try
         {
-            //上报消息写入文件
+            //上报消息写入
             StbReportMsg stbmsg= GsonJsonUtil.fromJson(msg, StbReportMsg.class);
             //机顶盒编号||消息编号||发送状态||点击状态 ||更新时间||消息应下发用户总数
             if(!StringUtils.isEmpty(stbmsg.getMsgId()))

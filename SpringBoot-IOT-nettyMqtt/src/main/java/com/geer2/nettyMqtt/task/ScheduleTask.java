@@ -21,8 +21,6 @@ public class ScheduleTask
 
     public static void executeTask()
     {
-//        Long cleanMsgPeriod = Long.parseLong(SysConfig.getSystemConfig("cleanmsgPeriod"));
-//        Long printBlankPeriod=Long.parseLong(SysConfig.getSystemConfig("printBlankPeriod"));
         Props props = new Props("config.properties");
         Long cleanMsgPeriod = Long.parseLong(props.get("cleanmsgPeriod").toString());
         Long printBlankPeriod=Long.parseLong(props.get("printBlankPeriod").toString());
