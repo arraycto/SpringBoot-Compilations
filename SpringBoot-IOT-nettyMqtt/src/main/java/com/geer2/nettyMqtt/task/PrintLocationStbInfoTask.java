@@ -3,7 +3,7 @@
  */
 package com.geer2.nettyMqtt.task;
 
-import com.geer2.nettyMqtt.server.MqttServerHandler;
+import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.util.DateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,11 +44,11 @@ public class PrintLocationStbInfoTask implements Runnable {
 				file.createNewFile();
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			if (MqttServerHandler.UN_CONNECT_MAP.size() > 0) {
+			if (DeviceManage.UN_CONNECT_MAP.size() > 0) {
 				String line = "";
-				for (String key : MqttServerHandler.UN_CONNECT_MAP.keySet()) {
+				for (String key : DeviceManage.UN_CONNECT_MAP.keySet()) {
 					line = key + ","
-							+ MqttServerHandler.UN_CONNECT_MAP.get(key);
+							+ DeviceManage.UN_CONNECT_MAP.get(key);
 					
 					writer.write(line);
 					writer.newLine();
@@ -73,11 +73,11 @@ public class PrintLocationStbInfoTask implements Runnable {
 				file.createNewFile();
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			if (MqttServerHandler.userOnlineMap.size() > 0) {
+			if (DeviceManage.DEVICE_ONLINE_MAP.size() > 0) {
 				String line = "";
-				for (String key : MqttServerHandler.userOnlineMap.keySet()) {
+				for (String key : DeviceManage.DEVICE_ONLINE_MAP.keySet()) {
 					line = key + ","
-							+ MqttServerHandler.userOnlineMap.get(key);
+							+ DeviceManage.DEVICE_ONLINE_MAP.get(key);
 					writer.write(line);
 					writer.newLine();
 				}

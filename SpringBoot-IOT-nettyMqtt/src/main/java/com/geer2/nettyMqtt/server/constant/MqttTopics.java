@@ -1,4 +1,4 @@
-package com.geer2.nettyMqtt.server;
+package com.geer2.nettyMqtt.server.constant;
 
 /**
  * @Author: JiaweiWu

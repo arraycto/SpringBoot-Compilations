@@ -1,4 +1,4 @@
-package com.geer2.nettyMqtt.server;
+package com.geer2.nettyMqtt.server.utils;
 
 import java.util.regex.Pattern;
 
@@ -12,7 +12,7 @@ public class MqttTopicMatcher {
     private final String topic;
     private final Pattern topicRegex;
 
-    MqttTopicMatcher(String topic) {
+    public MqttTopicMatcher(String topic) {
         if (topic == null){
             throw new NullPointerException("topic");
         }
@@ -30,8 +30,12 @@ public class MqttTopicMatcher {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         MqttTopicMatcher that = (MqttTopicMatcher) o;
 

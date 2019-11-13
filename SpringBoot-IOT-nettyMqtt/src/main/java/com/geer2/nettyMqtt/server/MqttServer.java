@@ -36,6 +36,7 @@ import java.security.cert.CertificateException;
 
 /**
  * Simplistic telnet server.
+ * @author
  */
 @Component
 public final class MqttServer {
@@ -45,7 +46,6 @@ public final class MqttServer {
 
     private void startServer() throws CertificateException, SSLException, InterruptedException {
         final SslContext sslCtx;
-//        SysConfig.init();
         ScheduleTask.executeTask();
         if (SSL) {
             SelfSignedCertificate ssc = new SelfSignedCertificate();
@@ -55,7 +55,7 @@ public final class MqttServer {
         }
         System.out.println(Runtime.getRuntime().availableProcessors());
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        //CPU����*2
+        //CPU
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();

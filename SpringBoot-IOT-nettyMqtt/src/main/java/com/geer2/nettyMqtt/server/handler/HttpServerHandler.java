@@ -1,5 +1,6 @@
-package com.geer2.nettyMqtt.server;
+package com.geer2.nettyMqtt.server.handler;
 
+import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.forBusiness.MsgToNode;
 import com.geer2.nettyMqtt.exception.ErrorCode;
 import com.geer2.nettyMqtt.server.sendMessage.SendOnlineMessageThread;
@@ -305,6 +306,6 @@ public class HttpServerHandler extends  SimpleChannelInboundHandler<Object>
      * @return
      */
     private String getOnlineUserInfo(){
-    	return MqttServerHandler.userOnlineMap.size()+"";
+    	return DeviceManage.DEVICE_ONLINE_MAP.size()+"";
     }
 }

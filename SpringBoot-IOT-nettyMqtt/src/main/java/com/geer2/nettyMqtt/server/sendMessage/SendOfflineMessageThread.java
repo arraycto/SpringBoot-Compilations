@@ -1,9 +1,10 @@
 package com.geer2.nettyMqtt.server.sendMessage;
 
+import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.forBusiness.MsgToNode;
 import com.geer2.nettyMqtt.bean.forBusiness.UpMessage;
-import com.geer2.nettyMqtt.server.HttpServerHandler;
-import com.geer2.nettyMqtt.server.MqttServerHandler;
+import com.geer2.nettyMqtt.server.channel.MqttHandlerServerImpl;
+import com.geer2.nettyMqtt.server.handler.HttpServerHandler;
 import com.geer2.nettyMqtt.util.Constants;
 import com.geer2.nettyMqtt.util.json.gson.GsonJsonUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,13 +39,13 @@ public class SendOfflineMessageThread extends Thread
         /**
          * 离线用户下发消息，并写入上报文件。从离线消息缓存，这条消息的离线集合中删除该用户
          */
-        if (MqttServerHandler.userMap.containsKey(stb_code))
+        if (DeviceManage.DEVICE_MAP.containsKey(stb_code))
         {
-            ChannelHandlerContext ctxx = (ChannelHandlerContext) MqttServerHandler.userMap.get(stb_code);
+            ChannelHandlerContext ctxx = (ChannelHandlerContext) DeviceManage.DEVICE_MAP.get(stb_code);
             if (ctxx != null && ctxx.channel().isActive())
             {
                 MqttPublishMessage pubMsg;
-                pubMsg = MqttServerHandler.buildPublish(GsonJsonUtil.toJson(msg.getMsgInfo()), Constants.TOPIC_STB, 1);
+                pubMsg = MqttHandlerServerImpl.buildPublish(GsonJsonUtil.toJson(msg.getMsgInfo()), Constants.TOPIC_STB, 1);
                 ReferenceCountUtil.retain(pubMsg);
                 ctxx.writeAndFlush(pubMsg);
                 UpMessage upmessage=new UpMessage();

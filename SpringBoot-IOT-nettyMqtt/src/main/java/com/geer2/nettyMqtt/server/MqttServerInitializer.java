@@ -15,6 +15,8 @@
  */
 package com.geer2.nettyMqtt.server;
 
+import com.geer2.nettyMqtt.server.handler.HttpServerHandler;
+import com.geer2.nettyMqtt.server.handler.MqttServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -30,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Creates a newly configured {@link ChannelPipeline} for a new channel.
+ * @author JiaweiWu
  */
 public class MqttServerInitializer extends ChannelInitializer<SocketChannel> {
 
@@ -44,18 +47,15 @@ public class MqttServerInitializer extends ChannelInitializer<SocketChannel> {
     }
 
     @Override
-    public void initChannel(SocketChannel ch) throws Exception
-    {
-        
-        
+    public void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         if (sslCtx != null)
         {
             pipeline.addLast(sslCtx.newHandler(ch.alloc()));
         }
         System.out.println(ch.localAddress().getPort());
-        if(ch.localAddress().getPort()==1883)
-        {/*
+        if(ch.localAddress().getPort()==1883) {
+            /*
              //mqtt消息解码、编码器
             pipeline.addLast(new MqttDecoder(81920));
             pipeline.addLast("timeout", new IdleStateHandler(0, 0, 20, TimeUnit.SECONDS));
@@ -63,15 +63,13 @@ public class MqttServerInitializer extends ChannelInitializer<SocketChannel> {
             pipeline.addLast(SERVER_HANDLER);
             pipeline.addLast(MqttEncoder.INSTANCE);
         */
-            
             pipeline.addLast(new MqttDecoder(81920));
             pipeline.addLast(MqttEncoder.INSTANCE);
             pipeline.addLast("timeout", new IdleStateHandler(30, 0, 20,
                     TimeUnit.SECONDS));      
             pipeline.addLast(SERVER_HANDLER);
         
-        }else
-        {
+        }else {
           //http请求消息解码、编码器，并将http 分段请求消息整合成 FullHttpRequest
             pipeline.addLast(new HttpRequestDecoder());
             pipeline.addLast(new HttpObjectAggregator(65536));
@@ -80,10 +78,7 @@ public class MqttServerInitializer extends ChannelInitializer<SocketChannel> {
             pipeline.addLast(new HttpServerHandler());
            
         }
-        
-        
-       
-        
+
     }
 
 }
