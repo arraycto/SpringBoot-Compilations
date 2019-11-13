@@ -1,23 +1,29 @@
 package com.geer2.nettyMqtt.server.channel;
 
+import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.MqttChannel;
+import com.geer2.nettyMqtt.server.api.BaseApi;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.channel.cache.CacheMap;
+import com.geer2.nettyMqtt.server.constant.enums.SubStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.MqttConnectMessage;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 抽象类
@@ -27,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 @Slf4j
 @Component
-public  class AbstractChannelService  implements ChannelService {
+public  class AbstractChannelService  implements ChannelService, BaseApi {
 
 
 //    protected AttributeKey<Boolean> _login = AttributeKey.valueOf("login");
@@ -36,13 +42,11 @@ public  class AbstractChannelService  implements ChannelService {
 
     protected  static char SPLITOR = '/';
 
-//    protected ExecutorService executorService =Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
+    protected ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
 
 
     protected static CacheMap<String, MqttChannel> cacheMap= new CacheMap<>();
 
-    // deviceId - mqChannel 登录
-    protected static ConcurrentHashMap<String ,MqttChannel> mqttChannels = new ConcurrentHashMap<>();
 
     // topic - 保留消息
 //    protected  static  ConcurrentHashMap<String,ConcurrentLinkedQueue<RetainMessage>> retain = new ConcurrentHashMap<>();
@@ -81,8 +85,8 @@ public  class AbstractChannelService  implements ChannelService {
     protected boolean addChannel(String topic,MqttChannel mqttChannel)
     {
         return  Optional.ofNullable(topic).map(s -> {
-            mqttChannelCache.invalidate(s);
-            return cacheMap.putData(getTopic(s),mqttChannel);
+//            mqttChannelCache.invalidate(s);
+            return cacheMap.putData(getTopic(s), mqttChannel);
         }).orElse(false);
     }
 
@@ -90,8 +94,8 @@ public  class AbstractChannelService  implements ChannelService {
      * 获取channel
      */
     @Override
-    public MqttChannel getMqttChannel(String deviceId){
-        return Optional.ofNullable(deviceId).map(s -> mqttChannels.get(s))
+    public ChannelHandlerContext getMqttChannel(String deviceId){
+        return Optional.ofNullable(deviceId).map(s -> DeviceManage.DEVICE_MAP.get(s))
                 .orElse(null);
     }
 
@@ -100,9 +104,24 @@ public  class AbstractChannelService  implements ChannelService {
         return false;
     }
 
+    /**
+     * 订阅成功后 (发送保留消息)
+     */
     @Override
     public void suscribeSuccess(String deviceId, Set<String> topics) {
-
+        doIfElse(topics,topics1->!CollectionUtils.isEmpty(topics1), strings -> {
+            MqttChannel mqttChannel = DeviceManage.mqttChannels.get(deviceId);
+            mqttChannel.setSubStatus(SubStatus.YES); // 设置订阅主题标识
+            mqttChannel.addTopic(strings);
+            executorService.execute(() -> {
+                Optional.ofNullable(mqttChannel).ifPresent(mqttChannel1 -> {
+                        strings.parallelStream().forEach(topic -> {
+                            addChannel(topic,mqttChannel);
+                            sendRetain(topic,mqttChannel); // 发送保留消息
+                        });
+                });
+            });
+        });
     }
 
     @Override

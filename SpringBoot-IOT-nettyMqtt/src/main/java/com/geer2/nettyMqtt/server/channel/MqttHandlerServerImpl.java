@@ -3,7 +3,6 @@ package com.geer2.nettyMqtt.server.channel;
 import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.forBusiness.UpMessage;
 import com.geer2.nettyMqtt.bean.forStb.StbReportMsg;
-import com.geer2.nettyMqtt.server.adapter.JsonMqttAdaptor;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
 import com.geer2.nettyMqtt.server.handler.HttpServerHandler;
@@ -11,7 +10,6 @@ import com.geer2.nettyMqtt.server.utils.MqttTopicMatcher;
 import com.geer2.nettyMqtt.util.Constants;
 import com.geer2.nettyMqtt.util.json.gson.GsonJsonUtil;
 import com.google.gson.JsonSyntaxException;
-import com.wjwcloud.tsl.adaptor.AdaptorException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -27,14 +25,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
-import static com.geer2.nettyMqtt.server.constant.MqttTopics.*;
-import static com.wjwcloud.tsl.session.SessionMsgType.SUBSCRIBE_ATTRIBUTES_REQUEST;
-import static io.netty.handler.codec.mqtt.MqttMessageType.SUBACK;
 import static io.netty.handler.codec.mqtt.MqttQoS.AT_LEAST_ONCE;
-import static io.netty.handler.codec.mqtt.MqttQoS.FAILURE;
 
 /**
  * @author JiaweiWu
@@ -119,39 +115,22 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
      */
     @Override
     public void subscribe(Channel channel, MqttSubscribeMessage mqttSubscribeMessage) {
-        int msgId = mqttSubscribeMessage.variableHeader().messageId();
-        List<Integer> grantedQoSList = new ArrayList<>();
-        for (MqttTopicSubscription subscription : mqttSubscribeMessage.payload().topicSubscriptions()) {
-            String topic = subscription.topicName();
-            MqttQoS reqQoS = subscription.qualityOfService();
-            switch (topic) {
-                //设备属性主题
-                case DEVICE_ATTRIBUTES_TOPIC: {
-                    try {
-                        JsonMqttAdaptor.convertToMsg(SUBSCRIBE_ATTRIBUTES_REQUEST, mqttSubscribeMessage);
-                    } catch (AdaptorException e) {
-                        e.printStackTrace();
-                    }
-                    registerSubQoS(topic, grantedQoSList, reqQoS);
-                    break;
-                }
-                //设备属性响应主题前缀
-                case DEVICE_ATTRIBUTES_RESPONSE_TOPIC_PREFIX:
-                    registerSubQoS(topic, grantedQoSList, reqQoS);
-                    break;
-                //设备注册
-                case DEVICE_REGISTER :
-                    registerSubQoS(topic, grantedQoSList, reqQoS);
-                    break;
-                default:
-                    grantedQoSList.add(FAILURE.value());
-                    break;
-            }
+        Set<String> topics = mqttSubscribeMessage.payload().topicSubscriptions().stream().map(mqttTopicSubscription ->
+                mqttTopicSubscription.topicName()
+        ).collect(Collectors.toSet());
+        mqttChannelService.suscribeSuccess(mqttChannelService.getDeviceId(channel), topics);
+        subBack(channel, mqttSubscribeMessage, topics.size());
+    }
+    private void subBack(Channel channel, MqttSubscribeMessage mqttSubscribeMessage, int num) {
+        MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.SUBACK, false, MqttQoS.AT_MOST_ONCE, false, 0);
+        MqttMessageIdVariableHeader variableHeader = MqttMessageIdVariableHeader.from(mqttSubscribeMessage.variableHeader().messageId());
+        List<Integer> grantedQoSLevels = new ArrayList<>(num);
+        for (int i = 0; i < num; i++) {
+            grantedQoSLevels.add(mqttSubscribeMessage.payload().topicSubscriptions().get(i).qualityOfService().value());
         }
-        channel.writeAndFlush(createSubAckMessage(msgId, grantedQoSList));
-        //todo 设备注册推送设备证书消息
-//        MqttPublishMessage mqttPublishMessage = buildPublish("{deviceSecret:123}","/ext/register",msgId);
-//        ctx.writeAndFlush(mqttPublishMessage);
+        MqttSubAckPayload payload = new MqttSubAckPayload(grantedQoSLevels);
+        MqttSubAckMessage mqttSubAckMessage = new MqttSubAckMessage(mqttFixedHeader, variableHeader, payload);
+        channel.writeAndFlush(mqttSubAckMessage);
     }
     /**
      * 创建客户端订阅主题反馈
@@ -159,21 +138,21 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
      * @param grantedQoSList
      * @return
      */
-    private static MqttSubAckMessage createSubAckMessage(Integer msgId, List<Integer> grantedQoSList) {
-        MqttFixedHeader mqttFixedHeader =
-                new MqttFixedHeader(SUBACK, false, AT_LEAST_ONCE, false, 0);
-        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
-        MqttSubAckPayload mqttSubAckPayload = new MqttSubAckPayload(grantedQoSList);
-        return new MqttSubAckMessage(mqttFixedHeader, mqttMessageIdVariableHeader, mqttSubAckPayload);
-    }
-
-    private void registerSubQoS(String topic, List<Integer> grantedQoSList, MqttQoS reqQoS) {
-        grantedQoSList.add(getMinSupportedQos(reqQoS));
-        mqttQoSMap.put(new MqttTopicMatcher(topic), getMinSupportedQos(reqQoS));
-    }
-    private static int getMinSupportedQos(MqttQoS reqQoS) {
-        return Math.min(reqQoS.value(), MAX_SUPPORTED_QOS_LVL.value());
-    }
+//    private static MqttSubAckMessage createSubAckMessage(Integer msgId, List<Integer> grantedQoSList) {
+//        MqttFixedHeader mqttFixedHeader =
+//                new MqttFixedHeader(SUBACK, false, AT_LEAST_ONCE, false, 0);
+//        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
+//        MqttSubAckPayload mqttSubAckPayload = new MqttSubAckPayload(grantedQoSList);
+//        return new MqttSubAckMessage(mqttFixedHeader, mqttMessageIdVariableHeader, mqttSubAckPayload);
+//    }
+//
+//    private void registerSubQoS(String topic, List<Integer> grantedQoSList, MqttQoS reqQoS) {
+//        grantedQoSList.add(getMinSupportedQos(reqQoS));
+//        mqttQoSMap.put(new MqttTopicMatcher(topic), getMinSupportedQos(reqQoS));
+//    }
+//    private static int getMinSupportedQos(MqttQoS reqQoS) {
+//        return Math.min(reqQoS.value(), MAX_SUPPORTED_QOS_LVL.value());
+//    }
 
     /**
      * 回复pong消息

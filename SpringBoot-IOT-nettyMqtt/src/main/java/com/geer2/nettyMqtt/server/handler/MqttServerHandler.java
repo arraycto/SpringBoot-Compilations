@@ -16,6 +16,7 @@
 package com.geer2.nettyMqtt.server.handler;
 
 import com.geer2.nettyMqtt.bean.DeviceManage;
+import com.geer2.nettyMqtt.bean.MqttChannel;
 import com.geer2.nettyMqtt.bean.forBusiness.MsgToNode;
 import com.geer2.nettyMqtt.bean.forStb.StbReportMsg;
 import com.geer2.nettyMqtt.server.api.MqttHandlerIntf;
@@ -140,6 +141,7 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         if (ctx.channel().hasAttr(DeviceManage.DEVICE)) {
             String device = ctx.channel().attr(DeviceManage.DEVICE).get();
             DeviceManage.DEVICE_MAP.remove(device);
+            DeviceManage.mqttChannels.remove(device);
             DeviceManage.DEVICE_ONLINE_MAP.remove(device);
         }
     }
@@ -235,6 +237,8 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         }
         //将连接信息写入缓存
         DeviceManage.DEVICE_MAP.put(stb_code, ctx);
+        MqttChannel mqttChannel= MqttChannel.builder().channel(ctx.channel()).build();
+        DeviceManage.mqttChannels.put(stb_code,mqttChannel);
         DeviceManage.DEVICE_ONLINE_MAP.put(stb_code, DateUtil.getCurrentTimeStr());
 //        log.debug("the user num is " + userMap.size());
 
