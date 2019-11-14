@@ -1,6 +1,7 @@
 package com.geer2.nettyMqtt.server.api;
 
 import io.netty.channel.Channel;
+import io.netty.handler.codec.mqtt.MqttConnectMessage;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
 import io.netty.handler.codec.mqtt.MqttSubscribeMessage;
 import io.netty.handler.codec.mqtt.MqttUnsubscribeMessage;
@@ -15,7 +16,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 public abstract class MqttHandlerService implements MqttHandlerIntf {
 
 
-//    public abstract boolean login(Channel channel, MqttConnectMessage mqttConnectMessage);
+    public abstract boolean login(Channel channel, MqttConnectMessage mqttConnectMessage);
 
     public abstract  void  publish(Channel channel, MqttPublishMessage mqttPublishMessage);
 

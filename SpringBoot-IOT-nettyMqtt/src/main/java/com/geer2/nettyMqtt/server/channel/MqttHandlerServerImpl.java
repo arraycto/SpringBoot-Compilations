@@ -1,5 +1,6 @@
 package com.geer2.nettyMqtt.server.channel;
 
+import com.geer2.nettyMqtt.server.api.BaseAuthService;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
 import com.geer2.nettyMqtt.server.utils.MqttTopicMatcher;
@@ -9,6 +10,7 @@ import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -32,6 +35,9 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
     @Autowired
     ChannelService mqttChannelService;
 
+    @Autowired
+    private BaseAuthService baseAuthService;
+
 
 
     public static Logger log = LogManager.getLogger(MqttHandlerServerImpl.class);
@@ -39,6 +45,46 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
     public static final MqttQoS MAX_SUPPORTED_QOS_LVL = MqttQoS.AT_LEAST_ONCE;
 
     private final ConcurrentMap<MqttTopicMatcher,Integer> mqttQoSMap = new ConcurrentHashMap<>();
+
+    @Override
+    public boolean login(Channel channel, MqttConnectMessage mqttConnectMessage) {
+        //   校验规则 自定义校验规则
+        MqttConnectPayload payload = mqttConnectMessage.payload();
+        String deviceId = payload.clientIdentifier();
+        if (StringUtils.isBlank(deviceId)) {
+            MqttConnectReturnCode connectReturnCode = MqttConnectReturnCode.CONNECTION_REFUSED_IDENTIFIER_REJECTED;
+            connectBack(channel,connectReturnCode);
+            return false;
+        }
+
+        if(mqttConnectMessage.variableHeader().hasPassword() && mqttConnectMessage.variableHeader().hasUserName()
+                && !baseAuthService.authorized(payload.userName(),payload.password())){
+            MqttConnectReturnCode connectReturnCode = MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD;
+            connectBack(channel,connectReturnCode);
+            return false;
+        }
+        return  Optional.ofNullable(mqttChannelService.getMqttChannel(deviceId))
+                .map(mqttChannel -> {
+                    switch (mqttChannel.getSessionStatus()){
+                        case OPEN:
+                            return false;
+                    }
+                    mqttChannelService.loginSuccess(channel, deviceId, mqttConnectMessage);
+                    return true;
+                }).orElseGet(() -> {
+                    mqttChannelService.loginSuccess(channel, deviceId, mqttConnectMessage);
+                    return  true;
+                });
+
+    }
+
+    private  void  connectBack(Channel channel,  MqttConnectReturnCode connectReturnCode){
+        MqttConnAckVariableHeader mqttConnAckVariableHeader = new MqttConnAckVariableHeader(connectReturnCode, true);
+        MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(
+                MqttMessageType.CONNACK,false, MqttQoS.AT_MOST_ONCE, false, 0x02);
+        MqttConnAckMessage connAck = new MqttConnAckMessage(mqttFixedHeader, mqttConnAckVariableHeader);
+        channel.writeAndFlush(connAck);
+    }
 
     /**
      *  客户端发布消息

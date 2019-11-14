@@ -19,6 +19,7 @@ import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.MqttChannel;
 import com.geer2.nettyMqtt.bean.forBusiness.MsgToNode;
 import com.geer2.nettyMqtt.bean.forStb.StbReportMsg;
+import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerIntf;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
 import com.geer2.nettyMqtt.server.sendMessage.SendOfflineMessageThread;
@@ -59,9 +60,11 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
     public void init(){
         mqttServerHandler = this;
     }
+
+    @Autowired
+    private ChannelService channelService;
     
     public static Logger log = LogManager.getLogger(MqttServerHandler.class);
-
 
     // 所有该上报的消息集合   mac+plan
     //    public static Map<Integer,Map<String, UpMessage>> upMap=new ConcurrentHashMap<Integer,Map<String, UpMessage>>();
@@ -97,35 +100,43 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
                 Channel channel = ctx.channel();
                 MqttHandlerService mqttHandlerService = (MqttHandlerService) mqttServerHandler.mqttHandlerIntf;
                 MqttMessage req = (MqttMessage)request;
-                switch (req.fixedHeader().messageType()) {
-                    case CONNECT:
-                        doConnectMessage(ctx, request);
-                        return;
-                    case SUBSCRIBE:
-                        mqttHandlerService.subscribe(channel,(MqttSubscribeMessage)request);
-                        return;
-                    case PUBLISH:
-                        mqttHandlerService.publish(channel,(MqttPublishMessage)request);
-                        return;
-                    case PINGREQ:
-                        doPingreoMessage(ctx, request);
-                        return;
-                    case PUBACK:
-                        doPubAck(ctx, request);
-                        return;
-                    case PUBREC:
-                    case PUBREL:
-                    case PUBCOMP:
-                    case UNSUBACK:
-                        return;
-                    case PINGRESP:
-                        doPingrespMessage(ctx, request);
-                        return;
-                    case DISCONNECT:
-                        ctx.close();
-                        return;
-                    default:
-                        return;
+                //处理登陆连接消息
+                MqttFixedHeader mqttFixedHeader = req.fixedHeader();
+                if(mqttFixedHeader.messageType().equals(MqttMessageType.CONNECT)){
+                    if(!mqttHandlerService.login(channel, (MqttConnectMessage) request)){
+                        channel.close();
+                    }
+                    return ;
+                }
+                MqttChannel mqttChannel = mqttServerHandler.channelService.getMqttChannel(mqttServerHandler.channelService.getDeviceId(channel));
+                if(mqttChannel!=null && mqttChannel.isLogin()) {
+                    switch (req.fixedHeader().messageType()) {
+                        case SUBSCRIBE:
+                            mqttHandlerService.subscribe(channel, (MqttSubscribeMessage) request);
+                            return;
+                        case PUBLISH:
+                            mqttHandlerService.publish(channel, (MqttPublishMessage) request);
+                            return;
+                        case PINGREQ:
+                            doPingreoMessage(ctx, request);
+                            return;
+                        case PUBACK:
+                            doPubAck(ctx, request);
+                            return;
+                        case PUBREC:
+                        case PUBREL:
+                        case PUBCOMP:
+                        case UNSUBACK:
+                            return;
+                        case PINGRESP:
+                            doPingrespMessage(ctx, request);
+                            return;
+                        case DISCONNECT:
+                            ctx.close();
+                            return;
+                        default:
+                            return;
+                    }
                 }
             }
         }
@@ -134,17 +145,17 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
     
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        log.debug(ctx.channel().remoteAddress().toString().substring(1,ctx.channel().remoteAddress().toString().lastIndexOf(":")) + "is close!");
-        //清理设备缓存
-        if (ctx.channel().hasAttr(DeviceManage.DEVICE)) {
-            String device = ctx.channel().attr(DeviceManage.DEVICE).get();
-            DeviceManage.DEVICE_MAP.remove(device);
-            DeviceManage.mqttChannels.remove(device);
-            DeviceManage.DEVICE_ONLINE_MAP.remove(device);
-        }
-    }
+//    @Override
+//    public void channelInactive(ChannelHandlerContext ctx) {
+//        log.debug(ctx.channel().remoteAddress().toString().substring(1,ctx.channel().remoteAddress().toString().lastIndexOf(":")) + "is close!");
+//        //清理设备缓存
+//        if (ctx.channel().hasAttr(DeviceManage.DEVICE)) {
+//            String device = ctx.channel().attr(DeviceManage.DEVICE).get();
+//            DeviceManage.DEVICE_MAP.remove(device);
+//            DeviceManage.mqttChannels.remove(device);
+//            DeviceManage.DEVICE_ONLINE_MAP.remove(device);
+//        }
+//    }
 
     /**
      * 超时处理
@@ -221,40 +232,40 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
      * @param ctx
      * @param request
      */
-    private void doConnectMessage(ChannelHandlerContext ctx, Object request)
-    {
-        MqttConnectMessage message = (MqttConnectMessage)request;
-        MqttConnAckVariableHeader variableheader = new MqttConnAckVariableHeader(MqttConnectReturnCode.CONNECTION_ACCEPTED, false);
-        MqttConnAckMessage connAckMessage = new MqttConnAckMessage(Constants.CONNACK_HEADER, variableheader);
-        ctx.write(connAckMessage);
-        //String user = message.variableHeader().name();
-        String stb_code = message.payload().clientIdentifier();
-        log.debug("connect ,stb_code is :" + stb_code);
-        //将设备信息写入变量
-        if (!ctx.channel().hasAttr(DeviceManage.DEVICE))
-        {
-            ctx.channel().attr(DeviceManage.DEVICE).set(stb_code);
-        }
-        //将连接信息写入缓存
-        DeviceManage.DEVICE_MAP.put(stb_code, ctx);
-        MqttChannel mqttChannel= MqttChannel.builder().channel(ctx.channel()).build();
-        DeviceManage.mqttChannels.put(stb_code,mqttChannel);
-        DeviceManage.DEVICE_ONLINE_MAP.put(stb_code, DateUtil.getCurrentTimeStr());
-//        log.debug("the user num is " + userMap.size());
-
-        /**
-         * 上线时，处理离线消息
-         */
-        for (String key : HttpServerHandler.OffLineUserMsgMap.keySet())
-        {
-            if (HttpServerHandler.OffLineUserMsgMap.get(key).contains(stb_code))
-            {
-                MsgToNode msg = HttpServerHandler.messageMap.get(key);
-                SendOfflineMessageThread t = new SendOfflineMessageThread(msg, stb_code);
-                HttpServerHandler.scheduledExecutorService.execute(t);
-            }
-        }
-    }
+//    private void doConnectMessage(ChannelHandlerContext ctx, Object request)
+//    {
+//        MqttConnectMessage message = (MqttConnectMessage)request;
+//        MqttConnAckVariableHeader variableheader = new MqttConnAckVariableHeader(MqttConnectReturnCode.CONNECTION_ACCEPTED, false);
+//        MqttConnAckMessage connAckMessage = new MqttConnAckMessage(Constants.CONNACK_HEADER, variableheader);
+//        ctx.write(connAckMessage);
+//        //String user = message.variableHeader().name();
+//        String stb_code = message.payload().clientIdentifier();
+//        log.debug("connect ,stb_code is :" + stb_code);
+//        //将设备信息写入变量
+//        if (!ctx.channel().hasAttr(DeviceManage.DEVICE))
+//        {
+//            ctx.channel().attr(DeviceManage.DEVICE).set(stb_code);
+//        }
+//        //将连接信息写入缓存
+//        DeviceManage.DEVICE_MAP.put(stb_code, ctx);
+//        MqttChannel mqttChannel= MqttChannel.builder().channel(ctx.channel()).build();
+//        DeviceManage.mqttChannels.put(stb_code,mqttChannel);
+//        DeviceManage.DEVICE_ONLINE_MAP.put(stb_code, DateUtil.getCurrentTimeStr());
+////        log.debug("the user num is " + userMap.size());
+//
+//        /**
+//         * 上线时，处理离线消息
+//         */
+//        for (String key : HttpServerHandler.OffLineUserMsgMap.keySet())
+//        {
+//            if (HttpServerHandler.OffLineUserMsgMap.get(key).contains(stb_code))
+//            {
+//                MsgToNode msg = HttpServerHandler.messageMap.get(key);
+//                SendOfflineMessageThread t = new SendOfflineMessageThread(msg, stb_code);
+//                HttpServerHandler.scheduledExecutorService.execute(t);
+//            }
+//        }
+//    }
 
     /**
      * 处理客户端回执消息

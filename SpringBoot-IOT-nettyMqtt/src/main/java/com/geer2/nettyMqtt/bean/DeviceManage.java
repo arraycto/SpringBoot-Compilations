@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DeviceManage {
 
-    public static final AttributeKey<String> DEVICE = AttributeKey.valueOf("device");
+    public static final AttributeKey<String> DEVICE = AttributeKey.valueOf("deviceId");
 
     /**
      * 断开连接的设备
