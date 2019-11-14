@@ -54,15 +54,21 @@ public  class DefaultChannelService extends PublishApiSevice implements ChannelS
 
     protected ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
 
-    // deviceId - mqChannel 设备数据缓存
+    /**
+     * deviceId - mqChannel 设备数据缓存
+     */
     public static ConcurrentHashMap<String ,MqttChannel> mqttChannels = new ConcurrentHashMap<>();
 
-    //topic--mqttChannel
+    /**
+     * topic--mqttChannel
+     */
     protected static CacheMap<String, MqttChannel> cacheMap= new CacheMap<>();
 
     protected  static  Cache<String, Collection<MqttChannel>> mqttChannelCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
-    // topic - 保留消息
+    /**
+     * topic - 保留消息
+     */
     protected  static ConcurrentHashMap<String, ConcurrentLinkedQueue<RetainMessage>> retain = new ConcurrentHashMap<>();
 
     public DefaultChannelService(MessageTransfer transfer) {

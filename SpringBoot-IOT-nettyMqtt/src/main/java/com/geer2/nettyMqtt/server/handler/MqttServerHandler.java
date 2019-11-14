@@ -126,7 +126,7 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
                             doPingrespMessage(ctx, request);
                             return;
                         case DISCONNECT:
-                            ctx.close();
+                            mqttHandlerService.disconnect(channel);
                             return;
                         default:
                             return;
@@ -171,7 +171,7 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if(evt instanceof IdleStateEvent){
-//            mqttServerHandler.mqttHandlerIntf.doTimeOut(ctx.channel(),(IdleStateEvent)evt);
+            mqttServerHandler.mqttHandlerIntf.doTimeOutEvt(ctx.channel(),(IdleStateEvent)evt);
         }
         super.userEventTriggered(ctx, evt);
 //        if (evt instanceof IdleStateEvent)
@@ -211,11 +211,13 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
      * @param request
      */
     private void doPingreoMessage(ChannelHandlerContext ctx, Object request) {
-        //MqttMessage message=(MqttMessage)request;
         System.out.println("响应心跳！");
+        MqttChannel mqttChannel = mqttServerHandler.channelService.getMqttChannel(
+                mqttServerHandler.channelService.getDeviceId(ctx.channel()));
+        mqttChannel.setReaderNum(0);
         MqttFixedHeader header = new MqttFixedHeader(MqttMessageType.PINGRESP, false, MqttQoS.AT_MOST_ONCE, false, 0);
         MqttMessage pingespMessage = new MqttMessage(header);
-        ctx.write(pingespMessage);
+        ctx.writeAndFlush(pingespMessage);
     }
 
     /**
@@ -225,15 +227,6 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
      */
     private void doPingrespMessage(ChannelHandlerContext ctx, Object request) {
         System.out.println("收到心跳请求！");
-    }
-    /**
-     * 封装心跳请求
-     * @param ctx
-     */
-    private void buildHearBeat(ChannelHandlerContext ctx) {
-        MqttFixedHeader mqttFixedHeader=new MqttFixedHeader(MqttMessageType.PINGREQ, false, MqttQoS.AT_MOST_ONCE, false, 0);
-        MqttMessage message=new MqttMessage(mqttFixedHeader);
-        ctx.writeAndFlush(message);
     }
     /**
      * 处理连接请求
@@ -303,12 +296,13 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         ctx.flush();
     }
 
-//    @Override
-//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-//    {
-//        cause.printStackTrace();
-//        ctx.close();
-//    }
+
+    /**
+     * 连接异常断开连接
+     * @param ctx
+     * @param cause
+     * @throws Exception
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("exception",cause);

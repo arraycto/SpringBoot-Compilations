@@ -1,13 +1,16 @@
 package com.geer2.nettyMqtt.server.channel;
 
+import com.geer2.nettyMqtt.bean.MqttChannel;
 import com.geer2.nettyMqtt.server.api.BaseAuthService;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
+import com.geer2.nettyMqtt.server.constant.MqttChannelConstant;
 import com.geer2.nettyMqtt.server.utils.MqttTopicMatcher;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.apache.commons.lang.StringUtils;
@@ -223,7 +226,7 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
      */
     @Override
     public void disconnect(Channel channel) {
-
+        mqttChannelService.closeSuccess(mqttChannelService.getDeviceId(channel), true);
     }
 
     /**
@@ -278,6 +281,41 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
             case ALL_IDLE:
                 close(channel);
         }
+    }
+
+    /**
+     * 服务端监听了读空闲(间隔为5秒一次)，在触发读空闲的时候，
+     * 服务端需要向客户端写一个心跳数据包，并累计空闲次数，如果超过3次，就认为客户端失连；
+     *
+     * 客户端收到服务端的心跳消息后，会回写一个心跳包给服务端，
+     * 服务端收到消息后，会将该客户端的空闲次数清0
+     * @param channel
+     * @param evt
+     */
+    @Override
+    public void doTimeOutEvt(Channel channel, IdleStateEvent evt) {
+        //读取空闲
+        if (evt.state().equals(IdleState.READER_IDLE)){
+            MqttChannel mqttChannel = mqttChannelService.getMqttChannel(mqttChannelService.getDeviceId(channel));
+            int readerNum = mqttChannel.getReaderNum();
+            int num = ++readerNum;
+            mqttChannel.setReaderNum(num);
+            log.debug("发送心跳给客户端！");
+            buildHearBeat(channel);
+            System.out.println("发送心跳次数："+ mqttChannel.getReaderNum());
+            if (num > MqttChannelConstant.NUM_4){
+                close(channel);
+            }
+        }
+    }
+    /**
+     * 封装心跳请求
+     * @param channel
+     */
+    private void buildHearBeat(Channel channel) {
+        MqttFixedHeader mqttFixedHeader=new MqttFixedHeader(MqttMessageType.PINGREQ, false, MqttQoS.AT_MOST_ONCE, false, 0);
+        MqttMessage message=new MqttMessage(mqttFixedHeader);
+        channel.writeAndFlush(message);
     }
 
     /**

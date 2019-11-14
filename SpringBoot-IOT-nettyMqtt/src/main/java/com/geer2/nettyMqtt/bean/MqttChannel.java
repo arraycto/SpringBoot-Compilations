@@ -32,31 +32,42 @@ public class MqttChannel {
 
     private boolean isWill;
 
-    // 是否订阅过主题
+    /**
+     * 是否订阅过主题
+     */
     private volatile SubStatus subStatus;
 
 
     private  Set<String> topic  ;
 
 
-    // 在线 - 离线
+    /**
+     * 在线 - 离线
+     */
     private volatile SessionStatus sessionStatus;
 
 
-    // 当为 true 时 channel close 时 从缓存中删除  此channel
+    /**
+     * 当为 true 时 channel close 时 从缓存中删除  此channel
+     */
     private volatile boolean cleanSession;
 
 
-
-    // messageId - message(qos1)  // 待确认消息
+    /**
+     * messageId - message(qos1)  // 待确认消息
+     */
     private ConcurrentHashMap<Integer,SendMqttMessage>  message ;
 
     
     
    private  AtomicInteger index ;
+
+    /**
+     * 服务端对设备读空闲的次数
+     */
+    private int readerNum;
     
-    
-    public    int  messageId(){
+    public int messageId(){
         for (;;) {
             int current = index.get();
             int next = (current >= Short.MAX_VALUE ? 0: current + 1);

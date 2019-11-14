@@ -24,5 +24,7 @@ public interface MqttHandlerIntf {
 
     void doTimeOut(Channel channel, IdleStateEvent evt);
 
+    void doTimeOutEvt(Channel channel, IdleStateEvent evt);
+
 
 }
