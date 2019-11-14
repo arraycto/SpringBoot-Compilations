@@ -269,7 +269,15 @@ public class MqttHandlerServerImpl extends MqttHandlerService {
 
     @Override
     public void doTimeOut(Channel channel, IdleStateEvent evt) {
-
+        log.info("【PingPongService：doTimeOut 心跳超时】" + channel.remoteAddress() + "【channel 关闭】");
+        switch (evt.state()) {
+            case READER_IDLE:
+                close(channel);
+            case WRITER_IDLE:
+                close(channel);
+            case ALL_IDLE:
+                close(channel);
+        }
     }
 
     /**

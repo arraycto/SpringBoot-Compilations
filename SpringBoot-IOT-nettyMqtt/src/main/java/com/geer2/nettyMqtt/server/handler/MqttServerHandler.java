@@ -145,17 +145,19 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
     
-//    @Override
-//    public void channelInactive(ChannelHandlerContext ctx) {
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
 //        log.debug(ctx.channel().remoteAddress().toString().substring(1,ctx.channel().remoteAddress().toString().lastIndexOf(":")) + "is close!");
-//        //清理设备缓存
+        log.info("【DefaultMqttHandler：channelInactive】"+ctx.channel().localAddress().toString()+"关闭成功");
+        mqttServerHandler.mqttHandlerIntf.close(ctx.channel());
+        //清理设备缓存
 //        if (ctx.channel().hasAttr(DeviceManage.DEVICE)) {
 //            String device = ctx.channel().attr(DeviceManage.DEVICE).get();
 //            DeviceManage.DEVICE_MAP.remove(device);
 //            DeviceManage.mqttChannels.remove(device);
 //            DeviceManage.DEVICE_ONLINE_MAP.remove(device);
 //        }
-//    }
+    }
 
     /**
      * 超时处理
@@ -164,37 +166,40 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
      * READER_IDLE 里 关闭链接
      */
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception
-    {
-        if (evt instanceof IdleStateEvent)
-        {
-            IdleStateEvent event = (IdleStateEvent)evt;
-            if (event.state().equals(IdleState.READER_IDLE))
-            {
-            	if (ctx.channel().hasAttr(DeviceManage.DEVICE)){
-            		String device = ctx.channel().attr(DeviceManage.DEVICE).get();
-                    //+ctx);
-            		 log.debug("ctx heartbeat timeout,close!"+device);
-                    //+ctx);
-            		 log.debug("ctx heartbeat timeout,close!");
-                     if(DeviceManage.UN_CONNECT_MAP.containsKey(device))
-                     {
-                         DeviceManage.UN_CONNECT_MAP.put(device, DeviceManage.UN_CONNECT_MAP.get(device)+1);
-                     }else
-                     {
-                         DeviceManage.UN_CONNECT_MAP.put(device, new Long(1));
-                     }
-            	}
-
-                ctx.fireChannelInactive();
-                ctx.close();
-            }else if(event.state().equals(IdleState.ALL_IDLE))
-            {
-            	log.debug("发送心跳给客户端！");
-            	buildHearBeat(ctx);
-            }
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if(evt instanceof IdleStateEvent){
+            mqttServerHandler.mqttHandlerIntf.doTimeOut(ctx.channel(),(IdleStateEvent)evt);
         }
         super.userEventTriggered(ctx, evt);
+//        if (evt instanceof IdleStateEvent)
+//        {
+//            IdleStateEvent event = (IdleStateEvent)evt;
+//            if (event.state().equals(IdleState.READER_IDLE))
+//            {
+//            	if (ctx.channel().hasAttr(DeviceManage.DEVICE)){
+//            		String device = ctx.channel().attr(DeviceManage.DEVICE).get();
+//                    //+ctx);
+//            		 log.debug("ctx heartbeat timeout,close!"+device);
+//                    //+ctx);
+//            		 log.debug("ctx heartbeat timeout,close!");
+//                     if(DeviceManage.UN_CONNECT_MAP.containsKey(device))
+//                     {
+//                         DeviceManage.UN_CONNECT_MAP.put(device, DeviceManage.UN_CONNECT_MAP.get(device)+1);
+//                     }else
+//                     {
+//                         DeviceManage.UN_CONNECT_MAP.put(device, new Long(1));
+//                     }
+//            	}
+//
+//                ctx.fireChannelInactive();
+//                ctx.close();
+//            }else if(event.state().equals(IdleState.ALL_IDLE))
+//            {
+//            	log.debug("发送心跳给客户端！");
+//            	buildHearBeat(ctx);
+//            }
+//        }
+//        super.userEventTriggered(ctx, evt);
     }
 
     /**
@@ -295,11 +300,16 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
         ctx.flush();
     }
 
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+//    {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-    {
-        cause.printStackTrace();
-        ctx.close();
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error("exception",cause);
+        mqttServerHandler.mqttHandlerIntf.close(ctx.channel());
     }
 
 
