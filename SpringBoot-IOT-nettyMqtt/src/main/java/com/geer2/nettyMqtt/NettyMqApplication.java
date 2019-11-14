@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan("com.geer2")
+
 public class NettyMqApplication {
 
 	public static void main(String[] args) {

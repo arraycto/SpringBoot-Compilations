@@ -15,23 +15,17 @@
  */
 package com.geer2.nettyMqtt.server.handler;
 
-import com.geer2.nettyMqtt.bean.DeviceManage;
 import com.geer2.nettyMqtt.bean.MqttChannel;
-import com.geer2.nettyMqtt.bean.forBusiness.MsgToNode;
 import com.geer2.nettyMqtt.bean.forStb.StbReportMsg;
 import com.geer2.nettyMqtt.server.api.ChannelService;
 import com.geer2.nettyMqtt.server.api.MqttHandlerIntf;
 import com.geer2.nettyMqtt.server.api.MqttHandlerService;
-import com.geer2.nettyMqtt.server.sendMessage.SendOfflineMessageThread;
-import com.geer2.nettyMqtt.util.Constants;
-import com.geer2.nettyMqtt.util.DateUtil;
 import com.geer2.nettyMqtt.util.json.gson.GsonJsonUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.mqtt.*;
-import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -146,10 +140,11 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
     }
     
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception{
 //        log.debug(ctx.channel().remoteAddress().toString().substring(1,ctx.channel().remoteAddress().toString().lastIndexOf(":")) + "is close!");
         log.info("【DefaultMqttHandler：channelInactive】"+ctx.channel().localAddress().toString()+"关闭成功");
         mqttServerHandler.mqttHandlerIntf.close(ctx.channel());
+//        super.channelInactive(ctx);
         //清理设备缓存
 //        if (ctx.channel().hasAttr(DeviceManage.DEVICE)) {
 //            String device = ctx.channel().attr(DeviceManage.DEVICE).get();
@@ -159,6 +154,14 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
 //        }
     }
 
+//    @Override
+//    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception{
+//        //这里执行客户端断开连接后的操作
+//        log.info("handlerRemove:");
+//        mqttServerHandler.mqttHandlerIntf.close(ctx.channel());
+//
+//
+//    }
     /**
      * 超时处理
      * 服务器端 设置超时 ALL_IDLE  <  READER_IDLE ， ALL_IDLE 触发时发送心跳，客户端需响应，
@@ -168,7 +171,7 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if(evt instanceof IdleStateEvent){
-            mqttServerHandler.mqttHandlerIntf.doTimeOut(ctx.channel(),(IdleStateEvent)evt);
+//            mqttServerHandler.mqttHandlerIntf.doTimeOut(ctx.channel(),(IdleStateEvent)evt);
         }
         super.userEventTriggered(ctx, evt);
 //        if (evt instanceof IdleStateEvent)
