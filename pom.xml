@@ -25,7 +25,7 @@
         <module>SpringBoot-iot-aligenie</module>
         <module>SpringBoot-Drools</module>
         <module>SpringBoot-activity-drools</module>
-        <module>SpringBoot-IOT-nettyMqtt</module>
+        <module>SpringBoot-IOT-netty-protocol</module>
         <module>SpringBoot-IOT-TSL</module>
     </modules>
     <packaging>pom</packaging>
