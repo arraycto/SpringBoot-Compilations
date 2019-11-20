@@ -5,7 +5,9 @@ import com.geer2.nettyprotocol.server.mqtt.api.BaseAuthService;
 import com.geer2.nettyprotocol.server.mqtt.api.ChannelService;
 import com.geer2.nettyprotocol.server.mqtt.api.AbstractMqttHandlerService;
 import com.geer2.nettyprotocol.server.mqtt.constant.MqttChannelConstant;
+import com.geer2.nettyprotocol.server.mqtt.constant.enums.ConfirmStatus;
 import com.geer2.nettyprotocol.server.mqtt.utils.MqttTopicMatcher;
+import com.geer2.nettyprotocol.server.queue.MessageTransfer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -43,6 +45,9 @@ public class AbstractMqttHandlerServerImpl extends AbstractMqttHandlerService {
     @Autowired
     private BaseAuthService baseAuthService;
 
+    @Autowired
+    private MessageTransfer messageTransfer;
+
 
 
     public static Logger log = LogManager.getLogger(AbstractMqttHandlerServerImpl.class);
@@ -63,7 +68,7 @@ public class AbstractMqttHandlerServerImpl extends AbstractMqttHandlerService {
         }
 
         if(mqttConnectMessage.variableHeader().hasPassword() && mqttConnectMessage.variableHeader().hasUserName()
-                && !baseAuthService.authorized(payload.userName(),new String(payload.passwordInBytes(), CharsetUtil.UTF_8))){
+                && !baseAuthService.authorized(payload.userName(),new String(payload.passwordInBytes()))){
             MqttConnectReturnCode connectReturnCode = MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD;
             connectBack(channel,connectReturnCode);
             return false;
@@ -246,31 +251,52 @@ public class AbstractMqttHandlerServerImpl extends AbstractMqttHandlerService {
      */
     @Override
     public void puback(Channel channel, MqttMessage mqttMessage) {
-
+        MqttMessageIdVariableHeader messageIdVariableHeader = (MqttMessageIdVariableHeader) mqttMessage.variableHeader();
+        int messageId = messageIdVariableHeader.messageId();
+        Optional.ofNullable(mqttChannelService.getMqttChannel(mqttChannelService.getDeviceId(channel)).getSendMqttMessage(messageId))
+                // 复制为空
+                .ifPresent(msg->msg.setConfirmStatus(ConfirmStatus.COMPLETE));
+        messageTransfer.removeQueue(channel,messageId);
     }
 
     /**
-     * qos2 发布收到
+     * qos2 发布收到 第一步
      */
     @Override
     public void pubrec(Channel channel, MqttMessage mqttMessage) {
-
+        MqttMessageIdVariableHeader messageIdVariableHeader = (MqttMessageIdVariableHeader) mqttMessage.variableHeader();
+        int messageId = messageIdVariableHeader.messageId();
+        Optional.ofNullable(mqttChannelService.getMqttChannel(mqttChannelService.getDeviceId(channel)).getSendMqttMessage(messageId))
+                // 复制为空
+                .ifPresent(msg-> msg.setConfirmStatus(ConfirmStatus.PUBREL));
+        //确认消息响应第二步
+        mqttChannelService.doPubrec(channel, messageId);
     }
 
     /**
-     * qos2 发布释放
+     * qos2 发布释放 第二步
      */
     @Override
     public void pubrel(Channel channel, MqttMessage mqttMessage) {
-
+        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = (MqttMessageIdVariableHeader) mqttMessage.variableHeader();
+        int messageId = mqttMessageIdVariableHeader.messageId();
+        Optional.ofNullable(mqttChannelService.getMqttChannel(mqttChannelService.getDeviceId(channel)).getSendMqttMessage(messageId)
+        ).ifPresent(msg-> msg .setConfirmStatus(ConfirmStatus.COMPLETE));
+        messageTransfer.removeQueue(channel,messageId);
+        //消息确认响应第三步
+        mqttChannelService.doPubrel(channel, messageId);
     }
 
     /**
-     * qos2 发布完成
+     * qos2 发布完成 第三步
      */
     @Override
     public void pubcomp(Channel channel, MqttMessage mqttMessage) {
-
+        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = (MqttMessageIdVariableHeader) mqttMessage.variableHeader();
+        int messageId = mqttMessageIdVariableHeader.messageId();
+        Optional.ofNullable(mqttChannelService.getMqttChannel(mqttChannelService.getDeviceId(channel)).getSendMqttMessage(messageId))
+                .ifPresent(msg->msg.setConfirmStatus(ConfirmStatus.COMPLETE));
+        messageTransfer.removeQueue(channel,messageId);
     }
 
     @Override

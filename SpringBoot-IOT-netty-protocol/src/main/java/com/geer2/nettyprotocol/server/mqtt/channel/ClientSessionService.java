@@ -16,7 +16,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Service
 public class ClientSessionService {
 
-    // 连接关闭后 保留此session 数据  deviceId
+    /**
+     * 连接关闭后 保留此session 数据  deviceId
+     */
     private static ConcurrentHashMap<String,ConcurrentLinkedQueue<SessionMessage>>  queueSession  = new ConcurrentHashMap<>();
 
 

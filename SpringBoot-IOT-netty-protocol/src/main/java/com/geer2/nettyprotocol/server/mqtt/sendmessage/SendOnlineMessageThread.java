@@ -1,4 +1,4 @@
-package com.geer2.nettyprotocol.server.mqtt.sendMessage;
+package com.geer2.nettyprotocol.server.mqtt.sendmessage;
 
 import com.geer2.nettyprotocol.server.bean.forbusiness.MsgPublish;
 import com.geer2.nettyprotocol.server.bean.forbusiness.MsgToNode;

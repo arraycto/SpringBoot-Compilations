@@ -33,9 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static io.netty.handler.codec.mqtt.MqttQoS.EXACTLY_ONCE;
 
 /**
- * 抽象类
- *
- * @author
+ * @author JiaweiWu
  * @create
  **/
 @Slf4j
@@ -91,6 +89,11 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
 
     @FunctionalInterface
     interface TopicFilter{
+        /**
+         * TopicFilter
+         * @param topic
+         * @return
+         */
         Collection<MqttChannel> filter(String topic);
     }
 
@@ -188,7 +191,7 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
                 .isWill(mqttConnectVariableHeader.isWillFlag())
                 .subStatus(SubStatus.NO)
                 .topic(new CopyOnWriteArraySet<>())
-                .message(new ConcurrentHashMap<>())
+                .message(new ConcurrentHashMap<>(16))
                 .receive(new CopyOnWriteArraySet<>())
                 .index(new AtomicInteger(1))
                 .build();
@@ -196,8 +199,8 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
         if (connectSuccess(deviceId, build)) {
             // 遗嘱消息标志
             if (mqttConnectVariableHeader.isWillFlag()) {
-                String willMessage = new String(payload.willMessageInBytes(), CharsetUtil.UTF_8);
-                boolean b = doIf(mqttConnectVariableHeader, mqttConnectVariableHeader1 -> ( willMessage!= null)
+                String willMssage = new String(payload.willMessageInBytes());
+                boolean b = doIf(mqttConnectVariableHeader, mqttConnectVariableHeader1 -> (willMssage != null)
                         , mqttConnectVariableHeader1 -> (payload.willTopic() != null));
                 if (!b) {
                     throw new ConnectionException("will message and will topic is not null");
@@ -265,6 +268,7 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
         MqttChannel mqttChannel = getMqttChannel(getDeviceId(channel));
         ByteBuf payload = mqttPublishMessage.payload();
         byte[] bytes = ByteBufUtil.copyByteBuf(payload);
+        //messageId
         int messageId = mqttPublishVariableHeader.packetId();
         executorService.execute(() -> {
             if (mqttChannel != null) {
@@ -412,14 +416,24 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
 
     }
 
-    @Override
-    public void doPubrel(Channel channel, int mqttMessage) {
-
-    }
-
+    /**
+     *  QoS 2等级协议交换的第二个报文
+     */
     @Override
     public void doPubrec(Channel channel, int mqttMessage) {
+        sendPubRel(channel,false,mqttMessage);
+    }
 
+    /**
+     *  QoS 2等级协议交换的第三个报文
+     */
+    @Override
+    public void doPubrel(Channel channel, int messageId) {
+        MqttChannel mqttChannel = getMqttChannel(getDeviceId(channel));
+        doIfElse(mqttChannel,mqttChannel1 ->mqttChannel1.isLogin(),mqttChannel1 -> {
+            mqttChannel1.removeRecevice(messageId);
+            sendToPubComp(channel,messageId);
+        });
     }
 
 

@@ -5,14 +5,19 @@ package com.geer2.nettyprotocol.server.mqtt.constant.enums;/**
 /**
  * Qos确认状态
  *
- * @author lxr
- * @create 2017-12-14 17:53
+ * @author JiaweiWu
  **/
 public enum QosStatus {
 
-    PUBD, // 已发送 没收到RECD （发送）
+    /**
+     *  已发送 没收到RECD （发送）
+     */
+    PUBD,
 
-    RECD, //publish 推送回复过（发送）
+    /**
+     * publish 推送回复过（发送）
+     */
+    RECD,
 
 
 }

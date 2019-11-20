@@ -3,6 +3,9 @@ package com.geer2.nettyprotocol.server.mqtt.channel;
 import com.geer2.nettyprotocol.server.mqtt.api.BaseAuthService;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author JiaweiWu
+ */
 @Service
 public class BaseAuthServerImpl implements BaseAuthService {
 

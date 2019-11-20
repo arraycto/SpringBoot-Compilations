@@ -30,6 +30,10 @@ public class StbReportMsg implements Serializable{
 //        this.status = status;
 //        this.jumpFlag = jumpFlag;
 //    }
+
+    /**
+     * 构造
+     */
     public StbReportMsg()
     {
         super();

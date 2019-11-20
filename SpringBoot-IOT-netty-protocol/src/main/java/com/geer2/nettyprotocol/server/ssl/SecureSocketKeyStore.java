@@ -18,6 +18,10 @@ import java.security.KeyStore;
  *
  * </pre>
  */
+
+/**
+ * @author JiaweiWu
+ */
 public class SecureSocketKeyStore {
 
 	private static final byte[] CERT_BYTES = { (byte) 254, (byte) 237,

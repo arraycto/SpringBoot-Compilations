@@ -16,7 +16,9 @@ import java.util.Date;
  * This class would require rt.jar in the class path in order to 
  * generated it alternative is using keytool.
  */
-
+/**
+ * @author JiaweiWu
+ */
 public class X509CertTool {
 
 	/**

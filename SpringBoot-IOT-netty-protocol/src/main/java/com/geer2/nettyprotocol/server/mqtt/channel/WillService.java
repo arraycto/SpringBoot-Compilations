@@ -30,7 +30,9 @@ public class WillService implements BaseApi {
     @Autowired
     ChannelService channelService;
 
-    // deviceid -WillMeaasge
+    /**
+     * deviceid -WillMeaasge
+     */
     private static  ConcurrentHashMap<String, WillMeaasge> willMeaasges = new ConcurrentHashMap<>();
 
 
@@ -43,7 +45,10 @@ public class WillService implements BaseApi {
         willMeaasges.put(deviceid,build);
     }
 
-    // 客户端断开连接后 开启遗嘱消息发送
+    /**
+     * 客户端断开连接后 开启遗嘱消息发送
+     * @param deviceId
+     */
     public void doSend( String deviceId) {
         if(StringUtils.isNotBlank(deviceId)&&(willMeaasges.get(deviceId))!=null){
             WillMeaasge willMeaasge = willMeaasges.get(deviceId);

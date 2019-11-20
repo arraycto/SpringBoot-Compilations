@@ -74,7 +74,7 @@ public class ConnectOptions {
 
         private  boolean hasCleanSession;
 
-        private int KeepAliveTime;
+        private int keepAliveTime;
 
 
     }

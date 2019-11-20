@@ -141,7 +141,6 @@ public class MqttServerHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception{
-//        log.debug(ctx.channel().remoteAddress().toString().substring(1,ctx.channel().remoteAddress().toString().lastIndexOf(":")) + "is close!");
         log.info("【DefaultMqttHandler：channelInactive】"+ctx.channel().localAddress().toString()+"关闭成功");
         mqttServerHandler.mqttHandlerIntf.close(ctx.channel());
 //        super.channelInactive(ctx);

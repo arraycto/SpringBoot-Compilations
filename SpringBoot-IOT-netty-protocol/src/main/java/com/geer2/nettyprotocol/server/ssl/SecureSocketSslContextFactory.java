@@ -30,6 +30,10 @@ import java.security.SecureRandom;
  *     to validate the client certificate.</li>
  * </ul>
  */
+
+/**
+ * @author JiaweiWu
+ */
 public final class SecureSocketSslContextFactory {
 
     private static final String PROTOCOL = "TLS";

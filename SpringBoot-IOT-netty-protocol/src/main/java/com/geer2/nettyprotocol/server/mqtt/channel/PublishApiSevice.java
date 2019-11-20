@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 发送消息以及确认
  *
- * @author lxr
- * @create 2017-11-24 11:04
+ * @author JiaweiWu
  **/
 @Slf4j
 public class PublishApiSevice {
@@ -44,6 +43,7 @@ public class PublishApiSevice {
             case 2:
                 sendQosConfirmMsg(MqttQoS.EXACTLY_ONCE,mqttChannel,willMeaasge.getWillTopic(),willMeaasge.getWillMessage().getBytes());
                 break;
+            default:break;
         }
 
 
@@ -59,6 +59,7 @@ public class PublishApiSevice {
                 case EXACTLY_ONCE:
                     mqttChannel.addSendMqttMessage(messageId,sendQos2Msg(mqttChannel.getChannel(),topic,false,bytes,messageId));
                     break;
+                default:break;
             }
         }
 
@@ -92,8 +93,6 @@ public class PublishApiSevice {
         MqttPublishMessage mqttPublishMessage = new MqttPublishMessage(mqttFixedHeader,mqttPublishVariableHeader, Unpooled.wrappedBuffer(byteBuf));
         channel.writeAndFlush(mqttPublishMessage);
     }
-
-
 
 
     private SendMqttMessage sendQos2Msg(Channel channel, String topic, boolean isDup, byte[] byteBuf, int messageId) {
@@ -132,7 +131,7 @@ public class PublishApiSevice {
     /**
      * 发送qos2 publish  确认消息 第二步
      */
-    protected   void  sendPubRel(Channel channel, boolean isDup, int messageId){
+    protected void sendPubRel(Channel channel, boolean isDup, int messageId){
         MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.PUBREL,isDup, MqttQoS.AT_LEAST_ONCE,false,0x02);
         MqttMessageIdVariableHeader from = MqttMessageIdVariableHeader.from(messageId);
         MqttPubAckMessage mqttPubAckMessage = new MqttPubAckMessage(mqttFixedHeader,from);
@@ -149,15 +148,15 @@ public class PublishApiSevice {
         channel.writeAndFlush(mqttPubAckMessage);
     }
 
-    private SendMqttMessage  addQueue(Channel channel, int messageId, String topic, byte[] datas, MqttQoS mqttQoS, ConfirmStatus confirmStatus){
+    private SendMqttMessage  addQueue(Channel channel, int messageId, String topic, byte[] datas, MqttQoS mqttQos, ConfirmStatus confirmStatus){
         SendMqttMessage build = SendMqttMessage.builder().
                 channel(channel).
                 confirmStatus(confirmStatus).
                 messageId(messageId)
                 .topic(topic)
-                .qos(mqttQoS)
+                .qos(mqttQos)
                 .byteBuf(datas)
-                 .build();
+                .build();
         transfer.addQueue(build);
         return build;
     }

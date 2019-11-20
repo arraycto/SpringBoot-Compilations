@@ -8,6 +8,9 @@ import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author  JiaweiWu
+ */
 @Component
 public class MessageHandler implements EventHandler<MessageEvent> {
 
@@ -32,6 +35,7 @@ public class MessageHandler implements EventHandler<MessageEvent> {
                 case PUBREC:
                     sendAck(MqttMessageType.PUBREC,message);
                     break;
+                default:break;
             }
         }
     }
