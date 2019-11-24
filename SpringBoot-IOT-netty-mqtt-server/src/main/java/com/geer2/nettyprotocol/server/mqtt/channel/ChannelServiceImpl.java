@@ -1,7 +1,7 @@
 package com.geer2.nettyprotocol.server.mqtt.channel;
 
-import com.geer2.nettyprotocol.server.bean.*;
 import com.geer2.nettyprotocol.exception.ConnectionException;
+import com.geer2.nettyprotocol.server.bean.*;
 import com.geer2.nettyprotocol.server.mqtt.api.BaseApi;
 import com.geer2.nettyprotocol.server.mqtt.api.ChannelService;
 import com.geer2.nettyprotocol.server.mqtt.channel.cache.CacheMap;
@@ -16,7 +16,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.util.AttributeKey;
-import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -413,7 +412,11 @@ public  class ChannelServiceImpl extends PublishApiSevice implements ChannelServ
 
     @Override
     public void unsubscribe(String deviceId, List<String> topics1) {
-
+        Optional.ofNullable(mqttChannels.get(deviceId)).ifPresent(mqttChannel -> {
+            topics1.forEach(topic -> {
+                deleteChannel(topic,mqttChannel);
+            });
+        });
     }
 
     /**

@@ -208,7 +208,11 @@ public class AbstractMqttHandlerServerImpl extends AbstractMqttHandlerService {
      */
     @Override
     public void pong(Channel channel) {
-
+        if (channel.isOpen() && channel.isActive() && channel.isWritable()) {
+            log.info("收到来自：【" + channel.remoteAddress().toString() + "】心跳");
+            MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PINGRESP, false, MqttQoS.AT_MOST_ONCE, false, 0);
+            channel.writeAndFlush(new MqttMessage(fixedHeader));
+        }
     }
 
     /**
@@ -216,7 +220,9 @@ public class AbstractMqttHandlerServerImpl extends AbstractMqttHandlerService {
      */
     @Override
     public void unsubscribe(Channel channel, MqttUnsubscribeMessage mqttMessage) {
-
+        List<String> topics1 = mqttMessage.payload().topics();
+        mqttChannelService.unsubscribe(mqttChannelService.getDeviceId(channel), topics1);
+        unSubBack(channel, mqttMessage.variableHeader().messageId());
     }
 
     /**
