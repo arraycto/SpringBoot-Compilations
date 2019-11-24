@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * WebSocketFrameToByteBufDecoder
  *
- * @author lxr
+ * @author JiaweiWu
  * @create 2017-11-20 13:46
  **/
 public class WebSocketFrameToByteBufDecoder extends MessageToMessageDecoder<BinaryWebSocketFrame> {

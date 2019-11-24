@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.geer2</groupId>
-	<artifactId>netty-protocol</artifactId>
+	<artifactId>netty-protocol-mqtt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringBoot-IOT-netty-protocol</name>
 	<description>Demo project for Spring Boot</description>
