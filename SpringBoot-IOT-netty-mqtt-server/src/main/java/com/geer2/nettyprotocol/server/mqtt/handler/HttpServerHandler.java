@@ -4,7 +4,7 @@ import com.geer2.nettyprotocol.pool.DefaultThreadFactory;
 import com.geer2.nettyprotocol.server.bean.DeviceManage;
 import com.geer2.nettyprotocol.server.bean.forbusiness.MsgToNode;
 import com.geer2.nettyprotocol.exception.ErrorCode;
-import com.geer2.nettyprotocol.server.mqtt.sendMessage.SendOnlineMessageThread;
+import com.geer2.nettyprotocol.server.mqtt.sendmessage.SendOnlineMessageThread;
 import com.geer2.nettyprotocol.util.xmlhelper.Helper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,7 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -112,7 +111,7 @@ public class HttpServerHandler extends  SimpleChannelInboundHandler<Object>
         String resultCode = ErrorCode.SUCCEED.getCode();
         try
         {
-            MsgToNode sendMsg = (MsgToNode) Helper.getInstance().fromXML(xml);
+            MsgToNode sendMsg = (MsgToNode) Helper.getInstance().fromXml(xml);
             log.debug("校验请求数据是否正确");
             resultCode = validaRequestXml(sendMsg);
             //请求数据有误，返回错误信息，不下发给终端
@@ -294,7 +293,7 @@ public class HttpServerHandler extends  SimpleChannelInboundHandler<Object>
     
     }
 
-    public void sendMessage(String code, int msgCode,int op,String planId,String str,int requestId)
+    public void sendmessage(String code, int msgCode,int op,String planId,String str,int requestId)
     {
     
     

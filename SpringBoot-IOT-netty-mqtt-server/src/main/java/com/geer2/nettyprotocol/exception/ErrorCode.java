@@ -1,19 +1,24 @@
 package com.geer2.nettyprotocol.exception;
 
 import java.util.Hashtable;
-
+/**
+ * @author JiaweiWu
+ */
 public enum ErrorCode {
+    /**
+     * 编码逻辑异常
+     */
     SUCCEED("200", "成功")
     , SERVER_EXCEPTION("101", "系统内部错误")
     , DATABASE_ACCESS_EXCEPTION("502", "数据库访问异常")
     , SERVICE_BUSINESS_EXCEPTION("503", "业务处理异常")
     , IO_EXCEPTION("504", "输入输出流异常")
     , COMPRESSION_EXCEPTION("505", "解压异常")
-    //上架管理
-    , CATEGORY_NULL("506", "本栏目已被删除，请刷新树")
-    
-    //XML解析异常
-	, REQUEST_XML_NULL("102", "请求XML数据为空")
+
+    /**
+     * XML解析异常
+     */
+    , REQUEST_XML_NULL("102", "请求XML数据为空")
 	, PARSE_XML_ERROR("103", "XML解析异常")
     ;
     

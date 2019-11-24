@@ -7,12 +7,19 @@ import java.util.function.Predicate;
 /**
  * 逻辑操作封装
  *
- * @author
+ * @author JiaweiWu
  * @create
  **/
 public interface BaseApi {
 
 
+    /**
+     *  if else
+     * @param t
+     * @param predicate
+     * @param consumer
+     * @param <T>
+     */
     default  <T> void  doIfElse(T t, Predicate<T> predicate, Consumer<T> consumer){
         if(t!=null){
             if(predicate.test(t)){
@@ -22,6 +29,14 @@ public interface BaseApi {
     }
 
 
+    /**
+     * if else
+     * @param t
+     * @param predicate
+     * @param consumer
+     * @param consumer2
+     * @param <T>
+     */
     default  <T> void  doIfElse(T t, Predicate<T> predicate, Consumer<T> consumer, Consumer<T> consumer2){
         if(t!=null){
             if(predicate.test(t)){
@@ -32,6 +47,14 @@ public interface BaseApi {
             }
         }
     }
+
+    /**
+     * if
+     * @param t
+     * @param predicates
+     * @param <T>
+     * @return
+     */
     default  <T> boolean  doIf(T t, Predicate<T>... predicates){
         if(t!=null){
             for(Predicate<T> p:predicates){
@@ -44,6 +67,13 @@ public interface BaseApi {
         return  false;
     }
 
+    /**
+     * if and
+     * @param t
+     * @param consumer2
+     * @param predicates
+     * @param <T>
+     */
     default  <T> void   doIfAnd(T t, Consumer<T> consumer2, Predicate<T>... predicates){
         boolean flag =true;
         if(t!=null){
@@ -59,6 +89,13 @@ public interface BaseApi {
         }
     }
 
+    /**
+     * if and
+     * @param t
+     * @param consumer2
+     * @param predicates
+     * @param <T>
+     */
     default  <T> void   doIfAnd1(@NotNull T t, @NotNull Consumer<T> consumer2, @NotNull Predicate<T>... predicates){
         Predicate<T> one = predicates[0];
         int l;

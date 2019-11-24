@@ -2,7 +2,9 @@ package com.geer2.nettyprotocol.server.bean.forbusiness;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-
+/**
+ * @author JiaweiWu
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "UserInfo")

@@ -15,51 +15,53 @@ import java.io.StringWriter;
 
 
 /**
- * @author panxincheng
- * @date 2011-7-15
+ * @author JiaweiWu
  */
 public class Helper {
-	
-	public final static String ENCODING = "UTF-8";
-    public static Logger log = LogManager.getLogger(Helper.class);
-	private static Helper instance = null;
-	private static String packagePath;
-	JAXBContext jaxbContext = null;
-	//Marshaller marshaller = null;
-	//Unmarshaller unmarshaller = null;
 
-	private Helper() {
-		super();
-		packagePath=this.getClass().getPackage().getName();
-	}
-	
-	public static synchronized Helper getInstance() {
-		if (instance == null) {
-			instance = new Helper();
-			instance.prepareJaxbContext();
-		}
-		return instance;
-	}
-	
-	public synchronized void prepareJaxbContext() {
-		try {
-			jaxbContext = JAXBContext.newInstance(packagePath);
-			// Class Marshaller controls the process of marshalling i.e: Java
-			// Object --> XML
-			//marshaller = jaxbContext.createMarshaller();
-			// Class UnMarshaller controls the process of unmarshalling i.e: XML
-			// --> Java Object
-			//unmarshaller = jaxbContext.createUnmarshaller();
-		} catch (Exception e) {
-			log.error("prepareJaxbContext",e);
-		}
-	}
-	
-    public String toXML(Object obj)
+    public final static String ENCODING = "UTF-8";
+    public static Logger log = LogManager.getLogger(Helper.class);
+    private static Helper instance = null;
+    private static String packagePath;
+    JAXBContext jaxbContext = null;
+    //Marshaller marshaller = null;
+    //Unmarshaller unmarshaller = null;
+
+    private Helper() {
+        super();
+        packagePath=this.getClass().getPackage().getName();
+    }
+
+    public static synchronized Helper getInstance() {
+        if (instance == null) {
+            instance = new Helper();
+            instance.prepareJaxbContext();
+        }
+        return instance;
+    }
+
+    /**
+     Class Marshaller controls the process of marshalling i.e: Java
+     // Object --> XML
+     marshaller = jaxbContext.createMarshaller();
+     Class UnMarshaller controls the process of unmarshalling i.e: XML
+     // --> Java Object
+     unmarshaller = jaxbContext.createUnmarshaller();
+     */
+    public synchronized void prepareJaxbContext() {
+        try {
+            jaxbContext = JAXBContext.newInstance(packagePath);
+
+        } catch (Exception e) {
+            log.error("prepareJaxbContext",e);
+        }
+    }
+
+    public String toXml(Object obj)
     {
         String docu = null;
         StringWriter sw = null;
-        
+
         try
         {
             Marshaller marshaller = jaxbContext.createMarshaller();
@@ -86,11 +88,11 @@ public class Helper {
                 }
             }
         }
-        
+
         return docu;
     }
-	
-    public Object fromXML(String xml) throws ParseMessageException
+
+    public Object fromXml(String xml) throws ParseMessageException
     {
         if (xml == null)
         {
@@ -98,7 +100,7 @@ public class Helper {
         }
         ByteArrayInputStream bais = null;
         Object obj = null;
-        
+
         try
         {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -124,22 +126,22 @@ public class Helper {
                 }
             }
         }
-        
+
         return obj;
     }
-	
-	
-	
-	/**
-	 * @Description 节点同名，调用此方法做指定转换
-	 * @param xml
-	 * @param clazz
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-    public static <T> T XML2Obj(String xml, Class<T> clazz) throws Exception 
-	{
+
+
+
+    /**
+     * @Description 节点同名，调用此方法做指定转换
+     * @param xml
+     * @param clazz
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T xml2Obj(String xml, Class<T> clazz) throws Exception
+    {
         if(xml.isEmpty() || clazz == null) {
             throw new Exception(">>>>>>>>>>传入的把XML转化为对象的参数不对  obj =" + clazz + "; xml " + xml);
         }
@@ -168,15 +170,15 @@ public class Helper {
         return t;
     }
 
-	
-	public String replaceUnicodeString(String str) {
-        return str.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");  
+
+    public String replaceUnicodeString(String str) {
+        return str.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");
     }
-	
-	
-	public static void main(String[] args)
+
+
+    public static void main(String[] args)
     {
-	    Area area=new Area();
-	    System.out.println(Helper.getInstance().toXML(area));;
+        Area area=new Area();
+        System.out.println(Helper.getInstance().toXml(area));
     }
 }

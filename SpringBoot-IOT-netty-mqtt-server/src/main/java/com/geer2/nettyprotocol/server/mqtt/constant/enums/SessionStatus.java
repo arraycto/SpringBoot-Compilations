@@ -5,11 +5,13 @@ package com.geer2.nettyprotocol.server.mqtt.constant.enums;/**
 /**
  * Channel 会话状态
  *
- * @author lxr
- * @create 2017-11-23 16:04
+ * @author JiaweiWu
  **/
 public enum  SessionStatus {
 
+    /**
+     * Channel 会话状态
+     */
     OPEN,
     CLOSE
 }

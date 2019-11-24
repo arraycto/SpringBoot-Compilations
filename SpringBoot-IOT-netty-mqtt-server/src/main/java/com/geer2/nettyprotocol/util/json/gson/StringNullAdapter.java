@@ -29,7 +29,6 @@ public class StringNullAdapter extends TypeAdapter<String> {
     {
         if (reader.peek() == JsonToken.NULL)
         {
-            //            reader.nextNull();
             if (StringUtils.isEmpty(nullDefaultString))
             {
                 return "";
@@ -44,7 +43,7 @@ public class StringNullAdapter extends TypeAdapter<String> {
     @Override
     public void write(JsonWriter writer, String value) throws IOException {
         if (value == null) {
-//            writer.nullValue();
+
             if (StringUtils.isEmpty(nullDefaultString))
             {
                 writer.nullValue();

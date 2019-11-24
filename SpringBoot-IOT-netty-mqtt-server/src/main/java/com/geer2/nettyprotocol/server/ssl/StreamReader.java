@@ -1,7 +1,9 @@
 package com.geer2.nettyprotocol.server.ssl;
 
 import java.io.InputStream;
-
+/**
+ * @author JiaweiWu
+ */
 public class StreamReader {
 
 
