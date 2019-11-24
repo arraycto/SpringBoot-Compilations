@@ -6,7 +6,7 @@ package com.geer2.iot.enums;/**
  * Qos确认状态
  *
  * @author JiaweiWu
- * @create 2017-12-14 17:53
+ * @create 2019-12-14 17:53
  **/
 public enum QosStatus {
 

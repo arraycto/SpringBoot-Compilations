@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 生成messgaeId
  *
  * @author JiaweiWu
- * @create 2017-11-23 19:43
+ * @create 2019-11-23 19:43
  **/
 public class MessageId {
 

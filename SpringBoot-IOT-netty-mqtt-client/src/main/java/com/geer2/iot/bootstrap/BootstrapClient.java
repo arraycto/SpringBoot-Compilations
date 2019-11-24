@@ -7,7 +7,7 @@ import io.netty.channel.Channel;
  * 启动类接口
  *
  * @author JiaweiWu
- * @create 2017-11-18 14:05
+ * @create 2019-11-18 14:05
  **/
 public interface BootstrapClient {
 

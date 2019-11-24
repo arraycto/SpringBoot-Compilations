@@ -14,7 +14,7 @@ import java.util.Optional;
  * mqtt协议处理器
  *
  * @author JiaweiWu
- * @create 2017-11-20 13:38
+ * @create 2019-11-20 13:38
  **/
 @Slf4j
 public  abstract  class MqttHander extends SimpleChannelInboundHandler<MqttMessage> {

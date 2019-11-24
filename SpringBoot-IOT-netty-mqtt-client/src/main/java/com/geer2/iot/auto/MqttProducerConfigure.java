@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * 自动配置类
  *
  * @author JiaweiWu
- * @create 2018-01-04 20:50
+ * @create 2019-11-04 20:50
  **/
 @Configuration
 @ConditionalOnClass({MqttProducer.class})

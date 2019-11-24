@@ -8,7 +8,7 @@ import lombok.Data;
  * 订阅消息
  *
  * @author JiaweiWu
- * @create 2018-01-04 19:42
+ * @create 2019-11-04 19:42
  **/
 @Builder
 @Data

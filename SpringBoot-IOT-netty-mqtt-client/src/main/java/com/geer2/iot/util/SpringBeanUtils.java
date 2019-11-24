@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * 获取 spring当前bean
  *
  * @author JiaweiWu
- * @create 2017-11-21 19:56
+ * @create 2019-11-21 19:56
  **/
 @Component
 public class SpringBeanUtils  implements ApplicationContextAware {

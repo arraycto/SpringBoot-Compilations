@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledFuture;
  * 客户端channelService 处理收到消息信息
  *
  * @author JiaweiWu
- * @create 2018-01-02 20:48
+ * @create 2019-11-02 20:48
  **/
 @Slf4j
 public class MqttHandlerServiceService extends AbstractClientMqttHandlerService {

@@ -9,7 +9,7 @@ import com.geer2.iot.properties.ConnectOptions;
  * 测试
  *
  * @author JiaweiWu
- * @create 2018-01-10 10:09
+ * @create 2019-11-10 10:09
  **/
 public class MqttMain {
 

@@ -8,7 +8,7 @@ import java.net.NetworkInterface;
  * 全局id生成器
  *
  * @author JiaweiWu
- * @create 2017-11-23 19:38
+ * @create 2019-11-23 19:38
  **/
 public class IdWorker {
 

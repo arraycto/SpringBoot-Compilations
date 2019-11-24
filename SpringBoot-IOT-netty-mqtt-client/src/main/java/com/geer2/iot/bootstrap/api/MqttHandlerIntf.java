@@ -8,7 +8,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  * 自定义 对外暴露 消息处理api
  *
  * @author JiaweiWu
- * @create 2017-11-21 9:53
+ * @create 2019-11-21 9:53
  **/
 public interface MqttHandlerIntf {
 

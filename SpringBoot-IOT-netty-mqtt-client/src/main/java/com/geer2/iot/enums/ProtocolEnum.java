@@ -5,7 +5,7 @@ package com.geer2.iot.enums;
  * 协议
  *
  * @author JiaweiWu
- * @create 2018-01-06 15:13
+ * @create 2019-11-06 15:13
  **/
 public enum  ProtocolEnum {
 

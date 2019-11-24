@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * mqtt api操作类
  *
  * @author JiaweiWu
- * @create 2018-01-04 15:10
+ * @create 2019-11-04 15:10
  **/
 @Slf4j
 public class MqttProducer  extends  AbsMqttProducer{

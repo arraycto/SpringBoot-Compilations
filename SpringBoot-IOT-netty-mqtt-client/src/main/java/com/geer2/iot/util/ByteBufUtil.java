@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
  * 跨线程情况下 byteBuf 需要转换成byte[]
  *
  * @author JiaweiWu
- * @create 2017-11-29 9:07
+ * @create 2019-11-29 9:07
  **/
 public class ByteBufUtil {
 

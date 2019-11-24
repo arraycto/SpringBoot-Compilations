@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * 默认 mqtthandler处理
  *
  * @author JiaweiWu
- * @create 2017-11-20 13:58
+ * @create 2019-11-20 13:58
  **/
 
 @ChannelHandler.Sharable

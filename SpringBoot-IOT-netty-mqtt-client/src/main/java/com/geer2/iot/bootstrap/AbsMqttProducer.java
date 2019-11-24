@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 操作类
  *
  * @author JiaweiWu
- * @create 2018-01-04 17:23
+ * @create 2019-11-04 17:23
  **/
 @Slf4j
 public abstract class AbsMqttProducer extends MqttApi implements  Producer {

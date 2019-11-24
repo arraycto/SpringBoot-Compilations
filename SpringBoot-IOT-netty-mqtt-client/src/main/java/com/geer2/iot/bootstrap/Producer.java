@@ -11,7 +11,7 @@ import java.util.List;
  * 生产者
  *
  * @author JiaweiWu
- * @create 2018-01-04 17:17
+ * @create 2019-11-04 17:17
  **/
 public interface Producer {
 
