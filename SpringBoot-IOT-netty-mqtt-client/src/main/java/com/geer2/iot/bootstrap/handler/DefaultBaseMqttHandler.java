@@ -14,6 +14,7 @@ import io.netty.handler.codec.mqtt.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
+import java.util.Optional;
 
 /**
  * 默认 mqtthandler处理
@@ -52,7 +53,10 @@ public class DefaultBaseMqttHandler extends BaseMqttHander {
         log.info("【DefaultBaseMqttHandler：channelActive】"+ctx.channel().localAddress().toString()+"启动成功");
         MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.CONNECT,false, MqttQoS.AT_LEAST_ONCE,false,10);
         MqttConnectVariableHeader mqttConnectVariableHeader = new MqttConnectVariableHeader(MqttVersion.MQTT_3_1_1.protocolName(),MqttVersion.MQTT_3_1_1.protocolLevel(),mqtt.isHasUserName(),mqtt.isHasPassword(),mqtt.isHasWillRetain(),mqtt.getWillQos(),mqtt.isHasWillFlag(),mqtt.isHasCleanSession(),mqtt.getKeepAliveTime());
-        MqttConnectPayload mqttConnectPayload = new MqttConnectPayload(mqtt.getClientIdentifier(),mqtt.getWillTopic(),mqtt.getWillMessage().getBytes(Charset.forName("UTF-8")),mqtt.getUserName(),mqtt.getPassword().getBytes(Charset.forName("UTF-8")));
+        MqttConnectPayload mqttConnectPayload = new MqttConnectPayload(mqtt.getClientIdentifier(),mqtt.getWillTopic()
+                , Optional.ofNullable(mqtt.getWillMessage()).map(item->mqtt.getWillMessage().getBytes(Charset.forName("UTF-8"))).orElse(null)
+                ,mqtt.getUserName()
+                ,Optional.ofNullable(mqtt.getPassword()).map(item->mqtt.getPassword().getBytes(Charset.forName("UTF-8"))).orElse(null));
         MqttConnectMessage mqttSubscribeMessage = new MqttConnectMessage(mqttFixedHeader,mqttConnectVariableHeader,mqttConnectPayload);
         channel.writeAndFlush(mqttSubscribeMessage);
     }
