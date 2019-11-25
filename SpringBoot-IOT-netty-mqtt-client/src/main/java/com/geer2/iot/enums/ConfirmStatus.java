@@ -6,7 +6,7 @@ package com.geer2.iot.enums;/**
  * 确认状态
  *
  * @author JiaweiWu
- * @create 2019-11-06 17:15
+ * @create 2019-11-25 17:15
  **/
 public enum ConfirmStatus {
     /**

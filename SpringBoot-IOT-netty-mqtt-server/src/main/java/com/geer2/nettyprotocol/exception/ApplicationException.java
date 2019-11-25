@@ -16,7 +16,7 @@ package com.geer2.nettyprotocol.exception;
  * 
  * @author JiaweiWu
  * @email 821060818@qq.com
- * @date 2019-11-12
+ * @date 2019-11-25
  * 
  */
 public class ApplicationException extends RuntimeException {

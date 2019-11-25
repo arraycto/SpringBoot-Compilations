@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 终端上报消息对象
  * @author JiaweiWu
- * 2019-11-12
+ * 2019-11-25
  *
  */
 public class StbReportMsg implements Serializable{

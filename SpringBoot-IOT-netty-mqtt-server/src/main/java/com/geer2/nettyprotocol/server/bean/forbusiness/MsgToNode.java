@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @Description:业务系统下发节点的xml格式
  * @author JiaweiWu
- * @Date:2019-11-12
+ * @Date:2019-11-25
  * @Version: 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)

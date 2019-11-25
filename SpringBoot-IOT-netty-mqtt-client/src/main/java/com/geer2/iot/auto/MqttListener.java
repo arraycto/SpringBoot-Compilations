@@ -3,7 +3,7 @@ package com.geer2.iot.auto;
 /**
  * call scan
  * @author JiaweiWu
- * @create 2019-11-04 18:42
+ * @create 2019-11-25 18:42
  **/
 public interface MqttListener{
 

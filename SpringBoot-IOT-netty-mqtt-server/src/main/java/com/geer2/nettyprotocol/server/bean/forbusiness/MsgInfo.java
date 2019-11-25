@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * @Description:消息体对象
  * @author JiaweiWu
- * @Date:2019-11-12
+ * @Date:2019-11-25
  * @Version: 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
