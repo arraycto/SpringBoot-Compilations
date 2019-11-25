@@ -61,7 +61,7 @@ public class MqttProducer  extends AbstractMqttProducer {
         }
         try {
             return SendMqttMessage.builder().messageId(messageId)
-                    .Topic(topic)
+                    .topic(topic)
                     .dup(dup)
                     .retained(retained)
                     .qos(qos)
