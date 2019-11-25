@@ -1,6 +1,6 @@
 package com.geer2.iot.bootstrap.cache;
 
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
 
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -12,10 +12,20 @@ import io.netty.channel.Channel;
 public interface BootstrapClient {
 
 
+    /**
+     * 关闭
+     */
     void shutdown();
 
+    /**
+     * 初始化数据
+     */
     void initEventPool();
 
+    /**
+     * 启动
+     * @return
+     */
     Channel start();
 
 

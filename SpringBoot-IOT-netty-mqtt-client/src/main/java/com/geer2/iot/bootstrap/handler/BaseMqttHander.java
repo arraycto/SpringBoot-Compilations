@@ -17,11 +17,11 @@ import java.util.Optional;
  * @create 2019-11-20 13:38
  **/
 @Slf4j
-public  abstract  class MqttHander extends SimpleChannelInboundHandler<MqttMessage> {
+public  abstract  class BaseMqttHander extends SimpleChannelInboundHandler<MqttMessage> {
 
     MqttHandlerIntf mqttHandlerApi;
 
-    public MqttHander(MqttHandlerIntf mqttHandlerIntf){
+    public BaseMqttHander(MqttHandlerIntf mqttHandlerIntf){
         this.mqttHandlerApi=mqttHandlerIntf;
     }
 
@@ -32,6 +32,11 @@ public  abstract  class MqttHander extends SimpleChannelInboundHandler<MqttMessa
                 .ifPresent(mqttFixedHeader1 -> doMessage(channelHandlerContext,mqttMessage));
     }
 
+    /**
+     * 处理
+     * @param channelHandlerContext
+     * @param mqttMessage
+     */
     public  abstract void doMessage(ChannelHandlerContext channelHandlerContext, MqttMessage mqttMessage);
 
 
@@ -39,7 +44,7 @@ public  abstract  class MqttHander extends SimpleChannelInboundHandler<MqttMessa
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.info("【DefaultMqttHandler：channelInactive】"+ctx.channel().localAddress().toString()+"关闭成功");
+        log.info("【DefaultBaseMqttHandler：channelInactive】"+ctx.channel().localAddress().toString()+"关闭成功");
         mqttHandlerApi.close(ctx.channel());
     }
 

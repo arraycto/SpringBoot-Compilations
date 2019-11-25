@@ -10,9 +10,15 @@ package com.geer2.iot.enums;/**
  **/
 public enum QosStatus {
 
-    PUBD, // 已发送 没收到RECD （发送）
+    /**
+     * 已发送 没收到RECD （发送）
+     */
+    PUBD,
 
-    RECD, //publish 推送回复过（发送）
+    /**
+     * publish 推送回复过（发送）
+     */
+    RECD,
 
 
 }

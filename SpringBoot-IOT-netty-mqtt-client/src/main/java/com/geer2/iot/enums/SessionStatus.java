@@ -1,6 +1,4 @@
-package com.geer2.iot.enums;/**
- * Created by wangcy on 2017/11/23.
- */
+package com.geer2.iot.enums;
 
 /**
  * Channel 会话状态
@@ -10,6 +8,12 @@ package com.geer2.iot.enums;/**
  **/
 public enum  SessionStatus {
 
+    /**
+     * OPEN
+     */
     OPEN,
+    /**
+     * CLOSE
+     */
     CLOSE
 }

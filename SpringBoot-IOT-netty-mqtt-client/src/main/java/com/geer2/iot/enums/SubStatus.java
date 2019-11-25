@@ -7,6 +7,12 @@ package com.geer2.iot.enums;
  * @create 2019-11-29 15:25
  **/
 public enum  SubStatus {
+    /**
+     * YES
+     */
     YES,
+    /**
+     * NO
+     */
     NO
 }

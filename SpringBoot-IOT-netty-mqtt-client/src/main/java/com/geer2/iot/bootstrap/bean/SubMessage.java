@@ -1,4 +1,4 @@
-package com.geer2.iot.bootstrap.Bean;
+package com.geer2.iot.bootstrap.bean;
 
 import io.netty.handler.codec.mqtt.MqttQoS;
 import lombok.Builder;

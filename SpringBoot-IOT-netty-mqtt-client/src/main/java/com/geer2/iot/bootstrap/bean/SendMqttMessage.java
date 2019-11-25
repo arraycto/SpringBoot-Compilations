@@ -1,4 +1,4 @@
-package com.geer2.iot.bootstrap.Bean;
+package com.geer2.iot.bootstrap.bean;
 
 import com.geer2.iot.enums.ConfirmStatus;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import lombok.Data;
 @Builder
 public class SendMqttMessage {
 
-    private String Topic;
+    private String topic;
 
     private byte[] payload;
 

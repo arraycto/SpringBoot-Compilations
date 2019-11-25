@@ -32,7 +32,7 @@ public class SpringBeanUtils implements ApplicationContextAware {
     }
 
     /**
-     * 通过name获取 Bean.
+     * 通过name获取 bean.
      * @param name
      * @return
      */

@@ -1,6 +1,6 @@
 package com.geer2.iot.bootstrap;
 
-import com.geer2.iot.bootstrap.handler.MqttHander;
+import com.geer2.iot.bootstrap.handler.BaseMqttHander;
 import com.geer2.iot.properties.ConnectOptions;
 import com.geer2.iot.ssl.SecureSokcetTrustManagerFactory;
 import io.netty.channel.ChannelPipeline;
@@ -21,26 +21,26 @@ import javax.net.ssl.SSLEngine;
 public abstract class AbstractBootstrapClient implements  BootstrapClient {
 
 
-    private SSLContext CLIENT_CONTEXT;
+    private SSLContext clientContext;
 
-    private   String PROTOCOL = "TLS";
+    private static  String PROTOCOL = "TLS";
 
     /**
      *  @param channelPipeline  channelPipeline
      * @param clientBean  客户端配置参数
      */
-    protected  void initHandler(ChannelPipeline channelPipeline, ConnectOptions clientBean, MqttHander mqttHander){
+    protected  void initHandler(ChannelPipeline channelPipeline, ConnectOptions clientBean, BaseMqttHander baseMqttHander){
         if(clientBean.isSsl()){
             initSsl();
             SSLEngine engine =
-                    CLIENT_CONTEXT.createSSLEngine();
+                    clientContext.createSSLEngine();
             engine.setUseClientMode(true);
             channelPipeline.addLast("ssl", new SslHandler(engine));
         }
         channelPipeline.addLast("decoder", new MqttDecoder());
         channelPipeline.addLast("encoder", MqttEncoder.INSTANCE);
         channelPipeline.addLast(new IdleStateHandler(clientBean.getHeart(),0,0));
-        channelPipeline.addLast(mqttHander);
+        channelPipeline.addLast(baseMqttHander);
 
     }
 
@@ -53,6 +53,6 @@ public abstract class AbstractBootstrapClient implements  BootstrapClient {
             throw new Error(
                     "Failed to initialize the client-side SSLContext", e);
         }
-        CLIENT_CONTEXT = clientContext;
+        clientContext = clientContext;
     }
 }

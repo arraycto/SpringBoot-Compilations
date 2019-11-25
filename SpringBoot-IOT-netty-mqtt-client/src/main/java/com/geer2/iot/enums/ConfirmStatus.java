@@ -9,8 +9,20 @@ package com.geer2.iot.enums;/**
  * @create 2019-11-06 17:15
  **/
 public enum ConfirmStatus {
+    /**
+     * PUB
+     */
     PUB,
+    /**
+     * PUBREC
+     */
     PUBREC,
+    /**
+     * PUBREL
+     */
     PUBREL,
+    /**
+     * COMPLETE
+     */
     COMPLETE,
 }

@@ -1,7 +1,7 @@
 package com.geer2.iot.bootstrap.scan;
 
 import com.geer2.iot.bootstrap.producer.MqttApi;
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
 import com.geer2.iot.enums.ConfirmStatus;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  **/
 
 @Slf4j
-public abstract class ScanRunnable  extends MqttApi implements Runnable {
+public abstract class AbstractScanRunnable extends MqttApi implements Runnable {
 
 
 
@@ -49,6 +49,11 @@ public abstract class ScanRunnable  extends MqttApi implements Runnable {
             addQueues(list);
         }
     }
+
+    /**
+     *抽象方法 消息推送线程池
+     * @param poll
+     */
     public  abstract  void  doInfo( SendMqttMessage poll);
 
 

@@ -28,7 +28,7 @@ public class CacheConfig {
      * @param
      * @return
      */
-//    @Bean
+//    @bean
 //    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
 //        StringRedisTemplate template = new StringRedisTemplate(factory);
 //        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
@@ -43,7 +43,7 @@ public class CacheConfig {
 //        return template;
 //    }
 
-//    @Bean(CacheConfig.CacheManagerName.REDIS_CACHE_MANAGER)
+//    @bean(CacheConfig.CacheManagerName.REDIS_CACHE_MANAGER)
 //    @Primary
 //    public RedisCacheManager redisCacheManager(RedisTemplate<String,String> redisTemplate) {
 //        RedisCacheManager rcm = new RedisCacheManager(redisTemplate);

@@ -1,7 +1,7 @@
 package com.geer2.iot.bootstrap.producer;
 
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
-import com.geer2.iot.bootstrap.Bean.SubMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SubMessage;
 import com.geer2.iot.enums.ConfirmStatus;
 import com.geer2.iot.properties.ConnectOptions;
 import com.geer2.iot.util.MessageId;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @create 2019-11-04 15:10
  **/
 @Slf4j
-public class MqttProducer  extends  AbsMqttProducer{
+public class MqttProducer  extends AbstractMqttProducer {
 
 
     @Override

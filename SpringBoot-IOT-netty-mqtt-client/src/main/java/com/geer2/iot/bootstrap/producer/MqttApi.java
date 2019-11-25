@@ -1,6 +1,7 @@
 package com.geer2.iot.bootstrap.producer;
 
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
+import com.geer2.iot.pool.DefaultThreadFactory;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
@@ -8,9 +9,7 @@ import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.*;
 
 /**
  * 操作api 处理主动发送请求
@@ -23,9 +22,8 @@ public class MqttApi {
 
 
 
-
-    protected ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-
+    DefaultThreadFactory defaultThreadFactory = new DefaultThreadFactory("mqtt-client-");
+    protected ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1,defaultThreadFactory);
 
     protected  void pubMessage(Channel channel, SendMqttMessage mqttMessage){
         log.info("成功发送消息:"+new String(mqttMessage.getPayload()));
@@ -61,8 +59,8 @@ public class MqttApi {
     protected  void unSubMessage(Channel channel,List<String> topic,int messageId){
         MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.UNSUBSCRIBE,false, MqttQoS.AT_LEAST_ONCE,false,0x02);
         MqttMessageIdVariableHeader variableHeader = MqttMessageIdVariableHeader.from(messageId);
-        MqttUnsubscribePayload MqttUnsubscribeMessage = new MqttUnsubscribePayload(topic);
-        MqttUnsubscribeMessage mqttUnsubscribeMessage = new MqttUnsubscribeMessage(mqttFixedHeader,variableHeader,MqttUnsubscribeMessage);
+        MqttUnsubscribePayload mqttUnsubscribePayload = new MqttUnsubscribePayload(topic);
+        MqttUnsubscribeMessage mqttUnsubscribeMessage = new MqttUnsubscribeMessage(mqttFixedHeader,variableHeader,mqttUnsubscribePayload);
         channel.writeAndFlush(mqttUnsubscribeMessage);
     }
 

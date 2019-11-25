@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledFuture;
 public interface Scheduled {
 
     /**
-     *
+     * 定时任务处理
      * @param runnable
      * @return
      */

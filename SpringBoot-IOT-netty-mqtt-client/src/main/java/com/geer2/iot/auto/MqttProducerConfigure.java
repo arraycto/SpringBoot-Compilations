@@ -2,7 +2,7 @@ package com.geer2.iot.auto;
 
 import com.geer2.iot.bootstrap.producer.MqttProducer;
 import com.geer2.iot.bootstrap.producer.Producer;
-import com.geer2.iot.bootstrap.Bean.SubMessage;
+import com.geer2.iot.bootstrap.bean.SubMessage;
 import com.geer2.iot.properties.ConnectOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.support.AopUtils;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties({ConnectOptions.class})
 public class MqttProducerConfigure   implements ApplicationContextAware,DisposableBean {
 
-    private static  final  int _BLACKLOG =   1024;
+    private static  final  int BLACKLOG =   1024;
 
     private static final  int  CPU =Runtime.getRuntime().availableProcessors();
 
@@ -66,13 +66,13 @@ public class MqttProducerConfigure   implements ApplicationContextAware,Disposab
                 mqttProducer.setMqttListener(listener);
                 mqttProducer.connect(connectOptions);
                 if(StringUtils.isNoneBlank(topics)){
-                    SubMessage[] SubMessages  = new SubMessage[topics.length];
+                    SubMessage[] subMessages  = new SubMessage[topics.length];
                     List<SubMessage> collect = Arrays.stream(topics)
                             .map(topic -> SubMessage.builder()
                                     .qos(annotation.qos())
                                     .topic(topic)
                                     .build()).collect(Collectors.toList());
-                    mqttProducer.sub(collect.toArray(SubMessages));
+                    mqttProducer.sub(collect.toArray(subMessages));
                 }
             });
         });
@@ -86,7 +86,7 @@ public class MqttProducerConfigure   implements ApplicationContextAware,Disposab
             throw new RuntimeException("端口号为空");
         }
         if(connectOptions.getBacklog()<1) {
-            connectOptions.setBacklog(_BLACKLOG);
+            connectOptions.setBacklog(BLACKLOG);
         }
         if(connectOptions.getBossThread()<1) {
             connectOptions.setBossThread(CPU);

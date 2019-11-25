@@ -13,6 +13,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.mqtt.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.Charset;
+
 /**
  * 默认 mqtthandler处理
  *
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @ChannelHandler.Sharable
 @Slf4j
-public class DefaultMqttHandler extends MqttHander {
+public class DefaultBaseMqttHandler extends BaseMqttHander {
 
 
     private AbstractClientMqttHandlerService mqttHandlerApi;
@@ -33,7 +35,7 @@ public class DefaultMqttHandler extends MqttHander {
     
     private ConnectOptions connectOptions;
 
-    public DefaultMqttHandler(ConnectOptions connectOptions, AbstractClientMqttHandlerService mqttHandlerApi, Producer producer, MqttListener mqttListener) {
+    public DefaultBaseMqttHandler(ConnectOptions connectOptions, AbstractClientMqttHandlerService mqttHandlerApi, Producer producer, MqttListener mqttListener) {
         super(mqttHandlerApi);
         this.mqttProducer =(MqttProducer) producer;
         this.mqttListener = mqttListener;
@@ -47,10 +49,10 @@ public class DefaultMqttHandler extends MqttHander {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         ConnectOptions.MqttOpntions mqtt = connectOptions.getMqtt();
-        log.info("【DefaultMqttHandler：channelActive】"+ctx.channel().localAddress().toString()+"启动成功");
+        log.info("【DefaultBaseMqttHandler：channelActive】"+ctx.channel().localAddress().toString()+"启动成功");
         MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.CONNECT,false, MqttQoS.AT_LEAST_ONCE,false,10);
         MqttConnectVariableHeader mqttConnectVariableHeader = new MqttConnectVariableHeader(MqttVersion.MQTT_3_1_1.protocolName(),MqttVersion.MQTT_3_1_1.protocolLevel(),mqtt.isHasUserName(),mqtt.isHasPassword(),mqtt.isHasWillRetain(),mqtt.getWillQos(),mqtt.isHasWillFlag(),mqtt.isHasCleanSession(),mqtt.getKeepAliveTime());
-        MqttConnectPayload mqttConnectPayload = new MqttConnectPayload(mqtt.getClientIdentifier(),mqtt.getWillTopic(),mqtt.getWillMessage(),mqtt.getUserName(),mqtt.getPassword());
+        MqttConnectPayload mqttConnectPayload = new MqttConnectPayload(mqtt.getClientIdentifier(),mqtt.getWillTopic(),mqtt.getWillMessage().getBytes(Charset.forName("UTF-8")),mqtt.getUserName(),mqtt.getPassword().getBytes(Charset.forName("UTF-8")));
         MqttConnectMessage mqttSubscribeMessage = new MqttConnectMessage(mqttFixedHeader,mqttConnectVariableHeader,mqttConnectPayload);
         channel.writeAndFlush(mqttSubscribeMessage);
     }
@@ -95,7 +97,7 @@ public class DefaultMqttHandler extends MqttHander {
         MqttFixedHeader mqttFixedHeader = mqttMessage.fixedHeader();
         MqttPublishVariableHeader mqttPublishVariableHeader = mqttMessage.variableHeader();
         ByteBuf payload = mqttMessage.payload();
-        byte[] bytes = ByteBufUtil.copyByteBuf(payload); //
+        byte[] bytes = ByteBufUtil.copyByteBuf(payload);
         if(mqttListener!=null){
             mqttListener.callBack(mqttPublishVariableHeader.topicName(),new String(bytes));
         }
@@ -103,18 +105,18 @@ public class DefaultMqttHandler extends MqttHander {
             case AT_MOST_ONCE:
                 break;
             case AT_LEAST_ONCE:
-                mqttHandlerApi.pubBackMessage(channel,mqttPublishVariableHeader.messageId());
+                mqttHandlerApi.pubBackMessage(channel,mqttPublishVariableHeader.packetId());
                 break;
             case EXACTLY_ONCE:
-                mqttProducer.pubRecMessage(channel,mqttPublishVariableHeader.messageId());
+                mqttProducer.pubRecMessage(channel,mqttPublishVariableHeader.packetId());
                 break;
+            default:break;
         }
 
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//        mqttProducer.getNettyBootstrapClient().doubleConnect();
         if(mqttListener!=null){
             mqttListener.callThrowable(cause);
         }

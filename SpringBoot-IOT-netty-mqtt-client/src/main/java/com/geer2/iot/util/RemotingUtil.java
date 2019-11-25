@@ -29,6 +29,9 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+/**
+ * @author JiaweiWu
+ */
 public class RemotingUtil {
     public static final String OS_NAME = System.getProperty("os.name");
 
@@ -36,12 +39,15 @@ public class RemotingUtil {
     private static boolean isLinuxPlatform = false;
     private static boolean isWindowsPlatform = false;
 
+    private static final String LINUX = "linux";
+    private static final String WINDOWS = "windows";
+
     static {
-        if (OS_NAME != null && OS_NAME.toLowerCase().contains("linux")) {
+        if (OS_NAME != null && OS_NAME.toLowerCase().contains(LINUX)) {
             isLinuxPlatform = true;
         }
 
-        if (OS_NAME != null && OS_NAME.toLowerCase().contains("windows")) {
+        if (OS_NAME != null && OS_NAME.toLowerCase().contains(WINDOWS)) {
             isWindowsPlatform = true;
         }
     }

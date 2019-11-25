@@ -84,7 +84,12 @@ public class MqttHandlerServiceService extends AbstractClientMqttHandlerService 
             scheduledFuture.cancel(true);
         }
     }
-    //qos1 send
+
+    /**
+     * qos1 send
+     * @param channel
+     * @param messageId
+     */
     @Override
     public void pubBackMessage(Channel channel, int messageId) {
         MqttFixedHeader mqttFixedHeader = new MqttFixedHeader(MqttMessageType.PUBACK,false, MqttQoS.AT_LEAST_ONCE,false,0x02);

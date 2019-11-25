@@ -2,10 +2,10 @@ package com.geer2.iot.bootstrap.producer;
 
 import com.geer2.iot.auto.MqttListener;
 import com.geer2.iot.bootstrap.AbstractBootstrapClient;
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
 import com.geer2.iot.bootstrap.cache.Cache;
 import com.geer2.iot.bootstrap.channel.MqttHandlerServiceService;
-import com.geer2.iot.bootstrap.handler.DefaultMqttHandler;
+import com.geer2.iot.bootstrap.handler.DefaultBaseMqttHandler;
 import com.geer2.iot.bootstrap.scan.SacnScheduled;
 import com.geer2.iot.enums.ConfirmStatus;
 import com.geer2.iot.util.ip.IpUtils;
@@ -35,10 +35,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 操作类
  *
  * @author JiaweiWu
- * @create 2019-11-04 17:23
+ * @create 2019-11
  **/
 @Slf4j
-public abstract class AbsMqttProducer extends MqttApi implements  Producer {
+public abstract class AbstractMqttProducer extends MqttApi implements  Producer {
 
     protected   Channel channel;
 
@@ -51,7 +51,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
     protected List<MqttTopicSubscription> topics = new ArrayList<>();
 
 
-    private static  final  int _BLACKLOG =   1024;
+    private static  final  int BLACKLOG =   1024;
 
     private static final  int  CPU =Runtime.getRuntime().availableProcessors();
 
@@ -64,7 +64,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
 
 
 
-    private  static final CountDownLatch countDownLatch = new CountDownLatch(1);
+    private  static final CountDownLatch COUNT_DOWN_LATCH= new CountDownLatch(1);
 
 
     protected   void  connectTo(ConnectOptions connectOptions){
@@ -75,7 +75,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
         this.channel =nettyBootstrapClient.start();
         initPool(connectOptions.getMinPeriod());
         try {
-            countDownLatch.await(connectOptions.getConnectTime(), TimeUnit.SECONDS);
+            COUNT_DOWN_LATCH.await(connectOptions.getConnectTime(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             log.error("InterruptedException",e);
             nettyBootstrapClient.doubleConnect(); // 重新连接
@@ -156,7 +156,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
         MqttConnAckVariableHeader mqttConnAckVariableHeader = mqttConnAckMessage.variableHeader();
         switch ( mqttConnAckVariableHeader.connectReturnCode()){
             case CONNECTION_ACCEPTED:
-                countDownLatch.countDown();
+                COUNT_DOWN_LATCH.countDown();
                 break;
             case CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD:
                 log.error("login error", new RuntimeException("用户名密码错误"));
@@ -173,6 +173,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
             case CONNECTION_REFUSED_NOT_AUTHORIZED:
                 log.error("login error", new RuntimeException("未授权登录"));
                 break;
+            default:break;
         }
 
     }
@@ -197,9 +198,9 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
             connect.addListener((ChannelFutureListener) future -> {
                 Thread.sleep(2000);
                 if (future.isSuccess()){
-                    AbsMqttProducer absMqttProducer = AbsMqttProducer.this;
-                    absMqttProducer.channel =future.channel();
-                    absMqttProducer.subMessage(future.channel(),topics, MessageId.messageId());
+                    AbstractMqttProducer abstractMqttProducer = AbstractMqttProducer.this;
+                    abstractMqttProducer.channel =future.channel();
+                    abstractMqttProducer.subMessage(future.channel(),topics, MessageId.messageId());
                 }
                 else {
                     doubleConnect();
@@ -220,7 +221,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            initHandler(ch.pipeline(),connectOptions,new DefaultMqttHandler(connectOptions,new MqttHandlerServiceService(), AbsMqttProducer.this, mqttListener));
+                            initHandler(ch.pipeline(),connectOptions,new DefaultBaseMqttHandler(connectOptions,new MqttHandlerServiceService(), AbstractMqttProducer.this, mqttListener));
                         }
                     });
             try {
@@ -246,6 +247,7 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
             bootstrap= new Bootstrap();
             bossGroup = new NioEventLoopGroup(4, new ThreadFactory() {
                 private AtomicInteger index = new AtomicInteger(0);
+                @Override
                 public Thread newThread(Runnable r) {
                     return new Thread(r, "BOSS_" + index.incrementAndGet());
                 }

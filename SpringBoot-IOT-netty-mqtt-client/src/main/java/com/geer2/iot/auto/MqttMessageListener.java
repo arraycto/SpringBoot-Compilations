@@ -5,7 +5,7 @@ import io.netty.handler.codec.mqtt.MqttQoS;
 import java.lang.annotation.*;
 
 /**
- * Created by rh on 2017/11/17.
+ * @author JiaweiWu
  * 消费者配置注解类
  */
 @Target(ElementType.TYPE)

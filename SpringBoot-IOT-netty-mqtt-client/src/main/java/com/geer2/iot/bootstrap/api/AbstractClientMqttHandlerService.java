@@ -16,11 +16,31 @@ public abstract class AbstractClientMqttHandlerService implements MqttHandlerInt
         heart(channel,evt);
     }
 
+    /**
+     * 心跳
+     * @param channel
+     * @param evt
+     */
     public abstract void  heart(Channel channel, IdleStateEvent evt);
 
+    /**
+     * 订阅回复确认
+     * @param channel
+     * @param mqttMessage
+     */
     public abstract void suback(Channel channel, MqttSubAckMessage mqttMessage) ;
 
+    /**
+     * 发布回复确认
+     * @param channel
+     * @param i
+     */
     public abstract void pubBackMessage(Channel channel, int i);
 
+    /**
+     * 取消订阅回复确认
+     * @param channel
+     * @param mqttMessage
+     */
     public abstract void unsubBack(Channel channel, MqttMessage mqttMessage);
 }

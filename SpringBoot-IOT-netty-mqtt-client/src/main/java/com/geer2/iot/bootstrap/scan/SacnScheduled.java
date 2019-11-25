@@ -1,7 +1,7 @@
 package com.geer2.iot.bootstrap.scan;
 
 import com.geer2.iot.bootstrap.producer.Producer;
-import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
+import com.geer2.iot.bootstrap.bean.SendMqttMessage;
 import com.geer2.iot.pool.Scheduled;
 import io.netty.handler.codec.mqtt.MqttMessageType;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Data
 @Slf4j
-public class SacnScheduled extends ScanRunnable {
+public class SacnScheduled extends AbstractScanRunnable {
 
     private Producer producer;
 
@@ -61,6 +61,7 @@ public class SacnScheduled extends ScanRunnable {
                     case PUBREL:
                         sendAck(MqttMessageType.PUBREL,true,producer.getChannel(),poll.getMessageId());
                         break;
+                    default:break;
                 }
 
             }
@@ -78,6 +79,7 @@ public class SacnScheduled extends ScanRunnable {
 
     private class ScheduledPool implements Scheduled {
         private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        @Override
         public ScheduledFuture<?> submit(Runnable runnable){
             return scheduledExecutorService.scheduleAtFixedRate(runnable,2,2, TimeUnit.SECONDS);
         }

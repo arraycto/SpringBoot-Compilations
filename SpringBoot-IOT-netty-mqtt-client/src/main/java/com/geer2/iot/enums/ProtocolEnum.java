@@ -9,10 +9,19 @@ package com.geer2.iot.enums;
  **/
 public enum  ProtocolEnum {
 
+    /**
+     * MQTT
+     */
     MQTT,
 
+    /**
+     * MQTT_WS_MQTT
+     */
     MQTT_WS_MQTT,
 
+    /**
+     * MQTT_WS_PAHO
+     */
     MQTT_WS_PAHO,
 
 }
