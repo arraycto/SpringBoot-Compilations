@@ -29,7 +29,7 @@ iot:
        userName: 123 # hasUserName = true 时候配置
        hasWillRetain: false # isWillFlag = true 时候配置
        willQos:  1 # isWillFlag = true 时候配置
-       keepAliveTime:  10 # 心跳时长
+       keepAliveTime:  5 # 心跳时长
 
 server:
 port: 8989

@@ -1,6 +1,6 @@
 package com.geer2.iot.bootstrap.scan;
 
-import com.geer2.iot.bootstrap.Producer;
+import com.geer2.iot.bootstrap.producer.Producer;
 import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
 import com.geer2.iot.pool.Scheduled;
 import io.netty.handler.codec.mqtt.MqttMessageType;

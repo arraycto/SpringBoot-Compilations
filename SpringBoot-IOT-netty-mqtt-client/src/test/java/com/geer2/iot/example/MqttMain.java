@@ -1,9 +1,11 @@
 package com.geer2.iot.example;
 
 import com.geer2.iot.auto.MqttListener;
-import com.geer2.iot.bootstrap.MqttProducer;
-import com.geer2.iot.bootstrap.Producer;
+import com.geer2.iot.bootstrap.Bean.SubMessage;
+import com.geer2.iot.bootstrap.producer.MqttProducer;
+import com.geer2.iot.bootstrap.producer.Producer;
 import com.geer2.iot.properties.ConnectOptions;
+import io.netty.handler.codec.mqtt.MqttQoS;
 
 /**
  * 测试
@@ -22,8 +24,8 @@ public class MqttMain {
         connectOptions.setJksStorePassword("mu$tch8ng3");
         connectOptions.setJksFile("/securesocket.jks");
         connectOptions.setJksCertificatePassword("inc0rrect");
-        connectOptions.setServerIp("192.168.109.1");
-        connectOptions.setPort(1884);
+        connectOptions.setServerIp("10.0.75.1");
+        connectOptions.setPort(1883);
         connectOptions.setBossThread(1);
         connectOptions.setWorkThread(8);
         connectOptions.setMinPeriod(10);
@@ -31,16 +33,22 @@ public class MqttMain {
         connectOptions.setSndbuf(1024);
         connectOptions.setTcpNodelay(true);
         connectOptions.setKeepalive(true);
+        connectOptions.setHeart(5);
         ConnectOptions.MqttOpntions mqttOpntions = new ConnectOptions.MqttOpntions();
         mqttOpntions.setHasCleanSession(true);
         mqttOpntions.setHasWillFlag(true);
-        mqttOpntions.setClientIdentifier("111");
+
+        mqttOpntions.setClientIdentifier("mac-125-123|authType=online,random=12345,signmethod=hmacmd5|");
+
         mqttOpntions.setWillTopic("/lose/device");
         mqttOpntions.setWillQos(1);
         mqttOpntions.setHasWillRetain(false);
         mqttOpntions.setWillMessage("123123");
-        mqttOpntions.setHasPassword(false);
-        mqttOpntions.setHasPassword(false);
+        mqttOpntions.setHasPassword(true);
+        mqttOpntions.setHasPassword(true);
+        mqttOpntions.setUserName("mac-125-123&7a84e627b816ccbd");
+        mqttOpntions.setPassword("db18e537405ee406ae8e307ba6ef2d6a");
+        mqttOpntions.setKeepAliveTime(5);
         connectOptions.setMqtt(mqttOpntions);
         producer.setMqttListener(new MqttListener() {
             @Override
@@ -53,8 +61,8 @@ public class MqttMain {
             }
         });
         producer.connect(connectOptions);
-//        producer.sub(SubMessage.builder().qos(MqttQoS.AT_LEAST_ONCE).topic("/t1/t2").build());
-        producer.pub("/test","hah",2);
+        producer.sub(SubMessage.builder().qos(MqttQoS.AT_MOST_ONCE).topic("/7a84e627b816ccbd/mac-125-123/ext/register").build());
+//        producer.pub("/test","hah",2);
     }
 
 }

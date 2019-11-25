@@ -1,6 +1,6 @@
 package com.geer2.iot.bootstrap.scan;
 
-import com.geer2.iot.bootstrap.MqttApi;
+import com.geer2.iot.bootstrap.producer.MqttApi;
 import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
 import com.geer2.iot.enums.ConfirmStatus;
 import lombok.extern.slf4j.Slf4j;

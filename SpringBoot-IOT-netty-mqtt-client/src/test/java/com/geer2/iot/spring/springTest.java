@@ -1,6 +1,6 @@
 package com.geer2.iot.spring;
 
-import com.geer2.iot.bootstrap.Producer;
+import com.geer2.iot.bootstrap.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

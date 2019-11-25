@@ -1,4 +1,4 @@
-package com.geer2.iot.bootstrap;
+package com.geer2.iot.bootstrap.producer;
 
 import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
 import io.netty.buffer.Unpooled;

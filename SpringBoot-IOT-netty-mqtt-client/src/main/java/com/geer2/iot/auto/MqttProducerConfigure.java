@@ -1,7 +1,7 @@
 package com.geer2.iot.auto;
 
-import com.geer2.iot.bootstrap.MqttProducer;
-import com.geer2.iot.bootstrap.Producer;
+import com.geer2.iot.bootstrap.producer.MqttProducer;
+import com.geer2.iot.bootstrap.producer.Producer;
 import com.geer2.iot.bootstrap.Bean.SubMessage;
 import com.geer2.iot.properties.ConnectOptions;
 import org.apache.commons.lang3.StringUtils;

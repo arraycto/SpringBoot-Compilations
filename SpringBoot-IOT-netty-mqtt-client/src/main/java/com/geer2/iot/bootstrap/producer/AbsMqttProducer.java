@@ -1,6 +1,7 @@
-package com.geer2.iot.bootstrap;
+package com.geer2.iot.bootstrap.producer;
 
 import com.geer2.iot.auto.MqttListener;
+import com.geer2.iot.bootstrap.AbstractBootstrapClient;
 import com.geer2.iot.bootstrap.Bean.SendMqttMessage;
 import com.geer2.iot.bootstrap.cache.Cache;
 import com.geer2.iot.bootstrap.channel.MqttHandlerServiceService;
@@ -256,10 +257,12 @@ public abstract class AbsMqttProducer extends MqttApi implements  Producer {
         return nettyBootstrapClient;
     }
 
+    @Override
     public Channel getChannel() {
         return channel;
     }
 
+    @Override
     public void setMqttListener(MqttListener mqttListener) {
         this.mqttListener = mqttListener;
     }
