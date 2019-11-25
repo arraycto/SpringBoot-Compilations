@@ -1,4 +1,4 @@
-package com.geer2.iot.enums;/**
+package com.geer2.iot.commons.enums;/**
  * Created by wangcy on 2017/12/14.
  */
 

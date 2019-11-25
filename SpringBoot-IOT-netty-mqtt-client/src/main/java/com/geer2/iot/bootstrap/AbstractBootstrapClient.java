@@ -1,8 +1,8 @@
 package com.geer2.iot.bootstrap;
 
 import com.geer2.iot.bootstrap.handler.BaseMqttHander;
-import com.geer2.iot.properties.ConnectOptions;
-import com.geer2.iot.ssl.SecureSokcetTrustManagerFactory;
+import com.geer2.iot.commons.properties.ConnectOptions;
+import com.geer2.iot.commons.ssl.SecureSokcetTrustManagerFactory;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.mqtt.MqttDecoder;
 import io.netty.handler.codec.mqtt.MqttEncoder;

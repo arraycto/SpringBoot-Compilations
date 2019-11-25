@@ -3,7 +3,7 @@ package com.geer2.iot.auto;
 import com.geer2.iot.bootstrap.producer.MqttProducer;
 import com.geer2.iot.bootstrap.producer.Producer;
 import com.geer2.iot.bootstrap.bean.SubMessage;
-import com.geer2.iot.properties.ConnectOptions;
+import com.geer2.iot.commons.properties.ConnectOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;

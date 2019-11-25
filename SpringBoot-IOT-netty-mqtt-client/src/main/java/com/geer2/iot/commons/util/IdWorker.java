@@ -1,4 +1,4 @@
-package com.geer2.iot.util;
+package com.geer2.iot.commons.util;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;

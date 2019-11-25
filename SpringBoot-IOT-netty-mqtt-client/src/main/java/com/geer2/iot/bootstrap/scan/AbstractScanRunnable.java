@@ -2,7 +2,7 @@ package com.geer2.iot.bootstrap.scan;
 
 import com.geer2.iot.bootstrap.producer.MqttApi;
 import com.geer2.iot.bootstrap.bean.SendMqttMessage;
-import com.geer2.iot.enums.ConfirmStatus;
+import com.geer2.iot.commons.enums.ConfirmStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;

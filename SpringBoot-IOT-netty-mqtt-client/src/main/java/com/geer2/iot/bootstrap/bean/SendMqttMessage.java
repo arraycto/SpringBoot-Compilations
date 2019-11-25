@@ -1,6 +1,6 @@
 package com.geer2.iot.bootstrap.bean;
 
-import com.geer2.iot.enums.ConfirmStatus;
+import com.geer2.iot.commons.enums.ConfirmStatus;
 import lombok.Builder;
 import lombok.Data;
 

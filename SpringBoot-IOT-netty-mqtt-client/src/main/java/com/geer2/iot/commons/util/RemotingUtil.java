@@ -1,4 +1,4 @@
-package com.geer2.iot.util;
+package com.geer2.iot.commons.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

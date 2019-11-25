@@ -1,4 +1,4 @@
-package com.geer2.iot.util.ip;
+package com.geer2.iot.commons.util.ip;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;

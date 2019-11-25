@@ -1,4 +1,4 @@
-package com.geer2.iot.properties;
+package com.geer2.iot.commons.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

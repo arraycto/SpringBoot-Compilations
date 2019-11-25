@@ -2,7 +2,7 @@ package com.geer2.iot.bootstrap.producer;
 
 import com.geer2.iot.auto.MqttListener;
 import com.geer2.iot.bootstrap.bean.SubMessage;
-import com.geer2.iot.properties.ConnectOptions;
+import com.geer2.iot.commons.properties.ConnectOptions;
 import io.netty.channel.Channel;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.geer2.iot.bootstrap.channel;
 
 import com.geer2.iot.bootstrap.api.AbstractClientMqttHandlerService;
 import com.geer2.iot.bootstrap.cache.Cache;
-import com.geer2.iot.enums.ConfirmStatus;
+import com.geer2.iot.commons.enums.ConfirmStatus;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.handler.timeout.IdleStateEvent;

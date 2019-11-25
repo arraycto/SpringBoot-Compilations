@@ -1,4 +1,4 @@
-package com.geer2.iot.ssl;
+package com.geer2.iot.commons.ssl;
 
 import java.io.InputStream;
 

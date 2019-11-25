@@ -1,4 +1,4 @@
-package com.geer2.iot.enums;
+package com.geer2.iot.commons.enums;
 
 /**
  * 是否订阅过主题

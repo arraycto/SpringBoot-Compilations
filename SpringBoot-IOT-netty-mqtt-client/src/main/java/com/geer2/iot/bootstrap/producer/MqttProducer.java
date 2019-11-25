@@ -2,9 +2,9 @@ package com.geer2.iot.bootstrap.producer;
 
 import com.geer2.iot.bootstrap.bean.SendMqttMessage;
 import com.geer2.iot.bootstrap.bean.SubMessage;
-import com.geer2.iot.enums.ConfirmStatus;
-import com.geer2.iot.properties.ConnectOptions;
-import com.geer2.iot.util.MessageId;
+import com.geer2.iot.commons.enums.ConfirmStatus;
+import com.geer2.iot.commons.properties.ConnectOptions;
+import com.geer2.iot.commons.util.MessageId;
 import io.netty.handler.codec.mqtt.MqttTopicSubscription;
 import lombok.extern.slf4j.Slf4j;
 

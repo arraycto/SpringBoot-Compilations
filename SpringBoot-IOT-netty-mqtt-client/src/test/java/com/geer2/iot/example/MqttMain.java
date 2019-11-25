@@ -4,7 +4,7 @@ import com.geer2.iot.auto.MqttListener;
 import com.geer2.iot.bootstrap.bean.SubMessage;
 import com.geer2.iot.bootstrap.producer.MqttProducer;
 import com.geer2.iot.bootstrap.producer.Producer;
-import com.geer2.iot.properties.ConnectOptions;
+import com.geer2.iot.commons.properties.ConnectOptions;
 import io.netty.handler.codec.mqtt.MqttQoS;
 
 /**

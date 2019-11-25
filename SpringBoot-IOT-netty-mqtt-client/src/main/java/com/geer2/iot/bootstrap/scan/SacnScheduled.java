@@ -2,7 +2,7 @@ package com.geer2.iot.bootstrap.scan;
 
 import com.geer2.iot.bootstrap.producer.Producer;
 import com.geer2.iot.bootstrap.bean.SendMqttMessage;
-import com.geer2.iot.pool.Scheduled;
+import com.geer2.iot.commons.pool.Scheduled;
 import io.netty.handler.codec.mqtt.MqttMessageType;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
