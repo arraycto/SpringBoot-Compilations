@@ -1,0 +1,2 @@
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#com.geer2.iot.auto.MqttProducerConfigure

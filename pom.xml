@@ -28,6 +28,7 @@
         <module>SpringBoot-IOT-netty-mqtt-server</module>
         <module>SpringBoot-IOT-netty-mqtt-client</module>
         <module>SpringBoot-IOT-TSL</module>
+        <module>SpringBoot-RabbitMQ</module>
     </modules>
     <packaging>pom</packaging>
 
